@@ -1,0 +1,18 @@
+export const  environment = {
+  production: ${IS_PRODUCTION},
+  debugRedux: ${DEBUG_REDUX},
+
+  auth: {
+    clientId: "${CLIENT_ID}",
+    authorizationServer: "${AUTHORIZE_SERVER}",
+    redirectUrl: "${REDIRECT_URL}",
+    serverUrl: "${SERVER_URL}",
+    appName: "${APP_NAME}",
+    jwtOptions: {
+      allowedDomains: ${ALLOWED_DOMAINS},
+      disallowedRoutes: ${DISALLOWED_ROUTES}
+    }
+  },
+
+  apiUrl: "${API_URL}"
+};

@@ -1,0 +1,47 @@
+version: "3.9"
+
+x-args: &args
+  args:
+    NODE_MAJOR: 18
+    APP_ROOT: /app
+    NG_CLI_VERSION: 15.0.5
+
+x-env: &envs
+  environment:
+    - TZ=Asia/Krasnoyarsk
+    - APP_ROOT=/app
+
+x-common: &common
+  restart: unless-stopped
+  stdin_open: true
+  tty: true
+
+x-ui: &app
+  build:
+    <<: *args
+    context: .
+    dockerfile: .docker/Dockerfiles/app.development.Dockerfile
+
+x-frontend: &frontend
+  <<: *envs
+  <<: *app
+  volumes:
+    - .:/app
+    - node_modules:/app/node_modules
+  <<: *common
+
+services:
+  rational-ui--runner--development:
+    <<: *frontend
+    container_name: rational-ui--runner--development
+    command: /bin/bash
+
+  rational-ui--app--development:
+    <<: *frontend
+    container_name: rational-ui--app--development
+    ports:
+      - "42115:4200"
+    command: yarn run start-dev
+
+volumes:
+  node_modules:
