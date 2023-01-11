@@ -57,6 +57,7 @@
             ],
             "styles": [
               "src/styles.scss",
+              "src/stylesheets/utils.scss",
               "node_modules/bootstrap/scss/bootstrap.scss"
             ],
             "scripts": []
