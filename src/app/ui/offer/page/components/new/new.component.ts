@@ -1,8 +1,12 @@
+import { searchUsers } from './../../../../shared/store/selectors';
+import { findEmployeeAction } from './../../../../shared/store/actions/find-employee.action';
 import { Component, OnInit } from '@angular/core';
 
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 
 import { Observable } from 'rxjs';
+
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'app-new',
@@ -27,7 +31,8 @@ export class NewComponent implements OnInit {
   maxSize: number = 20000000;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private store: Store
   ) { }
 
   ngOnInit() {
@@ -39,6 +44,8 @@ export class NewComponent implements OnInit {
   }
 
   onInitializeFrom() {
+    
+
     this.form = this.formBuilder.group({
       // author_info: this.formBuilder.group({
       //   id_tn: new FormControl(getData.proposal.author_info.id_tn, [Validators.required]),
@@ -66,7 +73,8 @@ export class NewComponent implements OnInit {
       id_tn: new FormControl('', [Validators.required]),
       fio: new FormControl('', [Validators.required]),
       phone: new FormControl('', [Validators.required]),
-      dept: new FormControl('', [Validators.required])
+      dept: new FormControl('', [Validators.required]),
+      obj: new FormControl('')
     })
   }
 
@@ -83,11 +91,11 @@ export class NewComponent implements OnInit {
   }
 
   searchEmployee(event: any) {
-    // this.store.dispatch(findEmployeeAction({ data: event.query.trim()}));
-    // this.employees$ = this.store.pipe(select(searchUsers));
+    this.store.dispatch(findEmployeeAction({ data: event.query.trim()}));
+    this.employees$ = this.store.pipe(select(searchUsers));
   }
 
-  selectEmpSign(event: any, index: number) {
+  selectEmpCoauthor(event: any, index: number) {
     (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['id_tn'].setValue(event.id_tn);
     (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['fio'].setValue(event.fio);
     (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['dept'].setValue(event.dept);

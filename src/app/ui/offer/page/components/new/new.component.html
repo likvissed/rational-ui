@@ -61,7 +61,7 @@
                             [showEmptyMessage]="true"
                             appendTo="body"
                             placeholder="Введите ФИО или таб.номер"
-                            (onSelect)="selectEmpSign($event, rowIndex)"
+                            (onSelect)="selectEmpCoauthor($event, rowIndex)"
                           >
                             <ng-template let-employee pTemplate="item">
                               <span class="ml-3">{{ employee.fio }}</span>

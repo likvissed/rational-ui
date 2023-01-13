@@ -1,3 +1,4 @@
+import { SharedModule } from './ui/shared/modules/shred.module';
 import { OfferModule } from './ui/offer/modules/offer.module';
 import { LayoutModule } from './ui/layout/modules/layout.module';
 
@@ -24,7 +25,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 const appModules: any[] = [
   LayoutModule,
   PrimengModule,
-  OfferModule
+  OfferModule,
+  SharedModule
 ];
 
 @NgModule({
