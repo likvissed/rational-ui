@@ -3159,6 +3159,11 @@ follow-redirects@^1.0.0:
   resolved "https://nexus.***REMOVED***.ru/repository/npm/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
   integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
 
+font-awesome@^4.7.0:
+  version "4.7.0"
+  resolved "https://nexus.***REMOVED***.ru/repository/npm/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
+  integrity sha512-U6kGnykA/6bFmg1M/oT9EkFeIYv7JlX3bozwQJWiiLz6L0w3F5vBVPxHlwyX/vtNq1ckcpRKOB9f2Qal/VtFpg==
+
 forwarded@0.2.0:
   version "0.2.0"
   resolved "https://nexus.***REMOVED***.ru/repository/npm/forwarded/-/forwarded-0.2.0.tgz#2269936428aad4c15c7ebe9779a84bf0b2a81811"
@@ -4847,6 +4852,23 @@ pretty-bytes@^5.3.0:
   version "5.6.0"
   resolved "https://nexus.***REMOVED***.ru/repository/npm/pretty-bytes/-/pretty-bytes-5.6.0.tgz#356256f643804773c82f64723fe78c92c62beaeb"
   integrity sha512-FFw039TmrBqFK8ma/7OL3sDz/VytdtJr044/QUJtH0wK9lb9jLq9tJyIxUwtQJHwar2BqtiA4iCWSwo9JLkzFg==
+
+primeflex@^3.3.0:
+  version "3.3.0"
+  resolved "https://nexus.***REMOVED***.ru/repository/npm/primeflex/-/primeflex-3.3.0.tgz#6c755230ddf30c8fffed9f817efed28d5fe2bdff"
+  integrity sha512-4hvyIO7lERN5bnyURn67Qpozghins8Jq/GSXO6tymc3oa2ADHWuiYBti8ZptPwHu+uD/HTEisS26NEmeIGfPZQ==
+
+primeicons@^6.0.1:
+  version "6.0.1"
+  resolved "https://nexus.***REMOVED***.ru/repository/npm/primeicons/-/primeicons-6.0.1.tgz#431fa7c79825934eefd62087d8e1faa6a9e376ad"
+  integrity sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==
+
+primeng@15:
+  version "15.0.1"
+  resolved "https://nexus.***REMOVED***.ru/repository/npm/primeng/-/primeng-15.0.1.tgz#dac0cd1da7facb81bc9e45b285911a3b55868c64"
+  integrity sha512-vuQbxPHejTCiPIaGQKvapYwmR3wqQj3v4PbKM6fsdcHSn0BtyQhtFB9QLTdT5mEr4EEW7RkgKo5hRt2j/Rj9Cw==
+  dependencies:
+    tslib "^2.3.0"
 
 proc-log@^2.0.1:
   version "2.0.1"

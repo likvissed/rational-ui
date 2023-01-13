@@ -1,0 +1,176 @@
+<div class="p-fluid flex">
+  <div class="container">
+    <form [formGroup]="form">
+      <div class="grid">
+        <div class="col-12 md:col-10 lg:col-6">
+          <div formGroupName="author_info"> 
+            <div class="py-2 pr-3 w-10">
+              <label class="pl-1"> * ФИО </label>
+              <input type="text" pInputText formControlName="fio" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+            </div>
+    
+            <div class="py-2 pr-3 w-10">
+              <label class="pl-1"> * Подразделение </label>
+              <input type="text" pInputText formControlName="dept" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+            </div>
+      
+            <div class="py-2 pr-3 w-10">
+              <label class="pl-1"> * Рабочий телефон </label>
+              <input type="text" pInputText formControlName="phone" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+            </div>
+          </div>
+
+          <div class="py-2 pr-3 w-10">
+            <label class="pl-1"> Дата подачи предложения </label>
+            <input type="text" pInputText formControlName="creation_datetime" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+          </div>
+    
+          <div class="py-2 pr-3 w-10">
+            <div>
+              <label class="pl-1 w-9"> Авторский состав </label>
+              <button type="button" class="btn btn-sm" (click)="onNewCoauthor()"> Добавить </button>
+            </div>
+    
+            <div class="row">
+              <ng-container>
+                <p-table
+                  [value]="allCoauthors.controls"
+                  [reorderableColumns]="true"
+                  dataKey="tn"
+                  styleClass="p-datatable-sm p-datatable-gridlines"
+                  [tableStyle]="{'font-size': '12px'}"
+                >
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th width=""> ФИО </th>
+                      <th width=""></th>
+                    </tr>
+                  </ng-template>
+    
+                  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                    <ng-container formArrayName="coauthor_info">
+                      <tr [formGroupName]="rowIndex">
+                        <td>
+                          <p-autoComplete
+                            [suggestions]="employees$ | async"
+                            (completeMethod)="searchEmployee($event)"
+                            field="fio"
+                            formControlName="obj"
+                            [minLength]="1"
+                            [forceSelection]="true"
+                            [showEmptyMessage]="true"
+                            appendTo="body"
+                            placeholder="Введите ФИО или таб.номер"
+                            (onSelect)="selectEmpSign($event, rowIndex)"
+                          >
+                            <ng-template let-employee pTemplate="item">
+                              <span class="ml-3">{{ employee.fio }}</span>
+                              <span> (отд. {{ employee.dept }}) </span>
+                            </ng-template>
+    
+                          </p-autoComplete>
+                        </td>
+    
+                        <td>
+                          <button type="button" class="btn btn-sm" (click)="onDeleteCoauthor(rowIndex)" > Удалить </button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-template>
+    
+    
+                </p-table>
+              </ng-container>
+            </div>
+          </div>
+    
+          <div class="py-2 pr-3 w-10">
+            <label> * Направление рац. предложения </label>
+            <p-dropdown [options]="trends" formControlName="trend_id" optionLabel="name" optionValue="id"></p-dropdown>
+          </div>
+    
+          <div class="py-2 pr-3 w-10">
+            <label> * Серийное производство </label>
+            <p-dropdown [options]="serials" formControlName="serial" optionLabel="name" optionValue="value"></p-dropdown>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-10 lg:col-6">
+            
+          <div class="py-2 pr-3 w-10">
+            <label> Профильное подразделение </label>
+            <p-multiSelect 
+              [options]="depts"
+              formControlName="profile_depts"
+              optionLabel="dept"
+              optionValue="dept"
+              display="chip"
+              defaultLabel="Выберите подразделение"
+              emptyFilterMessage="Не найдено"
+              emptyMessage="Нет данных"
+              [selectionLimit]="5"
+            >
+              <ng-template let-devision pTemplate="item">
+                <div>
+                    <p-chip [label]="devision.dept"></p-chip>
+                    <span> {{ devision.desc }} </span>
+                </div>
+              </ng-template>
+              
+            </p-multiSelect>
+          </div>
+
+          <div class="py-2 pr-3 w-10">
+            <label class="pl-1"> * Название рац. предложения </label>
+            <input type="text" pInputText formControlName="information_name" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+          </div>
+
+          <div class="py-2 pr-3 w-10">
+            <label class="pl-1"> * Ключевые слова </label>
+            <p-chips
+              formControlName="tags"
+              [max]="5"
+              [allowDuplicate]="false"
+              placeholder="Для разделения нажмите Enter"
+            ></p-chips>
+          </div>
+
+          <div class="py-2 pr-3 w-10">
+            <label class="pl-1"> * Аннотация </label>
+            <textarea 
+              formControlName="annotation" 
+              [rows]="5" 
+              [cols]="30" 
+              pInputTextarea 
+              placeholder="Введите краткое содержание"
+            ></textarea>
+          </div>
+
+          <div class="py-2 pr-3 w-10 ui-fileupload-override">
+            <label class="pl-1"> Информационный материал </label>
+            <p-fileUpload 
+              [customUpload]="true" 
+              [multiple]="true"
+              [maxFileSize]="maxSize"
+              invalidFileSizeMessageSummary="{0}: Превышен допустимый размер файла"
+              invalidFileSizeMessageDetail="Файл не должен превышать {0}"
+              [showUploadButton]="false"
+              [showCancelButton]="false"
+              [fileLimit]="10"
+              invalidFileLimitMessageDetail="Количество файлов не должен превышать {0} шт."
+              invalidFileLimitMessageSummary="Превышено максимальное количество файлов"
+            ></p-fileUpload>
+          </div>
+
+          <div class="py-2 pr-3 w-10">
+            <label class="pl-1"> * Аналоги </label>
+            <input type="text" pInputText formControlName="analog_id" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+          </div>
+
+        </div>
+      </div>
+
+      <label>* Обязательное поле для заполнения </label>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+:host ::ng-deep .p-inputtext {
+  padding: 5px;
+  font-size: 13px;
+}
+
+::ng-deep .p-tabmenu {
+  font-size: 13px;
+}
+::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
+  color: #2e2e2e;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-items  {
+  font-size: 13px;
+}
+
+::ng-deep .p-multiselect  {
+  font-size: 13px;
+}
+::ng-deep .p-multiselect .p-multiselect-label {
+  padding: 0.3rem 0.3rem;
+}
+::ng-deep .p-multiselect-panel .p-multiselect-items {
+  font-size: 13px;
+}
+
+::ng-deep .p-chip .p-chip-text {
+  font-size: 13px;
+}
+
+::ng-deep .p-chips .p-chips-multiple-container .p-chips-input-token {
+  padding: 0px;
+}
+::ng-deep .p-chips .p-chips-multiple-container .p-chips-input-token input {
+  font-size: 13px;
+}
+
+::ng-deep .p-button {
+  color: #000000;
+  background: #ffffff;
+  border: 1px solid #989899;
+  font-size: 13px;
+}
+::ng-deep .p-button-label {
+  font-weight: normal;
+}
+:host ::ng-deep .p-button:hover {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  // border: 1px solid var(--color-black); 
+}
+::ng-deep .p-component {
+  font-size: 13px;
+}
+
+::ng-deep .p-fileupload .p-fileupload-buttonbar {
+  padding: 5px 5px 5px 5px;
+}
