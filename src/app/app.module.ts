@@ -16,6 +16,11 @@ import { environment } from './../environments/environment';
 
 import { AuthCenterModule } from '@iss/ng-auth-center';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+
 const appModules: any[] = [
   LayoutModule,
   PrimengModule,
@@ -36,6 +41,10 @@ const appModules: any[] = [
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    environment.debugRedux ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
 
     ...appModules
   ],
