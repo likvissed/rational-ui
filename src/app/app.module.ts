@@ -12,6 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimengModule } from './primeng.module';
 
+import { environment } from './../environments/environment';
+
+import { AuthCenterModule } from '@iss/ng-auth-center';
+
 const appModules: any[] = [
   LayoutModule,
   PrimengModule,
@@ -23,12 +27,15 @@ const appModules: any[] = [
     AppComponent
   ],
   imports: [
+    HttpClientModule,
+    AuthCenterModule.forRoot(environment.auth),
+    AppRoutingModule,
+
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
 
     ...appModules
   ],

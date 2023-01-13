@@ -4,10 +4,13 @@ import { LayoutComponent } from './ui/layout/page/layout/layout.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthCenterGuard } from '@iss/ng-auth-center';
+
 const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [AuthCenterGuard],
     children: [
       {
         path: '',
