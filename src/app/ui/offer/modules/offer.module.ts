@@ -1,3 +1,4 @@
+import { CreateOfferEffect } from './../store/effects/create-offer.effect';
 import { EffectsModule } from '@ngrx/effects';
 import { NewOfferEffect } from './../store/effects/new-offer.effect';
 import { offerReducer, OFFER_FEATURE_KEY } from './../store/offer-reducers';
@@ -31,7 +32,8 @@ import { ListComponent } from '../page/components/list/list.component';
     StoreModule.forFeature(OFFER_FEATURE_KEY, offerReducer),
     EffectsModule.forFeature(
       [
-        NewOfferEffect
+        NewOfferEffect,
+        CreateOfferEffect
       ]
     )
   ]

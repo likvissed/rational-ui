@@ -11,6 +11,7 @@ import { ChipModule } from 'primeng/chip';
 import { ChipsModule } from 'primeng/chips';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
+import { DividerModule } from 'primeng/divider';
 
 const modules: any[] = [
   TabMenuModule,
@@ -23,7 +24,8 @@ const modules: any[] = [
   ChipModule,
   ChipsModule,
   InputTextareaModule,
-  FileUploadModule
+  FileUploadModule,
+  DividerModule
 ];
 
 @NgModule({

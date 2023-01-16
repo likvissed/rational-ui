@@ -1,5 +1,4 @@
-import { newOfferFailureAction, newOfferSuccessAction } from './../actions/new-offer.action';
-import { newOfferAction } from './../actions/new-offer.action';
+import { createOfferAction, createOfferSuccessAction, createOfferFailureAction } from './../actions/create-offer.action';
 
 import { OfferService } from './../../services/offer.service';
 
@@ -12,23 +11,23 @@ import { of } from 'rxjs';
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 
 @Injectable()
-export class NewOfferEffect {
+export class CreateOfferEffect {
   constructor(
     private actions$: Actions,
     private service: OfferService
   ) {}
 
-  new$ = createEffect(() =>
+  create$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(newOfferAction),
-      switchMap(() => {
-        return this.service.newOffer().pipe(
+      ofType(createOfferAction),
+      switchMap((value) => {
+        return this.service.createOffer(value.data).pipe(
           map((response: any ) => {
-            return newOfferSuccessAction({response});
+            return createOfferSuccessAction({response});
           }),
 
           catchError((errorResponse: HttpErrorResponse) => of(
-            newOfferFailureAction({error: errorResponse.error})
+            createOfferFailureAction({error: errorResponse.error})
           ))
         )
       })

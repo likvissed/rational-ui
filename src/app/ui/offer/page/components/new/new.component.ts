@@ -1,8 +1,12 @@
+import { createOfferAction } from './../../../store/actions/create-offer.action';
 import { selectNewOffer } from './../../../store/offer-selectors';
 import { newOfferAction } from './../../../store/actions/new-offer.action';
 import { searchUsers } from './../../../../shared/store/selectors';
 import { findEmployeeAction } from './../../../../shared/store/actions/find-employee.action';
-import { Component, OnInit } from '@angular/core';
+
+import { FileUpload } from 'primeng/fileupload'
+
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 
@@ -16,6 +20,7 @@ import { Store, select } from '@ngrx/store';
   styleUrls: ['./new.component.scss']
 })
 export class NewComponent implements OnInit {
+  @ViewChild('fileUpload') fileUpload!: FileUpload;
   form!: FormGroup;
   employees$!: Observable<any>;
   trends!: any;
@@ -31,6 +36,7 @@ export class NewComponent implements OnInit {
     }
   ];
   maxSize: number = 20000000;
+  formData = new FormData();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -73,13 +79,15 @@ export class NewComponent implements OnInit {
 
       coauthor_info: this.formBuilder.array([], [Validators.required]),
 
-      trend_id:  new FormControl('', [Validators.required]),
-      serial:  new FormControl('', [Validators.required]),
+      files: new FormControl(''),
+
+      trend_id: new FormControl('', [Validators.required]),
+      serial: new FormControl('', [Validators.required]),
       profile_depts: new FormControl(''),
-      information_name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       tags: new FormControl('', [Validators.required]),
       annotation: new FormControl('', [Validators.required, Validators.maxLength(500)]),
-      analog_id: new FormControl('', [Validators.required])
+      analog_id: new FormControl('')
     });
   }
 
@@ -115,5 +123,26 @@ export class NewComponent implements OnInit {
     (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['fio'].setValue(event.fio);
     (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['dept'].setValue(event.dept);
     (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['phone'].setValue(event.phone);
+  }
+
+  uploadFile(event: any) {
+    for (let file of event.files) {
+      this.formData.append(
+        'file[]',
+        file,
+        file.name
+      );
+    }
+  }
+
+  onCreateOffer() {
+    const nameData = 'proposal';
+
+    this.fileUpload.upload();
+
+    this.formData.delete(nameData);
+    this.formData.append(nameData, JSON.stringify(this.form.getRawValue()));
+    
+    this.store.dispatch(createOfferAction({ data: this.formData }));
   }
 }

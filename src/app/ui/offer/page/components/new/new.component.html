@@ -128,7 +128,7 @@
 
           <div class="py-2 pr-3 w-10">
             <label class="pl-1"> * Название рац. предложения </label>
-            <input type="text" pInputText formControlName="information_name" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+            <input type="text" pInputText formControlName="name" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
           </div>
 
           <div class="py-2 pr-3 w-10">
@@ -155,6 +155,7 @@
           <div class="py-2 pr-3 w-10 ui-fileupload-override">
             <label class="pl-1"> Информационный материал </label>
             <p-fileUpload 
+              #fileUpload
               [customUpload]="true" 
               [multiple]="true"
               [maxFileSize]="maxSize"
@@ -165,26 +166,41 @@
               [fileLimit]="10"
               invalidFileLimitMessageDetail="Количество файлов не должен превышать {0} шт."
               invalidFileLimitMessageSummary="Превышено максимальное количество файлов"
-            ></p-fileUpload>
+              (uploadHandler)="uploadFile($event)"
+              name="file[]"
+            >
+              <ng-template pTemplate="content" let-files>
+                <span class="font-italic text-secondary pl-1 text-sm">
+                  Макс. размер 1 файла: 20 Мб;
+                  Макс. количество: 10 шт.
+                </span>
+              </ng-template>
 
-            <span class="font-italic text-secondary pl-1 text-sm">
-              Макс. размер 1 файла: 20 Мб;
-              Макс. количество: 10 шт.
-            </span>
-          
+            </p-fileUpload>
           </div>
 
           <div class="py-2 pr-3 w-10">
-            <label class="pl-1"> * Аналоги </label>
+            <label class="pl-1"> Аналоги </label>
             <input type="text" pInputText formControlName="analog_id" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
           </div>
 
         </div>
       </div>
 
-      <label>* Обязательное поле для заполнения </label>
+      <p-divider></p-divider>
 
-     
+      <div class="flex justify-content-between flex-wrap card-container">
+          <div class="flex align-items-center justify-content-center border-round">
+            <label>* Обязательное поле для заполнения </label>
+          </div>
+          <div class="flex align-items-center justify-content-center border-round">
+            <button type="button" class="btn btn-sm old-style" (click)="onCreateOffer()"> Отправить </button>
+          </div>
+      </div>
+
+      <pre>
+        {{ form.value | json }}
+      </pre>
     </form>
   </div>
 </div>

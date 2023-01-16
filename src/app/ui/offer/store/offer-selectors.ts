@@ -4,7 +4,8 @@ import { OFFER_FEATURE_KEY } from './offer-reducers';
 
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 
-export const deptnameFeatureSelector = createFeatureSelector<OfferStateInterface>(OFFER_FEATURE_KEY);
+export const offerFeatureSelector = createFeatureSelector<OfferStateInterface>(OFFER_FEATURE_KEY);
 
-export const selectNewOffer = createSelector(deptnameFeatureSelector, (state: any) => state.response);
+export const selectNewOffer = createSelector(offerFeatureSelector, (state: any) => state.response);
 
+export const sendNewOffer = createSelector(offerFeatureSelector, (state: any) => state.response);

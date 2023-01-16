@@ -17,4 +17,14 @@ export class OfferService {
 
     return this.http.get(url, { headers: headers });
   }
+
+  createOffer(formData: any) {
+    const url = `${environment.apiUrl}/new`;
+
+    let headers = new HttpHeaders();
+    headers.set('Content-Type', 'multipart/form-data');
+    headers.set('Content-Type', 'application/json');
+
+    return this.http.post (url, formData, { headers: headers });
+  }
 }
