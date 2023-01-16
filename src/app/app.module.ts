@@ -1,4 +1,4 @@
-import { SharedModule } from './ui/shared/modules/shred.module';
+import { SharedModule } from './ui/shared/modules/shared.module';
 import { OfferModule } from './ui/offer/modules/offer.module';
 import { LayoutModule } from './ui/layout/modules/layout.module';
 

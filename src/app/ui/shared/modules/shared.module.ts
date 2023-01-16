@@ -1,7 +1,7 @@
-import { FindEmployeeEffect } from './../store/effects/find-employee.effect';
+import { FindEmployeeEffect } from '../store/effects/find-employee.effect';
 import { EffectsModule } from '@ngrx/effects';
-import { sharedReducer, SHARED_FEATURE_KEY } from './../store/reducers';
-import { EmployeeService } from './../services/employee.service';
+import { sharedReducer, SHARED_FEATURE_KEY } from '../store/reducers';
+import { EmployeeService } from '../services/employee.service';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';

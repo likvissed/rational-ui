@@ -1,3 +1,5 @@
+import { selectNewOffer } from './../../../store/offer-selectors';
+import { newOfferAction } from './../../../store/actions/new-offer.action';
 import { searchUsers } from './../../../../shared/store/selectors';
 import { findEmployeeAction } from './../../../../shared/store/actions/find-employee.action';
 import { Component, OnInit } from '@angular/core';
@@ -41,20 +43,33 @@ export class NewComponent implements OnInit {
   }
 
   onInitializeValues() {
+    this.onGetNewOffer();
+  }
+
+  onGetNewOffer() {
+    this.store.dispatch(newOfferAction());
+
+    this.store.pipe(select(selectNewOffer))
+      .subscribe((response: any) => {
+        if (response) {
+          this.form.patchValue(response.proposal);
+
+          this.trends = response.data_filters.trends;
+          this.depts = response.data_filters.depts;
+        }
+      });
   }
 
   onInitializeFrom() {
-    
-
     this.form = this.formBuilder.group({
-      // author_info: this.formBuilder.group({
-      //   id_tn: new FormControl(getData.proposal.author_info.id_tn, [Validators.required]),
-      //   fio: new FormControl(getData.proposal.author_info.fio, [Validators.required, Validators.maxLength(60)]),
-      //   phone: new FormControl(getData.proposal.author_info.phone, [Validators.required, Validators.maxLength(20), Validators.pattern("^[0-9\-]*$")]),
-      //   dept: new FormControl(getData.proposal.author_info.dept, [Validators.required, Validators.maxLength(10)])
-      // }),
+      author_info: this.formBuilder.group({
+        id_tn: new FormControl('', [Validators.required]),
+        fio: new FormControl('', [Validators.required, Validators.maxLength(60)]),
+        phone: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.pattern("^[0-9\-]*$")]),
+        dept: new FormControl('', [Validators.required, Validators.maxLength(10)])
+      }),
 
-      // creation_datetime: new FormControl({ value: getData.proposal.creation_datetime, disabled: true }),
+      creation_datetime: new FormControl({ value: '', disabled: true }),
 
       coauthor_info: this.formBuilder.array([], [Validators.required]),
 
