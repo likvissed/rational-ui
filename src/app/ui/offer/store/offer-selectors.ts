@@ -9,3 +9,5 @@ export const offerFeatureSelector = createFeatureSelector<OfferStateInterface>(O
 export const selectNewOffer = createSelector(offerFeatureSelector, (state: any) => state.response);
 
 export const sendNewOffer = createSelector(offerFeatureSelector, (state: any) => state.response);
+
+export const getAnalogs = createSelector(offerFeatureSelector, (state: any) => state.proposals);

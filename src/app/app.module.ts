@@ -21,7 +21,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-
 const appModules: any[] = [
   LayoutModule,
   PrimengModule,
@@ -39,7 +38,6 @@ const appModules: any[] = [
     AppRoutingModule,
 
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,

@@ -1,3 +1,4 @@
+import { GetAnalogsEffect } from './../store/effects/get-analogs.effect';
 import { CreateOfferEffect } from './../store/effects/create-offer.effect';
 import { EffectsModule } from '@ngrx/effects';
 import { NewOfferEffect } from './../store/effects/new-offer.effect';
@@ -33,7 +34,8 @@ import { ListComponent } from '../page/components/list/list.component';
     EffectsModule.forFeature(
       [
         NewOfferEffect,
-        CreateOfferEffect
+        CreateOfferEffect,
+        GetAnalogsEffect
       ]
     )
   ]

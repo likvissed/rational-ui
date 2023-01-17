@@ -1,5 +1,6 @@
+import { getAnalogsAction } from './../../../store/actions/get-analogs.action';
 import { createOfferAction } from './../../../store/actions/create-offer.action';
-import { selectNewOffer } from './../../../store/offer-selectors';
+import { selectNewOffer, getAnalogs } from './../../../store/offer-selectors';
 import { newOfferAction } from './../../../store/actions/new-offer.action';
 import { searchUsers } from './../../../../shared/store/selectors';
 import { findEmployeeAction } from './../../../../shared/store/actions/find-employee.action';
@@ -77,9 +78,7 @@ export class NewComponent implements OnInit {
 
       creation_datetime: new FormControl({ value: '', disabled: true }),
 
-      coauthor_info: this.formBuilder.array([], [Validators.required]),
-
-      files: new FormControl(''),
+      coauthor_info: new FormControl(''),
 
       trend_id: new FormControl('', [Validators.required]),
       serial: new FormControl('', [Validators.required]),
@@ -87,42 +86,16 @@ export class NewComponent implements OnInit {
       name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       tags: new FormControl('', [Validators.required]),
       annotation: new FormControl('', [Validators.required, Validators.maxLength(500)]),
-      analog_id: new FormControl('')
+      analog_id: new FormControl([]),
+      // analogs: this.formBuilder.array([])
     });
   }
 
-  private createUser(): FormGroup {
-    return this.formBuilder.group({
-      id_tn: new FormControl('', [Validators.required]),
-      fio: new FormControl('', [Validators.required]),
-      phone: new FormControl('', [Validators.required]),
-      dept: new FormControl('', [Validators.required]),
-      obj: new FormControl('')
-    })
-  }
-
-  get allCoauthors(): FormArray {
-    return this.form.get("coauthor_info") as FormArray;
-  }
-
-  onNewCoauthor() {
-    this.allCoauthors.push(this.createUser());
-  }
-
-  onDeleteCoauthor(index: number) {
-    this.allCoauthors.removeAt(index);
-  }
-
   searchEmployee(event: any) {
-    this.store.dispatch(findEmployeeAction({ data: event.query.trim()}));
-    this.employees$ = this.store.pipe(select(searchUsers));
-  }
-
-  selectEmpCoauthor(event: any, index: number) {
-    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['id_tn'].setValue(event.id_tn);
-    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['fio'].setValue(event.fio);
-    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['dept'].setValue(event.dept);
-    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['phone'].setValue(event.phone);
+    if (this.form.value.coauthor_info.length <= 9) {
+      this.store.dispatch(findEmployeeAction({ data: event.query.trim()}));
+      this.employees$ = this.store.pipe(select(searchUsers));
+    }
   }
 
   uploadFile(event: any) {
