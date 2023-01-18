@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
 
 export const getAnalogsAction = createAction(
   OfferActionTypes.GET_ANALOGS,
-  props<{ tags: any }>()
+  props<{ data: any }>()
 );
 
 export const getAnalogsSuccessAction = createAction(

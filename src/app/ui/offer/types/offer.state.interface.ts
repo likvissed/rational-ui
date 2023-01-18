@@ -3,5 +3,6 @@ export interface OfferStateInterface {
   response: any
   errors: any
   newOffer: any,
-  proposals: any
+  proposals: any,
+  flagAnalog: boolean
 }

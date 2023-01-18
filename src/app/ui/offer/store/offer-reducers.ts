@@ -12,7 +12,8 @@ const initialState: OfferStateInterface = {
   response: null,
   errors: null,
   newOffer: null,
-  proposals: null
+  proposals: null,
+  flagAnalog: false
 }
 
 const reducer = createReducer(
@@ -50,18 +51,21 @@ const reducer = createReducer(
 
   on(getAnalogsAction, (state): OfferStateInterface => ({
     ...state,
-    isSubmitting: true
+    isSubmitting: true,
+    flagAnalog: false
   })),
   on(getAnalogsSuccessAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     response: action.response,
-    proposals: action.response.proposals
+    proposals: action.response.proposals,
+    flagAnalog: true
   })),
   on(getAnalogsFailureAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
-    errors: action.error
+    errors: action.error,
+    flagAnalog: false
   }))
 )
 

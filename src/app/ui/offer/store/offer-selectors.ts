@@ -11,3 +11,5 @@ export const selectNewOffer = createSelector(offerFeatureSelector, (state: any) 
 export const sendNewOffer = createSelector(offerFeatureSelector, (state: any) => state.response);
 
 export const getAnalogs = createSelector(offerFeatureSelector, (state: any) => state.proposals);
+
+export const flagGetAnalogResponse = createSelector(offerFeatureSelector, (state: any) => state.flagAnalog);

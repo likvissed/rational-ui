@@ -1,4 +1,5 @@
 import { getAnalogsAction } from './../../../store/actions/get-analogs.action';
+import { AnalogComponent } from './../analog/analog.component';
 import { createOfferAction } from './../../../store/actions/create-offer.action';
 import { selectNewOffer, getAnalogs } from './../../../store/offer-selectors';
 import { newOfferAction } from './../../../store/actions/new-offer.action';
@@ -11,20 +12,24 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
+
+import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-new',
   templateUrl: './new.component.html',
-  styleUrls: ['./new.component.scss']
+  styleUrls: ['./new.component.scss'],
+  providers:[DynamicDialogRef, DynamicDialogConfig, DialogService]
 })
 export class NewComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload!: FileUpload;
   form!: FormGroup;
   employees$!: Observable<any>;
-  trends!: any;
+  analogs$: Observable<any> = of([]);;
+  trends: any = [];
   depts!: any;
   serials = [
     {
@@ -41,7 +46,10 @@ export class NewComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store
+    private store: Store,
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
+    public dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -81,13 +89,12 @@ export class NewComponent implements OnInit {
       coauthor_info: new FormControl(''),
 
       trend_id: new FormControl('', [Validators.required]),
-      serial: new FormControl('', [Validators.required]),
+      serial: new FormControl(true, [Validators.required]),
       profile_depts: new FormControl(''),
       name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       tags: new FormControl('', [Validators.required]),
       annotation: new FormControl('', [Validators.required, Validators.maxLength(500)]),
-      analog_id: new FormControl([]),
-      // analogs: this.formBuilder.array([])
+      analogs: new FormControl([])
     });
   }
 
@@ -105,6 +112,31 @@ export class NewComponent implements OnInit {
         file,
         file.name
       );
+    }
+  }
+
+  onOpenAnalogs() {
+    this.store.dispatch(getAnalogsAction({ data: this.form.getRawValue() }));
+
+    this.analogs$ = this.store.select(getAnalogs);
+
+    if (this.analogs$) {
+      const ref = this.dialogService.open(AnalogComponent, {
+        header: 'Выбор аналогов',
+        width: '70%',
+        data: {
+          analogs: this.analogs$,
+          presentAnalogs: this.form.value.analogs
+        }
+      });
+  
+      ref.onClose.subscribe((analogs: string[]) => {
+        if (analogs) {
+          this.form.controls['analogs'].setValue(analogs);
+  
+          this.onCreateOffer();
+        }
+      });
     }
   }
 

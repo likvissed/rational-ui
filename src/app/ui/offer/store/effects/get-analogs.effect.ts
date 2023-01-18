@@ -20,7 +20,7 @@ export class GetAnalogsEffect {
     this.actions$.pipe(
       ofType(getAnalogsAction),
       switchMap((value) => {
-        return this.service.getAnalogs(value.tags).pipe(
+        return this.service.getAnalogs(value.data).pipe(
           map((response: any ) => {
             return getAnalogsSuccessAction({response});
           }),

@@ -28,12 +28,12 @@ export class OfferService {
     return this.http.post (url, formData, { headers: headers });
   }
 
-  getAnalogs(tags: any) {
+  getAnalogs(data: any) {
     const url = `${environment.apiUrl}/analogs`;
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const params = new HttpParams().append('tags', JSON.stringify(tags));
+    const params = new HttpParams().append('data', JSON.stringify(data));
 
     return this.http.get(url, { params: params, headers: headers });
   }
