@@ -53,13 +53,20 @@ export class AnalogComponent implements OnInit {
       this.newAnalogs.splice(index, 1);
     }
   }
+
+  private getData(flag: boolean) {
+    return { 
+      save: flag, 
+      analogs: this.newAnalogs
+    }
+  }
   
-  onSendAnalog() {
-    this.onCloseModal();
+  onSendAnalog(flag: boolean) {
+    this.ref.close(this.getData(flag));
   }
 
-  onCloseModal() {
-    this.ref.close(this.newAnalogs);
+  onCloseModal(flag: boolean) {
+    this.ref.close(this.getData(flag));
   }
 
 }

@@ -21,13 +21,13 @@ export class CreateOfferEffect {
     this.actions$.pipe(
       ofType(createOfferAction),
       switchMap((value) => {
-        return this.service.createOffer(value.data).pipe(
+        return this.service.createOffer(value.formData).pipe(
           map((response: any ) => {
             return createOfferSuccessAction({response});
           }),
 
           catchError((errorResponse: HttpErrorResponse) => of(
-            createOfferFailureAction({error: errorResponse.error})
+            createOfferFailureAction({ error: errorResponse.error })
           ))
         )
       })

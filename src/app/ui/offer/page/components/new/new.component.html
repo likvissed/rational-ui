@@ -52,7 +52,7 @@
   
           <div class="py-2 pr-3 w-10">
             <label> * Направление рац. предложения </label>
-            <p-dropdown [options]="trends" formControlName="trend_id" optionLabel="name" optionValue="id"></p-dropdown>
+            <p-dropdown [options]="trends" formControlName="trend_id" optionLabel="name" optionValue="id" (onChange)="onChangeTrend($event)"></p-dropdown>
           </div>
     
           <div class="py-2 pr-3 w-10">
@@ -61,6 +61,7 @@
           </div>
 
           <div class="py-2 pr-3 w-10">
+            <span *ngIf="form.value.trend_id == 1"> * </span>
             <label> Профильное подразделение </label>
             <p-multiSelect 
               #multiSelector
@@ -78,6 +79,7 @@
               [virtualScrollItemSize]="40"
               [virtualScroll]="true"
               defaultLabel="Нажмите для выбора"
+              appendTo="body"
             >
               <ng-template let-division pTemplate="item">
                 <div>
@@ -101,10 +103,17 @@
             <textarea 
               formControlName="name" 
               [rows]="3" 
-              [cols]="30" 
               pInputTextarea 
               placeholder="Не должно быть пустым"
             ></textarea>
+
+            <div class="p-error text-sm pl-1" *ngIf="form.controls['name']?.invalid && (form.controls['name']?.dirty || form.controls['name']?.touched)">
+              <span *ngIf="form.controls['name']?.errors?.['maxlength']">
+                Название должно содержать не более {{form.controls['name'].errors?.['maxlength'].requiredLength }} символов.
+                Сейчас длина равна {{ form.controls['name'].errors?.['maxlength'].actualLength }} символа
+              </span>
+            </div>
+            
           </div>
 
           <div class="py-2 pr-3 w-10">
@@ -125,11 +134,21 @@
             <label class="pl-1"> * Аннотация </label>
             <textarea 
               formControlName="annotation" 
-              [rows]="6" 
-              [cols]="30" 
+              [rows]="9"
               pInputTextarea 
-              placeholder="Введите краткое содержание"
+              placeholder="Краткое содержание"
             ></textarea>
+
+            <div class="p-error text-sm pl-1" *ngIf="form.controls['annotation']?.invalid && (form.controls['annotation']?.dirty || form.controls['annotation']?.touched)">
+              <span *ngIf="form.controls['annotation']?.errors?.['maxlength']">
+                Аннотация должна содержать не более {{ form.controls['annotation'].errors?.['maxlength'].requiredLength }} символов.
+                Сейчас длина равна {{ form.controls['annotation'].errors?.['maxlength'].actualLength }} символа
+              </span>
+
+              <span *ngIf="form.controls['annotation']?.errors?.['required']">
+                Не должно быть пустым
+              </span>
+            </div>
           </div>
 
           <div class="py-2 pr-3 w-10 ui-fileupload-override">
