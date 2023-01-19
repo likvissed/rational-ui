@@ -19,6 +19,8 @@ import { Store, select } from '@ngrx/store';
 
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 
+import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'app-new',
   templateUrl: './new.component.html',
@@ -50,7 +52,8 @@ export class NewComponent implements OnInit {
     private store: Store,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    public dialogService: DialogService
+    public dialogService: DialogService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -105,6 +108,7 @@ export class NewComponent implements OnInit {
   searchEmployee(event: any) {
     if (this.form.value.coauthor_info.length <= 9) {
       this.store.dispatch(findEmployeeAction({ data: event.query.trim()}));
+
       this.employees$ = this.store.pipe(select(searchUsers));
     }
   }
@@ -113,7 +117,7 @@ export class NewComponent implements OnInit {
     if (event.value.length > 15) {
       this.form.value.tags.pop();
 
-      // TODO: Добавить сообщение пользователю
+      this.messageService.add({ severity: 'warn', summary: 'Внимание', detail: 'Максимальная длина ключевого слова 15 символов' });
     }
   }
 

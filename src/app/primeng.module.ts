@@ -14,6 +14,9 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { DialogModule } from 'primeng/dialog';
 import { InputMaskModule } from 'primeng/inputmask';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
 
 const modules: any[] = [
   TabMenuModule,
@@ -29,7 +32,10 @@ const modules: any[] = [
   FileUploadModule,
   DividerModule,
   DialogModule,
-  InputMaskModule
+  InputMaskModule,
+  MessagesModule,
+  MessageModule,
+  ToastModule
 ];
 
 @NgModule({

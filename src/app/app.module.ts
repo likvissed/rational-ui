@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { SharedModule } from './ui/shared/modules/shared.module';
 import { OfferModule } from './ui/offer/modules/offer.module';
 import { LayoutModule } from './ui/layout/modules/layout.module';
@@ -48,7 +49,7 @@ const appModules: any[] = [
 
     ...appModules
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
