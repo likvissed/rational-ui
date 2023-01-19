@@ -58,7 +58,7 @@ export class NewComponent implements OnInit {
   }
 
   onInitializeValues() {
-    this.onGetNewOffer();
+    // this.onGetNewOffer();
   }
 
   onGetNewOffer() {
@@ -80,7 +80,7 @@ export class NewComponent implements OnInit {
       author_info: this.formBuilder.group({
         id_tn: new FormControl('', [Validators.required]),
         fio: new FormControl('', [Validators.required, Validators.maxLength(60)]),
-        phone: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.pattern("^[0-9\-]*$")]),
+        phone: new FormControl('', [Validators.required]),
         dept: new FormControl('', [Validators.required, Validators.maxLength(10)])
       }),
 

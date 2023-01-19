@@ -13,6 +13,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { DialogModule } from 'primeng/dialog';
+import { InputMaskModule } from 'primeng/inputmask';
 
 const modules: any[] = [
   TabMenuModule,
@@ -27,7 +28,8 @@ const modules: any[] = [
   InputTextareaModule,
   FileUploadModule,
   DividerModule,
-  DialogModule
+  DialogModule,
+  InputMaskModule
 ];
 
 @NgModule({
