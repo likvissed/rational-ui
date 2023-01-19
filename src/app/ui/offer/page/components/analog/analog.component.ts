@@ -55,11 +55,11 @@ export class AnalogComponent implements OnInit {
   }
   
   onSendAnalog() {
-    this.ref.close(this.newAnalogs);
+    this.onCloseModal();
   }
 
   onCloseModal() {
-    this.ref.close();
+    this.ref.close(this.newAnalogs);
   }
 
 }

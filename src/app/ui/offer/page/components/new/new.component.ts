@@ -28,7 +28,7 @@ export class NewComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload!: FileUpload;
   form!: FormGroup;
   employees$!: Observable<any>;
-  analogs$: Observable<any> = of([]);;
+  analogs$: Observable<any> = of([]);
   trends: any = [];
   depts!: any;
   serials = [
@@ -102,6 +102,14 @@ export class NewComponent implements OnInit {
     if (this.form.value.coauthor_info.length <= 9) {
       this.store.dispatch(findEmployeeAction({ data: event.query.trim()}));
       this.employees$ = this.store.pipe(select(searchUsers));
+    }
+  }
+
+  onAddNewTag(event: any) {
+    if (event.value.length > 15) {
+      this.form.value.tags.pop();
+
+      // TODO: Добавить сообщение пользователю
     }
   }
 
