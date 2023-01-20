@@ -16,7 +16,7 @@ x-args: &args
     NODE_MAJOR: 18
     APP_ROOT: /app
     NG_CLI_VERSION: 15.0.5
-    ENVIRONMENT: staging
+    ENVIRONMENT: production
     APP_HOSTNAME: staging-rational
 
 x-syslog-driver: &syslog-driver
