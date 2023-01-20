@@ -92,6 +92,12 @@
             <span class="font-italic text-secondary pl-1 text-sm">
               Макс. количество: 5 шт.
             </span>
+
+            <div class="p-error text-sm pl-1" *ngIf="form.controls['profile_depts']?.invalid && (form.controls['profile_depts']?.dirty || form.controls['profile_depts']?.touched)">
+              <span *ngIf="form.controls['profile_depts']?.errors?.['required']">
+                Необходимо выбрать профильное подразделение из списка
+              </span>
+            </div>
           </div>
 
         </div>
@@ -112,6 +118,10 @@
                 Название должно содержать не более {{form.controls['name'].errors?.['maxlength'].requiredLength }} символов.
                 Сейчас длина равна {{ form.controls['name'].errors?.['maxlength'].actualLength }} символа
               </span>
+
+              <span *ngIf="form.controls['name']?.errors?.['required']">
+                Необходимо ввести название рац. предложения
+              </span>
             </div>
             
           </div>
@@ -128,6 +138,12 @@
             <span class="font-italic text-secondary pl-1 text-sm">
               Для разделения нажмите Enter
             </span>
+
+            <div class="p-error text-sm pl-1" *ngIf="form.controls['tags']?.invalid && (form.controls['tags']?.dirty || form.controls['tags']?.touched)">
+              <span *ngIf="form.controls['tags']?.errors?.['required']">
+                Необходимо заполнить ключевые слова
+              </span>
+            </div>
           </div>
 
           <div class="py-2 pr-3 w-10">

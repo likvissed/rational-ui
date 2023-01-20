@@ -114,10 +114,12 @@ export class NewComponent implements OnInit {
   }
 
   onAddNewTag(event: any) {
-    if (event.value.length > 15) {
+    let lengthForTag: number = 15;
+
+    if (event.value.length > lengthForTag) {
       this.form.value.tags.pop();
 
-      this.messageService.add({ severity: 'warn', summary: 'Внимание', detail: 'Максимальная длина ключевого слова 15 символов' });
+      this.messageService.add({ severity: 'warn', summary: 'Внимание', detail: `Максимальная длина ключевого слова ${lengthForTag} символов` });
     }
   }
 
@@ -160,34 +162,41 @@ export class NewComponent implements OnInit {
 
     this.analogs$ = this.store.select(getAnalogs);
 
-    if (this.analogs$) {
-      const ref = this.dialogService.open(AnalogComponent, {
-        header: 'Выбор аналогов',
-        width: '70%',
-        closable: false,
-        data: {
-          analogs: this.analogs$,
-          presentAnalogs: this.form.value.analogs
+    this.store.select(flagGetAnalogResponse)
+      .subscribe((flag: boolean) => {
+        if (flag) {
+          this.onOpenModalAddAnalogs();
         }
       });
-  
-      ref.onClose.subscribe((data: any) => {
-        if (data) {
-          this.form.controls['analogs'].setValue(data.analogs);
+  }
 
-          this.analogs$
-            .subscribe((response: any) => {
-              if (response) {
-                this.form.controls['proposed_analogs'].setValue(response);
-              }
-            });
+  onOpenModalAddAnalogs() {
+    const ref = this.dialogService.open(AnalogComponent, {
+      header: 'Выбор аналогов',
+      width: '70%',
+      closable: false,
+      data: {
+        analogs: this.analogs$,
+        presentAnalogs: this.form.value.analogs
+      }
+    });
 
-          if (data.save) {
-            this.onCreateOffer();
-          }
+    ref.onClose.subscribe((data: any) => {
+      if (data) {
+        this.form.controls['analogs'].setValue(data.analogs);
+
+        this.analogs$
+          .subscribe((response: any) => {
+            if (response) {
+              this.form.controls['proposed_analogs'].setValue(response);
+            }
+          });
+
+        if (data.save) {
+          this.onCreateOffer();
         }
-      });
-    }
+      }
+    });
   }
   
   onCreateOffer() {
