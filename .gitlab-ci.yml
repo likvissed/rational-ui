@@ -34,4 +34,4 @@ docker-build-staging:
     - docker-compose -f docker-compose.staging.yml -p ${CI_PROJECT_NAME}-staging -H "ssh://$DEPLOY_USER@$DEPLOY_SERVER" down --remove-orphans
     - docker-compose -f docker-compose.staging.yml -p ${CI_PROJECT_NAME}-staging -H "ssh://$DEPLOY_USER@$DEPLOY_SERVER" up -d
   only:
-    - dockerize
+    - development
