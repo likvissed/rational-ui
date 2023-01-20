@@ -52,7 +52,9 @@ const reducer = createReducer(
   on(getAnalogsAction, (state): OfferStateInterface => ({
     ...state,
     isSubmitting: true,
-    flagAnalog: false
+    flagAnalog: false,
+    response: null,
+    proposals: []
   })),
   on(getAnalogsSuccessAction, (state, action): OfferStateInterface => ({
     ...state,
@@ -65,7 +67,9 @@ const reducer = createReducer(
     ...state,
     isSubmitting: false,
     errors: action.error,
-    flagAnalog: false
+    flagAnalog: false,
+    response: null,
+    proposals: []
   }))
 )
 

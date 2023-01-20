@@ -1,4 +1,3 @@
-import { map } from 'rxjs/operators';
 import { getAnalogsAction } from './../../../store/actions/get-analogs.action';
 import { AnalogComponent } from './../analog/analog.component';
 import { createOfferAction } from './../../../store/actions/create-offer.action';
@@ -20,6 +19,8 @@ import { Store, select } from '@ngrx/store';
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 
 import { MessageService } from 'primeng/api';
+
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new',
@@ -46,6 +47,7 @@ export class NewComponent implements OnInit {
   ];
   maxSize: number = 20000000;
   formData = new FormData();
+  dataSubscription!: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,12 +55,12 @@ export class NewComponent implements OnInit {
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
-    this.onInitializeValues();
     this.onInitializeFrom();
+    this.onInitializeValues();
   }
 
   onInitializeValues() {
@@ -151,22 +153,27 @@ export class NewComponent implements OnInit {
     });
   }
 
+  onLoadAnalogs() {
+    this.store.dispatch(getAnalogsAction({ data: this.form.getRawValue() }));
+  }
+
   onOpenAnalogs() {
     if (this.form.invalid) {
       this.onMarkAsDirtyForm();
 
       return;
     }
-
-    this.store.dispatch(getAnalogsAction({ data: this.form.getRawValue() }));
-
+    
+    this.onLoadAnalogs();
     this.analogs$ = this.store.select(getAnalogs);
 
-    this.store.select(flagGetAnalogResponse)
+    this.dataSubscription = this.store.select(flagGetAnalogResponse)
       .subscribe((flag: boolean) => {
         if (flag) {
           this.onOpenModalAddAnalogs();
         }
+        
+        this.dataSubscription.unsubscribe();
       });
   }
 
