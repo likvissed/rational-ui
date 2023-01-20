@@ -3,7 +3,7 @@ version: "3.9"
 x-common-labels: &common-labels
   labels:
     project-name: "rational-ui"
-    comment: ""
+    comment: "Рационализаторское предложение (frontend)"
     domain: "staging-rational"
     environment: "staging"
     git: "***REMOVED***"
@@ -59,10 +59,10 @@ services:
   rational-ui--staging--app:
     <<: *frontend
     container_name: rational-ui--staging--app
-#    mac_address: ***REMOVED***
-#    networks:
-#      macvlan:
-#        ipv4_address: ***REMOVED***
+    mac_address: ***REMOVED***
+    networks:
+      macvlan:
+        ipv4_address: ***REMOVED***
     deploy:
       resources:
         reservations:

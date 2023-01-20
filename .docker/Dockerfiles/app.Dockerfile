@@ -23,7 +23,7 @@ COPY ./.docker/tls/ /etc/pki/tls/nginx/
 COPY .docker/nginx/nginx.conf /tmp/nginx.conf
 RUN envsubst '${APP_HOSTNAME}' < /tmp/nginx.conf > /etc/nginx/conf.d/nginx.conf
 
-COPY --from=builder /app/dist/project-name /app/public
+COPY --from=builder /app/dist/rational-ui /app/public
 
 EXPOSE 80
 EXPOSE 443
