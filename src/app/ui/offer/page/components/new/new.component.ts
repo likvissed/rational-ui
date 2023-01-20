@@ -31,22 +31,19 @@ import { Subscription } from 'rxjs';
 export class NewComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload!: FileUpload;
   form!: FormGroup;
+
   employees$!: Observable<any>;
   analogs$: Observable<any> = of([]);
+
   trends: any = [];
-  depts!: any;
-  serials = [
-    {
-      name: 'Да',
-      value: true
-    },
-    {
-      name: 'Нет',
-      value: false
-    }
-  ];
-  maxSize: number = 20000000;
+  depts: any = [];
+  serials: any = [];
+
+  MAX_FILE_SIZE!: number;
+  ID_TREND_TECHNICAL!: number;
+
   formData = new FormData();
+
   dataSubscription!: Subscription;
 
   constructor(
@@ -78,6 +75,10 @@ export class NewComponent implements OnInit {
 
           this.trends = response.data_filters.trends;
           this.depts = response.data_filters.depts;
+          this.serials = response.data_filters.serials;
+          this.ID_TREND_TECHNICAL = response.data_filters.trend_technical_id;
+
+          this.MAX_FILE_SIZE = response.constants.max_file_size;
         }
       });
   }
@@ -136,8 +137,7 @@ export class NewComponent implements OnInit {
   }
 
   onChangeTrend(event: any) {
-    // Техническое
-    if (event.value == 1) {
+    if (event.value == this.ID_TREND_TECHNICAL) {
       this.form.controls['profile_depts'].setValidators(Validators.required);
     } else {
       this.form.controls['profile_depts'].clearValidators();

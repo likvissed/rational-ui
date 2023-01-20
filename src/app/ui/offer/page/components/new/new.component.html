@@ -61,7 +61,7 @@
           </div>
 
           <div class="py-2 pr-3 w-10">
-            <span *ngIf="form.value.trend_id == 1"> * </span>
+            <span *ngIf="form.value.trend_id == ID_TREND_TECHNICAL"> * </span>
             <label> Профильное подразделение </label>
             <p-multiSelect 
               #multiSelector
@@ -136,7 +136,7 @@
               (onAdd)="onAddNewTag($event)"
             ></p-chips>
             <span class="font-italic text-secondary pl-1 text-sm">
-              Для разделения нажмите Enter
+              Для добавления нажмите Enter
             </span>
 
             <div class="p-error text-sm pl-1" *ngIf="form.controls['tags']?.invalid && (form.controls['tags']?.dirty || form.controls['tags']?.touched)">
@@ -173,24 +173,19 @@
               #fileUpload
               [customUpload]="true" 
               [multiple]="true"
-              [maxFileSize]="maxSize"
+              [maxFileSize]="MAX_FILE_SIZE"
               invalidFileSizeMessageSummary="{0}: Превышен допустимый размер файла"
               invalidFileSizeMessageDetail="Файл не должен превышать {0}"
               [showUploadButton]="false"
               [showCancelButton]="false"
-              [fileLimit]="10"
-              invalidFileLimitMessageDetail="Количество файлов не должен превышать {0} шт."
-              invalidFileLimitMessageSummary="Превышено максимальное количество файлов"
               (uploadHandler)="uploadFile($event)"
               name="file[]"
             >
               <ng-template pTemplate="content" let-files>
-                <span class="font-italic text-secondary pl-1 text-sm">
-                  Макс. размер 1 файла: 20 Мб;
-                  Макс. количество: 10 шт.
+                <span *ngIf="files.length == 0" class="font-italic text-secondary pl-1 text-sm">
+                  Для добавления файлов нажмите на кнопку "Выбрать файлы"
                 </span>
               </ng-template>
-
             </p-fileUpload>
           </div>
 
