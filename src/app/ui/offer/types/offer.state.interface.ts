@@ -6,4 +6,5 @@ export interface OfferStateInterface {
   proposals: any
   flagAnalog: boolean
   flagCreatedOffer: boolean
+  filters: any
 }

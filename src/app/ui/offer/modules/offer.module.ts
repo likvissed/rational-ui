@@ -10,6 +10,7 @@ import { offerReducer, OFFER_FEATURE_KEY } from './../store/offer-reducers';
 
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { SharedModule } from './../../shared/modules/shared.module';
 
 import { OfferRoutingModule } from './offer-routing.module';
 import { OfferServiceModule } from './../services/offer.service.module';
@@ -30,6 +31,7 @@ import { NgModule } from '@angular/core';
     OfferRoutingModule,
 
     PrimengModule,
+    SharedModule,
 
     FormsModule,
     ReactiveFormsModule,

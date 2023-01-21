@@ -15,7 +15,8 @@ const initialState: OfferStateInterface = {
   newOffer: null,
   proposals: null,
   flagAnalog: false,
-  flagCreatedOffer: false
+  flagCreatedOffer: false,
+  filters: null
 }
 
 const reducer = createReducer(
@@ -80,16 +81,22 @@ const reducer = createReducer(
   on(getListsAction, (state): OfferStateInterface => ({
     ...state,
     isSubmitting: true,
+    filters: null,
+    proposals: []
   })),
   on(getListsSuccessAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
-    response: action.response
+    response: action.response,
+    proposals: action.response.proposals,
+    filters:  action.response.data_filters
   })),
   on(getListsFailureAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     errors: action.error,
+    filters: null,
+    proposals: []
   })),
 )
 

@@ -71,7 +71,6 @@ export class NewComponent implements OnInit {
 
     this.store.pipe(select(selectNewOffer))
       .subscribe((response: any) => {
-        // TODO: Сообщение о том, что не удалось получить данные пользователя
         if (response) {
           this.form.patchValue(response.proposal);
 

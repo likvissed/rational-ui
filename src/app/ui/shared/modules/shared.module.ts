@@ -1,3 +1,5 @@
+import { StatuslNamePipe } from './../pipes/status-name.pipe';
+import { SerialNamePipe } from './../pipes/serial-name.pipe';
 import { ErrorInterceptor } from './../interceptors/error.interceptor';
 import { ErrorHandlerService } from './../services/error-handler.service';
 import { EmployeeService } from '../services/employee.service';
@@ -13,8 +15,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TrendNamePipe } from '../pipes/trend-name.pipe';
 
-const pipes: any[] = [];
+const pipes: any[] = [
+  TrendNamePipe,
+  SerialNamePipe,
+  StatuslNamePipe
+];
 
 const components: any[] = [];
 
