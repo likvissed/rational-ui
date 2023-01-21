@@ -13,3 +13,5 @@ export const flagSuccessCreateOffer = createSelector(offerFeatureSelector, (stat
 
 export const getAnalogs = createSelector(offerFeatureSelector, (state: any) => state.proposals);
 export const flagGetAnalogResponse = createSelector(offerFeatureSelector, (state: any) => state.flagAnalog);
+
+export const getLists = createSelector(offerFeatureSelector, (state: any) => state.response);

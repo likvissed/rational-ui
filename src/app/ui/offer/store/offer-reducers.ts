@@ -1,3 +1,4 @@
+import { getListsAction, getListsSuccessAction, getListsFailureAction } from './actions/get-lists.action';
 import { getAnalogsAction, getAnalogsSuccessAction, getAnalogsFailureAction } from './actions/get-analogs.action';
 import { createOfferAction, createOfferSuccessAction, createOfferFailureAction } from './actions/create-offer.action';
 import { newOfferAction, newOfferSuccessAction, newOfferFailureAction } from './actions/new-offer.action';
@@ -74,7 +75,22 @@ const reducer = createReducer(
     flagAnalog: false,
     response: null,
     proposals: []
-  }))
+  })),
+
+  on(getListsAction, (state): OfferStateInterface => ({
+    ...state,
+    isSubmitting: true,
+  })),
+  on(getListsSuccessAction, (state, action): OfferStateInterface => ({
+    ...state,
+    isSubmitting: false,
+    response: action.response
+  })),
+  on(getListsFailureAction, (state, action): OfferStateInterface => ({
+    ...state,
+    isSubmitting: false,
+    errors: action.error,
+  })),
 )
 
 export function offerReducer(state: OfferStateInterface, action: Action) {

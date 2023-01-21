@@ -2,6 +2,7 @@ import { AnalogComponent } from './../page/components/analog/analog.component';
 import { NewComponent } from './../page/components/new/new.component';
 import { ListComponent } from '../page/components/list/list.component';
 
+import { GetListsEffect } from './../store/effects/get-lists.effect';
 import { GetAnalogsEffect } from './../store/effects/get-analogs.effect';
 import { CreateOfferEffect } from './../store/effects/create-offer.effect';
 import { NewOfferEffect } from './../store/effects/new-offer.effect';
@@ -40,7 +41,8 @@ import { NgModule } from '@angular/core';
       [
         NewOfferEffect,
         CreateOfferEffect,
-        GetAnalogsEffect
+        GetAnalogsEffect,
+        GetListsEffect
       ]
     )
   ]

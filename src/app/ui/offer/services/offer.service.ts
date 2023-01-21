@@ -41,4 +41,12 @@ export class OfferService {
 
     return this.http.get(url, { params: params, headers: headers });
   }
+
+  getLists() {
+    const url = `${environment.apiUrl}/list`;
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this.http.get(url, { headers: headers });
+  }
 }

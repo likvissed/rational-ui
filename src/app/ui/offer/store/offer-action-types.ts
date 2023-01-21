@@ -9,5 +9,9 @@ export enum OfferActionTypes {
 
   GET_ANALOGS = '[Offer] Get analogs',
   GET_ANALOGS_SUCCESS = '[Offer] Get analogs success',
-  GET_ANALOGS_FAILURE = '[Offer] Get analogs failure'
+  GET_ANALOGS_FAILURE = '[Offer] Get analogs failure',
+
+  GET_LISTS = '[Offer] Get lists',
+  GET_LISTS_SUCCESS = '[Offer] Get lists success',
+  GET_LISTS_FAILURE = '[Offer] Get lists failure'
 }
