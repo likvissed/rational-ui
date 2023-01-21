@@ -1,16 +1,20 @@
 
 import { environment } from 'src/environments/environment';
 
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpBackend } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class OfferService {
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private handler: HttpBackend
   ) {}
 
   newOffer() {
+    // TODO: Проверить на сервере
+    // this.http = new HttpClient(this.handler);
+
     const url = `${environment.apiUrl}/new`;
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
