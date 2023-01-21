@@ -1,9 +1,7 @@
+import { OfferService } from './../../services/offer.service';
 import { downloadFileAction, downloadFileSuccessAction, downloadFileFailureAction } from './../actions/download-file.action';
+
 import { MessageService } from 'primeng/api';
-
-import { downloadNomenclatureAction, downloadNomenclatureActionSuccess, downloadNomenclatureActionFailure } from '@store/nomenclature/actions/download.action';
-
-import { NomenclatureService } from './../../services/nomenclature.service';
 
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -16,7 +14,7 @@ import { Injectable } from "@angular/core";
 export class DownloadFileEffect {
   constructor(
     private actions$: Actions,
-    private nomenclatureService: NomenclatureService,
+    private service: OfferService,
     private messageService: MessageService
   ) {}
 
@@ -24,7 +22,7 @@ export class DownloadFileEffect {
     this.actions$.pipe(
       ofType(downloadFileAction),
       switchMap((value) => {
-        return this.nomenclatureService.downloadFile(value.id).pipe(
+        return this.service.downloadFile(value.id).pipe(
           map((response: any ) => {
             let file = new Blob([response], { type: response.type });
             let fileURL = URL.createObjectURL(file);

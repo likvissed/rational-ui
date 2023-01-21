@@ -37,6 +37,12 @@ export class ListComponent implements OnInit {
     text: ''
   }
 
+  isDisplayCoauthors: boolean = false;
+  coauthors = {
+    name: '',
+    lists: []
+  }
+
   constructor(
     private store: Store
   ) { }
@@ -94,23 +100,12 @@ export class ListComponent implements OnInit {
   }
   // -------------------------------------------
 
-  // ---------------- Coauthors ----------------
-  private createItemCoauthor(item: any, index: number) {
-    return {
-      label: `${index + 1}. ${item.fio} (${item.dept})`
-    }
+  onShowCoauthors(name: string, coauthoars: any) {
+    this.coauthors.name = `Соавторы рац.предложения:  ${name}`;
+    this.coauthors.lists = coauthoars;
+
+    this.isDisplayCoauthors = true;
   }
-
-  onGeListCoauthors(data: any) {
-    let array: any = [];
-
-    data.forEach((element: any, index: number) => {
-      array.push(this.createItemCoauthor(element, index));
-    });
-
-    return array;
-  }
-  // -------------------------------------------
 
   onShowAnnotation(name: string, text: string) {
     this.annotation.name = `Аннотация рац.предложения:  ${name}`;
