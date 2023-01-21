@@ -1,3 +1,4 @@
+import { downloadFileAction, downloadFileSuccessAction, downloadFileFailureAction } from './actions/download-file.action';
 import { getListsAction, getListsSuccessAction, getListsFailureAction } from './actions/get-lists.action';
 import { getAnalogsAction, getAnalogsSuccessAction, getAnalogsFailureAction } from './actions/get-analogs.action';
 import { createOfferAction, createOfferSuccessAction, createOfferFailureAction } from './actions/create-offer.action';
@@ -98,6 +99,21 @@ const reducer = createReducer(
     filters: null,
     proposals: []
   })),
+
+  on(downloadFileAction, (state): OfferStateInterface => ({
+    ...state,
+    isSubmitting: true
+  })),
+  on(downloadFileSuccessAction, (state, action): OfferStateInterface => ({
+    ...state,
+    isSubmitting: false,
+    response: action.response
+  })),
+  on(downloadFileFailureAction, (state, action): OfferStateInterface => ({
+    ...state,
+    isSubmitting: false,
+    errors: action.error
+  }))
 )
 
 export function offerReducer(state: OfferStateInterface, action: Action) {

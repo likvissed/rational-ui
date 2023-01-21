@@ -49,4 +49,13 @@ export class OfferService {
 
     return this.http.get(url, { headers: headers });
   }
+
+  downloadFile(id: number) {
+    // TODO: Добавить url
+    const url = `${environment.apiUrl}/`;
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this.http.get(`${url}/${id}`,  { headers,  responseType: 'blob' });
+  }
 }

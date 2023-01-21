@@ -13,5 +13,9 @@ export enum OfferActionTypes {
 
   GET_LISTS = '[Offer] Get lists',
   GET_LISTS_SUCCESS = '[Offer] Get lists success',
-  GET_LISTS_FAILURE = '[Offer] Get lists failure'
+  GET_LISTS_FAILURE = '[Offer] Get lists failure',
+
+  DOWNLOAD_FILE = '[Offer] Download file',
+  DOWNLOAD_FILE_SUCCESS = '[Offer] Download file success',
+  DOWNLOAD_FILE_FAILURE = '[Offer] Download file failure'
 }

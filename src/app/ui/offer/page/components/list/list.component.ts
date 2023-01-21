@@ -1,3 +1,4 @@
+import { downloadFileAction } from './../../../store/actions/download-file.action';
 import { getLists, selectFiltersLists } from './../../../store/offer-selectors';
 import { getListsAction } from './../../../store/actions/get-lists.action';
 
@@ -89,6 +90,7 @@ export class ListComponent implements OnInit {
   }
 
   onDownloadFile(id: number) {
+    this.store.dispatch(downloadFileAction({ id: id }));
   }
   // -------------------------------------------
 

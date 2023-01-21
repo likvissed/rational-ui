@@ -1,3 +1,4 @@
+import { DownloadFileEffect } from './../store/effects/download-file.effect';
 import { AnalogComponent } from './../page/components/analog/analog.component';
 import { NewComponent } from './../page/components/new/new.component';
 import { ListComponent } from '../page/components/list/list.component';
@@ -44,7 +45,8 @@ import { NgModule } from '@angular/core';
         NewOfferEffect,
         CreateOfferEffect,
         GetAnalogsEffect,
-        GetListsEffect
+        GetListsEffect,
+        DownloadFileEffect
       ]
     )
   ]
