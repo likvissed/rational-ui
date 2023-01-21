@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { createOfferAction, createOfferSuccessAction, createOfferFailureAction } from './../actions/create-offer.action';
 
 import { OfferService } from './../../services/offer.service';
@@ -14,7 +15,8 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 export class CreateOfferEffect {
   constructor(
     private actions$: Actions,
-    private service: OfferService
+    private service: OfferService,
+    private messageService: MessageService
   ) {}
 
   create$ = createEffect(() =>
@@ -23,6 +25,8 @@ export class CreateOfferEffect {
       switchMap((value) => {
         return this.service.createOffer(value.formData).pipe(
           map((response: any ) => {
+            this.messageService.add({severity: 'success', summary: 'Успешно', detail: response.result });
+
             return createOfferSuccessAction({response});
           }),
 

@@ -1,7 +1,7 @@
 import { getAnalogsAction } from './../../../store/actions/get-analogs.action';
 import { AnalogComponent } from './../analog/analog.component';
 import { createOfferAction } from './../../../store/actions/create-offer.action';
-import { selectNewOffer, getAnalogs, flagGetAnalogResponse } from './../../../store/offer-selectors';
+import { selectNewOffer, getAnalogs, flagGetAnalogResponse, flagSuccessCreateOffer } from './../../../store/offer-selectors';
 import { newOfferAction } from './../../../store/actions/new-offer.action';
 import { searchUsers } from './../../../../shared/store/selectors';
 import { findEmployeeAction } from './../../../../shared/store/actions/find-employee.action';
@@ -14,7 +14,7 @@ import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@ang
 
 import { Observable, of } from 'rxjs';
 
-import { Store, select } from '@ngrx/store';
+import { Store, select, on } from '@ngrx/store';
 
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 
@@ -45,6 +45,8 @@ export class NewComponent implements OnInit {
   formData = new FormData();
 
   dataSubscription!: Subscription;
+
+  isDisplaySuccessMsg: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -216,5 +218,18 @@ export class NewComponent implements OnInit {
     this.formData.append(nameData, JSON.stringify(data));
     
     this.store.dispatch(createOfferAction({ formData: this.formData, data: data }));
+
+    this.dataSubscription = this.store.select(flagSuccessCreateOffer)
+      .subscribe((flag: boolean) => {
+        if (flag) {
+          this.onOpenModalMsg();
+        }
+        
+        this.dataSubscription.unsubscribe();
+      });
+  }
+
+  onOpenModalMsg() {
+    this.isDisplaySuccessMsg = true;    
   }
 }

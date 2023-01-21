@@ -1,5 +1,18 @@
 <div class="p-fluid flex">
   <div class="container">
+    <p-dialog 
+      header="Рационализаторское предложение успешно отправлено" 
+      [(visible)]="isDisplaySuccessMsg" 
+      [style]="{width: '600px'}" 
+      [baseZIndex]="10000"
+      [modal]="true"
+    >
+      <h6>
+        Проверить статус можно во вкладке
+        <a routerLink="/offer/list"> Список предложений </a>
+      </h6>
+    </p-dialog>
+
     <form [formGroup]="form">
       <div class="grid">
         <div class="col-12 md:col-10 lg:col-6">
@@ -199,7 +212,7 @@
             <label>* Обязательное поле для заполнения </label>
           </div>
           <div class="flex align-items-center justify-content-center border-round">
-            <button type="button" class="btn btn-sm old-style" (click)="onOpenAnalogs()"> Отправить </button>
+            <button type="button" class="btn btn-sm old-style" (click)="onOpenModalMsg()"> Отправить </button>
           </div>
       </div>
 
