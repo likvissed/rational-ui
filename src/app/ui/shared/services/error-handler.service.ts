@@ -40,7 +40,7 @@ export class ErrorHandlerService {
 
         break;
       default:
-        this.messageService.add({severity: this.str_severity, summary: 'Сервер временно недоступен', detail: error.statusText});
+        this.messageService.add({severity: this.str_severity, summary: 'Сервер временно недоступен', detail: 'Не удалось загрузить данные. Попробуйте обновить страницу' });
 
         break;
     }

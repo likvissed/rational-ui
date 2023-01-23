@@ -1,4 +1,3 @@
-import { MessageService } from 'primeng/api';
 import { newOfferFailureAction, newOfferSuccessAction } from './../actions/new-offer.action';
 import { newOfferAction } from './../actions/new-offer.action';
 
@@ -16,8 +15,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 export class NewOfferEffect {
   constructor(
     private actions$: Actions,
-    private service: OfferService,
-    private messageService: MessageService
+    private service: OfferService
   ) {}
 
   new$ = createEffect(() =>
@@ -29,11 +27,9 @@ export class NewOfferEffect {
             return newOfferSuccessAction({response});
           }),
 
-          catchError((errorResponse: HttpErrorResponse) => {
-            this.messageService.add({ severity: 'error', summary: 'Сервер временно недоступен', detail: 'Не удалось загрузить данные. Попробуйте обновить страницу' });
-
-            return of(newOfferFailureAction({ error: errorResponse.error }))
-          })
+          catchError((errorResponse: HttpErrorResponse) => of(
+            newOfferFailureAction({error: errorResponse.error})
+          ))
         )
       })
     )

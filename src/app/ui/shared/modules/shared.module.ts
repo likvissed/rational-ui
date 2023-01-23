@@ -1,3 +1,4 @@
+import { JoinPipe } from './../pipes/join.pipe';
 import { StatuslNamePipe } from './../pipes/status-name.pipe';
 import { SerialNamePipe } from './../pipes/serial-name.pipe';
 import { ErrorInterceptor } from './../interceptors/error.interceptor';
@@ -20,7 +21,8 @@ import { TrendNamePipe } from '../pipes/trend-name.pipe';
 const pipes: any[] = [
   TrendNamePipe,
   SerialNamePipe,
-  StatuslNamePipe
+  StatuslNamePipe,
+  JoinPipe
 ];
 
 const components: any[] = [];

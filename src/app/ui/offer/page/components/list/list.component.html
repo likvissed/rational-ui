@@ -55,7 +55,7 @@
         [rows]="10"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} записей"
-      >    
+      >
         <ng-template pTemplate="header" class="flex">
           <tr>
             <th class="w-1" style="text-align:center"> № п/п </th>
@@ -64,7 +64,7 @@
             <th class="w-1" style="text-align:center"> Дата подачи </th>
             <th class="w-1" style="text-align:center"> Статус </th>
 
-            <th class="w-1" style="text-align:center"> № решения Экспертного совета </th>
+            <th class="" style="text-align:center"> № решения Экспертного совета </th>
 
             <th class="w-1" style="text-align:center"> Направление </th>
             <th class="w-1" style="text-align:center"> Серийное производство </th>
@@ -123,9 +123,8 @@
               >
               </span>
             </td>
-            <td style="text-align:center">{{ column.profile_depts }}</td>
-            <td style="text-align:center">{{ column.tags }}</td>
-
+            <td style="text-align:center">{{ column.profile_depts | join:', ' }}</td>
+            <td style="text-align:center">{{ column.tags | join:', ' }}</td>
 
             <td style="text-align:center">{{ column.author_info.fio }}</td>
             <td style="text-align:center">{{ column.author_info.dept }}</td>
