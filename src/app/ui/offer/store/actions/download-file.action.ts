@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
 
 export const downloadFileAction = createAction(
   OfferActionTypes.DOWNLOAD_FILE,
-  props<{ id: number }>()
+  props<{ id: number, filename: string }>()
 );
 
 export const downloadFileSuccessAction = createAction(

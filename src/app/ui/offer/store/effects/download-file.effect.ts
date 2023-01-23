@@ -23,16 +23,14 @@ export class DownloadFileEffect {
       ofType(downloadFileAction),
       switchMap((value) => {
         return this.service.downloadFile(value.id).pipe(
-          map((response: any ) => {
+          map((response: any ) => {            
             let file = new Blob([response], { type: response.type });
             let fileURL = URL.createObjectURL(file);
 
             let fileLink = document.createElement('a');
             fileLink.href = fileURL;
 
-            // FIXME: Изменить наименование
-            let nameFile = 'Наименование файла';
-            fileLink.download = `${nameFile}`;
+            fileLink.download = value.filename;
 
             fileLink.click();
 

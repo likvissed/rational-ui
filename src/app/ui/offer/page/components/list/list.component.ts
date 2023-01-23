@@ -87,7 +87,7 @@ export class ListComponent implements OnInit {
       label: item.filename,
       icon: 'pi pi-download',
       command: () => {
-        this.onDownloadFile(item.id);
+        this.onDownloadFile(item.id, item.filename);
       }
     }
   }
@@ -102,20 +102,20 @@ export class ListComponent implements OnInit {
     return array;
   }
 
-  onDownloadFile(id: number) {
-    this.store.dispatch(downloadFileAction({ id: id }));
+  onDownloadFile(id: number, name: string) {
+    this.store.dispatch(downloadFileAction({ id: id, filename: name }));
   }
   // -------------------------------------------
 
   onShowCoauthors(name: string, coauthoars: any) {
-    this.coauthors.name = `Соавторы рац.предложения:  ${name}`;
+    this.coauthors.name = `Соавторы рацпредложения:  ${name}`;
     this.coauthors.lists = coauthoars;
 
     this.isDisplayCoauthors = true;
   }
 
   onShowAnnotation(name: string, text: string) {
-    this.annotation.name = `Аннотация рац.предложения:  ${name}`;
+    this.annotation.name = `Аннотация рацпредложения:  ${name}`;
     this.annotation.text = text;
 
     this.isDisplayAnnotation = true;
