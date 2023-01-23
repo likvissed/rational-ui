@@ -51,8 +51,7 @@ export class OfferService {
   }
 
   downloadFile(id: number) {
-    // TODO: Добавить url
-    const url = `${environment.apiUrl}/`;
+    const url = `${environment.apiUrl}/download_file`;
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 

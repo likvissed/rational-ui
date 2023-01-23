@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
 
+import { AuthHelper } from '@iss/ng-auth-center';
+
 
 @Component({
   selector: 'app-list',
@@ -19,16 +21,7 @@ export class ListComponent implements OnInit {
   filters = {
     trends: [],
     statuses: [],
-    serials: [
-      {
-        name: 'Да',
-        value: true
-      },
-      {
-        name: 'Нет',
-        value: false
-      } 
-    ]
+    serials: []
   };
 
   isDisplayAnnotation: boolean = false;
@@ -41,10 +34,18 @@ export class ListComponent implements OnInit {
   coauthors = {
     name: '',
     lists: []
-  }
+  };
+
+  user = {
+    role: {
+      name: '',
+      value: ''
+    }
+  };
 
   constructor(
-    private store: Store
+    private store: Store,
+    private authHelper: AuthHelper
   ) { }
 
   ngOnInit() {
@@ -52,10 +53,17 @@ export class ListComponent implements OnInit {
   }
 
   onInitializeValues() {
+    this.onGetJwtPayload();
+
     this.store.dispatch(getListsAction());
 
     this.onLoadLists();
     this.onLoadFilters();
+  }
+
+  onGetJwtPayload() {
+    this.user.role.value = this.authHelper.getJwtPayload()['role']['value'];
+    this.user.role.name = this.authHelper.getJwtPayload()['role']['name'];
   }
 
   onLoadLists() {
@@ -68,8 +76,7 @@ export class ListComponent implements OnInit {
         if (data) {
           this.filters.trends = data.trends;
           this.filters.statuses = data.statuses;
-          // TODO: Поменять после изменений на сервере + строка 21
-          // this.filters.serials = data.serials;
+          this.filters.serials = data.serials;
         }
     });
   } 
