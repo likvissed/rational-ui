@@ -35,7 +35,7 @@ const appModules: any[] = [
   ],
   imports: [
     HttpClientModule,
-    // AuthCenterModule.forRoot(environment.auth),
+    AuthCenterModule.forRoot(environment.auth),
     AppRoutingModule,
 
     BrowserModule,
