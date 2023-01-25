@@ -32,6 +32,8 @@ export class MainComponent implements AfterViewInit  {
 
   @HostListener('window:message', ['$event'])
   getToken(event: any) {
+    console.log('getToken', event);
+
     if (this.onCheckToken(event)) {
       this.onGetInfoUser(event.data);
     }
