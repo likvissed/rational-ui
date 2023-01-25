@@ -1,3 +1,4 @@
+import { StorageService } from 'src/app/ui/shared/services/storage.service';
 import { downloadFileAction } from './../../../store/actions/download-file.action';
 import { getLists, selectFiltersLists } from './../../../store/offer-selectors';
 import { getListsAction } from './../../../store/actions/get-lists.action';
@@ -7,8 +8,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
-
-import { AuthHelper } from '@iss/ng-auth-center';
 
 
 @Component({
@@ -45,25 +44,30 @@ export class ListComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private authHelper: AuthHelper
+    private storageService: StorageService
   ) { }
 
   ngOnInit() {
+    let user = this.storageService.getJwtPayload();
+
+    if (!user) {
+      return;
+    }
+
+    this.onGetJwtPayload(user);
     this.onInitializeValues();
   }
 
   onInitializeValues() {
-    this.onGetJwtPayload();
-
     this.store.dispatch(getListsAction());
 
     this.onLoadLists();
     this.onLoadFilters();
   }
 
-  onGetJwtPayload() {
-    this.user.role.value = this.authHelper.getJwtPayload()['role']['value'];
-    this.user.role.name = this.authHelper.getJwtPayload()['role']['name'];
+  onGetJwtPayload(currentUser: any) {
+    this.user.role.value = currentUser['role']['value'];
+    this.user.role.name = currentUser['role']['name'];
   }
 
   onLoadLists() {

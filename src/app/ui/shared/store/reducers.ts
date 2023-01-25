@@ -1,3 +1,4 @@
+import { getAuthUserAction, getAuthUserSuccessAction, getAuthUserFailureAction } from './actions/get-auth-user.action';
 import { Action, createReducer, on } from '@ngrx/store';
 
 import { findEmployeeAction, findEmployeeSuccessAction, findEmployeeFailureAction } from './actions/find-employee.action';
@@ -29,7 +30,25 @@ const reducer = createReducer(
   on(findEmployeeFailureAction, (state, action): any => ({
     ...state,
     isSubmitting: false,
-    errors: action.error
+    errors: action.error,
+  })),
+
+  on(getAuthUserAction, (state) => ({
+    ...state,
+    isSubmitting: true,
+    response: null,
+    errors: null
+  })),
+  on(getAuthUserSuccessAction, (state, action): any => ({
+    ...state,
+    isSubmitting: false,
+    response: action.response,
+    peoples: action.response.people
+  })),
+  on(getAuthUserFailureAction, (state, action): any => ({
+    ...state,
+    isSubmitting: false,
+    errors: action.error,
   }))
 )
 

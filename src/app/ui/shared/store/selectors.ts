@@ -7,3 +7,5 @@ export const sharedFeatureSelector = createFeatureSelector(SHARED_FEATURE_KEY);
 export const searchUsers = createSelector(sharedFeatureSelector, (state: any) => {
   return state.peoples;
 });
+
+export const getInfoUser = createSelector(sharedFeatureSelector, (state: any) => state.response);

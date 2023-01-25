@@ -3,14 +3,11 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { AuthHelper } from '@iss/ng-auth-center';
-
 @Injectable()
 export class ErrorHandlerService {
   str_severity = 'error';
 
   constructor(
-    private authHelper: AuthHelper,
     private messageService: MessageService
   ) {}
 
@@ -19,7 +16,6 @@ export class ErrorHandlerService {
 
     switch (error.status) {
       case 401:
-        this.authHelper.logout();
         this.messageService.add({severity: 'warn', summary: 'Не авторизован', detail: 'Авторизуйтесь снова'});
 
         break;

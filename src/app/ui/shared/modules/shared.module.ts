@@ -1,3 +1,9 @@
+import { AuthInterceptor } from './../interceptors/auth.interceptor';
+
+import { JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
+
+import { AuthService } from './../services/auth.service';
+import { GetAuthUserEffect } from './../store/effects/get-auth-user.effect';
 import { JoinPipe } from './../pipes/join.pipe';
 import { StatuslNamePipe } from './../pipes/status-name.pipe';
 import { SerialNamePipe } from './../pipes/serial-name.pipe';
@@ -17,6 +23,7 @@ import { CommonModule } from '@angular/common';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TrendNamePipe } from '../pipes/trend-name.pipe';
+import { StorageService } from '../services/storage.service';
 
 const pipes: any[] = [
   TrendNamePipe,
@@ -41,7 +48,8 @@ const directives: any[] = [];
     StoreModule.forFeature(SHARED_FEATURE_KEY, sharedReducer),
     EffectsModule.forFeature(
       [
-        FindEmployeeEffect
+        FindEmployeeEffect,
+        GetAuthUserEffect
       ]
     )
   ],
@@ -52,12 +60,22 @@ const directives: any[] = [];
   ],
   providers: [
     EmployeeService,
+    AuthService,
+    StorageService,
     ErrorHandlerService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService
   ]
 })
 

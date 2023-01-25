@@ -1,0 +1,12 @@
+<div class="card">
+  <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
+</div>
+
+<div [hidden]="tabs.tab1">
+  <app-list></app-list>
+</div> 
+
+<div [hidden]="tabs.tab2">
+  <app-new></app-new>
+</div>
+

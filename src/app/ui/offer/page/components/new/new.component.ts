@@ -1,3 +1,4 @@
+import { StorageService } from 'src/app/ui/shared/services/storage.service';
 import { getAnalogsAction } from './../../../store/actions/get-analogs.action';
 import { AnalogComponent } from './../analog/analog.component';
 import { createOfferAction } from './../../../store/actions/create-offer.action';
@@ -55,9 +56,16 @@ export class NewComponent implements OnInit {
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
     private messageService: MessageService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit() {
+    let user = this.storageService.getJwtPayload();
+
+    if (!user) {
+      return;
+    }
+
     this.onInitializeFrom();
     this.onInitializeValues();
   }
