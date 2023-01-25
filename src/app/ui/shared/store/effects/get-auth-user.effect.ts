@@ -20,7 +20,6 @@ export class GetAuthUserEffect {
     this.actions$.pipe(
       ofType(getAuthUserAction),
       switchMap((value) => {
-        console.log('effect', value);
         return this.authService.getInfoUser(value.token).pipe(
           map((response: any) => {
             return getAuthUserSuccessAction({ response });

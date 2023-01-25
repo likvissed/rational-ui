@@ -49,6 +49,8 @@ export class NewComponent implements OnInit {
 
   isDisplaySuccessMsg: boolean = false;
 
+  isValidUser: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store,
@@ -65,6 +67,8 @@ export class NewComponent implements OnInit {
     if (!user) {
       return;
     }
+
+    this.isValidUser = true;
 
     this.onInitializeFrom();
     this.onInitializeValues();

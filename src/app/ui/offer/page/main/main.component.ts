@@ -4,7 +4,7 @@ import { StorageService } from 'src/app/ui/shared/services/storage.service';
 import { getAuthUserAction } from './../../../shared/store/actions/get-auth-user.action';
 import { Store, select } from '@ngrx/store';
 import { getInfoUser } from './../../../shared/store/selectors';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, HostListener, AfterViewInit } from '@angular/core';
 
 import { MenuItem } from 'primeng/api';
 
@@ -13,7 +13,7 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements AfterViewInit  {
   items!: MenuItem[];
   tabs = {
     'tab1': false,
@@ -26,7 +26,8 @@ export class MainComponent implements OnInit {
     private storageService: StorageService
   ) { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.storageService.onDeleteToken();
   }
 
   @HostListener('window:message', ['$event'])
@@ -51,7 +52,6 @@ export class MainComponent implements OnInit {
       .subscribe((response: any) => {
         if (response) {
           this.storageService.onNewToken(response['jwt']);
-          console.log('response', response);
 
           this.onInitial();
         }
@@ -60,7 +60,6 @@ export class MainComponent implements OnInit {
 
   onInitial() {
     let user = this.storageService.getJwtPayload();
-    console.log('user', user);
 
     if (!user) {
       return;

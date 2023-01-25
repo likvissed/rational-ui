@@ -49,13 +49,18 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     let user = this.storageService.getJwtPayload();
-
+    
     if (!user) {
       return;
     }
-
+  
     this.onGetJwtPayload(user);
     this.onInitializeValues();
+  }
+
+  onGetJwtPayload(currentUser: any) {
+    this.user.role.value = currentUser['role']['value'];
+    this.user.role.name = currentUser['role']['name'];
   }
 
   onInitializeValues() {
@@ -63,11 +68,6 @@ export class ListComponent implements OnInit {
 
     this.onLoadLists();
     this.onLoadFilters();
-  }
-
-  onGetJwtPayload(currentUser: any) {
-    this.user.role.value = currentUser['role']['value'];
-    this.user.role.name = currentUser['role']['name'];
   }
 
   onLoadLists() {
