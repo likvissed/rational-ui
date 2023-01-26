@@ -1,49 +1,4 @@
 <div class="container-fluid">
-  <p-dialog 
-    [header]="coauthors.name" 
-    [(visible)]="isDisplayCoauthors" 
-    [style]="{width: '600px'}" 
-    [baseZIndex]="10000"
-    [modal]="true"
-    [dismissableMask]="true"
-  >
-    <p-table
-      [value]="coauthors.lists"
-      styleClass="p-datatable-sm p-datatable-gridlines"
-    >
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th width="2%"> № </th>
-          <th width="60%"> ФИО </th>
-          <th width="20%"> Подразделение </th>
-          <th width="20%"> Телефон </th>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-        <tr>
-          <td> {{ rowIndex + 1 }} </td>
-          <td> {{ rowData.fio }} </td>
-          <td> {{ rowData.dept }} </td>
-          <td> {{ rowData.phone }} </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-dialog>
-
-  <p-dialog 
-    [header]="annotation.name" 
-    [(visible)]="isDisplayAnnotation" 
-    [style]="{width: '600px'}" 
-    [baseZIndex]="10000"
-    [modal]="true"
-    [dismissableMask]="true"
-  >
-    <h6>
-      {{ annotation.text }}
-    </h6>
-  </p-dialog>
-
   <div class="row">
     <ng-container *ngIf="lists$ | async as data">
       <p-table
@@ -52,7 +7,7 @@
         dataKey="id"
         styleClass="p-datatable-sm p-datatable-gridlines"
         [paginator]="true"
-        [rows]="15"
+        [rows]="10"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} записей"
         [scrollable]="true"
@@ -62,26 +17,26 @@
         <ng-template pTemplate="header">
           <tr>
             <th style="text-align:center; min-width: 10px" pFrozenColumn> № </th>
-            <th class="" style="text-align:center; min-width: 150px" pFrozenColumn> Название рацпредложения </th>
-            <th class="" style="text-align:center"> Аннотация </th>
-            <th class="" style="text-align:center"> Дата подачи </th>
-            <th class="" style="text-align:center"> Статус </th>
+            <th style="text-align:center; min-width: 150px" pFrozenColumn> Название рацпредложения </th>
+            <th style="text-align:center"> Аннотация </th>
+            <th style="text-align:center"> Дата подачи </th>
+            <th style="text-align:center; min-width: 130px"> Статус </th>
 
-            <th class="" style="text-align:center"> № решения Экспертного совета </th>
+            <th style="text-align:center"> № решения Экспертного совета </th>
 
-            <th class="" style="text-align:center; min-width: 200px"> ФИО автора </th>
-            <th class="" style="text-align:center"> Телефон </th>
-            <th class="" style="text-align:center"> Подразделение </th>
+            <th style="text-align:center; min-width: 200px"> ФИО автора </th>
+            <th style="text-align:center"> Телефон </th>
+            <th style="text-align:center"> Подразделение </th>
 
-            <th class="" style="text-align:center"> Направление </th>
-            <th class="" style="text-align:center"> Серийное производство </th>
-            <th class="" style="text-align:center"> Профильное подразделение </th>
-            <th class="" style="text-align:center; min-width: 160px"> Ключевые слова </th>
+            <th style="text-align:center"> Направление </th>
+            <th style="text-align:center"> Серийное производство </th>
+            <th style="text-align:center"> Профильное подразделение </th>
+            <th style="text-align:center; min-width: 160px"> Ключевые слова </th>
 
-            <th class="" style="text-align:center"> Аналоги </th>
+            <th style="text-align:center"> Аналоги </th>
 
-            <th class="" style="text-align:center"> Авторский состав </th>
-            <th class="" style="text-align:center"> Материалы </th>
+            <th style="text-align:center"> Авторский состав </th>
+            <th style="text-align:center"> Материалы </th>
           </tr>
         </ng-template>
 
@@ -135,9 +90,19 @@
 
 
             <td style="text-align:center">
-              <div *ngIf="column.analogs; else emptyValue">
-                {{ column.analogs }}
-              </div>
+              <span *ngIf="column.analogs.length == 0">
+                Отстутствуют
+              </span>
+              <span *ngIf="column.analogs.length > 0">
+                <button 
+                type="button" 
+                pButton 
+                pRipple
+                label="Смотреть" 
+                (click)="onShowAnalogs(column.name, column.analogs)"
+                class="btn btn-sm old-style"
+              ></button>
+              </span>
             </td> 
 
             <td style="text-align:center">
@@ -180,6 +145,88 @@
     </ng-container>
 
   </div>
+
+  <p-dialog 
+    [header]="coauthors.name" 
+    [(visible)]="isDisplayCoauthors" 
+    [style]="{width: '600px'}" 
+    [baseZIndex]="10000"
+    [modal]="true"
+    [dismissableMask]="true"
+  >
+    <p-table
+      [value]="coauthors.lists"
+      styleClass="p-datatable-sm p-datatable-gridlines"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th width="2%"> № </th>
+          <th width="60%"> ФИО </th>
+          <th width="20%"> Подразделение </th>
+          <th width="20%"> Телефон </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+        <tr>
+          <td> {{ rowIndex + 1 }} </td>
+          <td> {{ rowData.fio }} </td>
+          <td> {{ rowData.dept }} </td>
+          <td> {{ rowData.phone }} </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-dialog>
+
+  <p-dialog 
+    [header]="annotation.name" 
+    [(visible)]="isDisplayAnnotation" 
+    [style]="{width: '600px'}" 
+    [baseZIndex]="10000"
+    [modal]="true"
+    [dismissableMask]="true"
+  >
+    <h6>
+      {{ annotation.text }}
+    </h6>
+  </p-dialog>
+
+  <p-dialog 
+    [header]="analogs.name" 
+    [(visible)]="isDisplayAnalogs" 
+    [style]="{width: '1000px'}" 
+    [baseZIndex]="10000"
+    [modal]="true"
+    [dismissableMask]="true"
+  >
+    <p-table
+      [value]="analogs.lists"
+      styleClass="p-datatable-sm p-datatable-gridlines"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th width="5%" style="text-align:center"> № </th>
+          <th width="20%" style="text-align:center"> Наименование </th>
+          <th width="60%" style="text-align:center"> Аннотация </th>
+          <th width="40%" style="text-align:center"> ФИО автора </th>
+          <th width="5%" style="text-align:center"> Телефон </th>
+          <th width="5%" style="text-align:center"> Подразделение </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+        <tr>
+          <td style="text-align:center"> {{ rowData.id }} </td>
+          <td style="text-align:center"> {{ rowData.name }} </td>
+          <td style="text-align:center"> {{ rowData.annotation }} </td>
+          <td style="text-align:center"> {{ rowData.author_info.fio }} </td>
+          <td style="text-align:center"> {{ rowData.author_info.phone }} </td>
+          <td style="text-align:center"> {{ rowData.author_info.dept }} </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-dialog>
+
 </div>
 
 <ng-template #emptyValue>

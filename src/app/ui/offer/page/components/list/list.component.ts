@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
 
-
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -35,6 +34,12 @@ export class ListComponent implements OnInit {
     lists: []
   };
 
+  isDisplayAnalogs: boolean = false;
+  analogs = {
+    name: '',
+    lists: []
+  };
+
   user = {
     role: {
       name: '',
@@ -48,7 +53,6 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('init list');
     let user = this.storageService.getJwtPayload();
     
     if (!user) {
@@ -124,6 +128,13 @@ export class ListComponent implements OnInit {
     this.annotation.text = text;
 
     this.isDisplayAnnotation = true;
+  }
+
+  onShowAnalogs(name: string, analogs: any) {
+    this.analogs.name = `Аналоги рацпредложения:  ${name}`;
+    this.analogs.lists = analogs;
+
+    this.isDisplayAnalogs = true;
   }
 
 }

@@ -27,15 +27,13 @@ export class MainComponent implements AfterViewInit  {
   ) { }
 
   ngAfterViewInit() {
-    console.log('init main');
     this.storageService.onDeleteToken();
   }
 
   @HostListener('window:message', ['$event'])
   getToken(event: any) {
-    console.log('getToken', event);
-
     if (this.onCheckToken(event)) {
+      console.log('getToken', (event.data['user_info']));
       this.onGetInfoUser(event.data);
     }
   }
