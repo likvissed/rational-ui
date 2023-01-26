@@ -5,6 +5,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable()
 export class StorageService {
   tokenName = 'rational-jwt';
+  nameDraftForm = 'rational-draft-form';
+  nameDraftFiles = 'rational-draft-files';
 
   onNewToken(token: any) {
     this.onDeleteToken();
@@ -28,6 +30,16 @@ export class StorageService {
 
   onSetToken(token: any) {
     localStorage.setItem(this.tokenName, token);
+  }
+
+  onSetDraft(data: any) {
+    localStorage.setItem(this.nameDraftForm, JSON.stringify(data));
+  }
+
+  onGetDraftForm() {
+    let value = localStorage.getItem(this.nameDraftForm);
+
+    return value && JSON.parse(value);
   }
   
 }

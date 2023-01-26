@@ -131,14 +131,24 @@ export class NewComponent implements OnInit {
     }
   }
 
-  private createUser(): FormGroup {
-    return this.formBuilder.group({
-      id_tn: new FormControl('', [Validators.required]),
-      fio: new FormControl('', [Validators.required]),
-      phone: new FormControl('', [Validators.required]),
-      dept: new FormControl('', [Validators.required]),
-      obj: new FormControl('')
-    })
+  private createUser(obj?: any): FormGroup {
+    if (obj) {
+      return this.formBuilder.group({
+        id_tn: new FormControl(obj['id_tn'], [Validators.required]),
+        fio: new FormControl(obj['fio'], [Validators.required]),
+        phone: new FormControl(obj['phone'], [Validators.required]),
+        dept: new FormControl(obj['dept'], [Validators.required]),
+        obj: new FormControl(obj)
+      });
+    } else {   
+      return this.formBuilder.group({
+        id_tn: new FormControl('', [Validators.required]),
+        fio: new FormControl('', [Validators.required]),
+        phone: new FormControl('', [Validators.required]),
+        dept: new FormControl('', [Validators.required]),
+        obj: new FormControl('')
+      });
+    }
   }
 
   get allCoauthors(): FormArray {
@@ -280,5 +290,26 @@ export class NewComponent implements OnInit {
 
   onOpenModalMsg() {
     this.isDisplaySuccessMsg = true;    
+  }
+
+  onSaveDraft() {
+    this.storageService.onSetDraft(this.form.getRawValue());
+
+    this.messageService.add({severity: 'success', summary: 'Успешно', detail: 'Черновик сохранен. Внимание: без файлов' });
+  }
+
+  onGetDraft() {
+    let dataObj = this.storageService.onGetDraftForm();
+
+    if (dataObj) {
+      this.form.patchValue(dataObj);
+
+      dataObj.coauthor_info.forEach((object: any) => {
+        this.allCoauthors.push(this.createUser(object));
+      });
+  
+    } else {
+      this.messageService.add({severity: 'warn', summary: 'Внимание', detail: 'Сохраненных черновиков нет' });
+    }
   }
 }
