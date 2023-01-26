@@ -105,8 +105,6 @@ export class NewComponent implements OnInit {
         dept: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(10)])
       }),
 
-      creation_datetime: new FormControl({ value: '', disabled: true }),
-
       coauthor_info: new FormControl(''),
 
       trend_id: new FormControl('', [Validators.required]),
