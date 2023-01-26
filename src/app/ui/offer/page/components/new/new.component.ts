@@ -51,6 +51,8 @@ export class NewComponent implements OnInit {
 
   isValidUser: boolean = false;
 
+  countCoauthors: number = 10;
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store,
@@ -105,7 +107,7 @@ export class NewComponent implements OnInit {
         dept: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(10)])
       }),
 
-      coauthor_info: new FormControl(''),
+      coauthor_info: this.formBuilder.array([]),
 
       trend_id: new FormControl('', [Validators.required]),
       serial: new FormControl(true, [Validators.required]),
@@ -119,13 +121,51 @@ export class NewComponent implements OnInit {
     });
   }
 
+  // ------------------ Coauthors ------------------
+
   searchEmployee(event: any) {
-    if (this.form.value.coauthor_info.length <= 9) {
+    if (this.form.value.coauthor_info.length <= this.countCoauthors) {
       this.store.dispatch(findEmployeeAction({ data: event.query.trim()}));
 
       this.employees$ = this.store.pipe(select(searchUsers));
     }
   }
+
+  private createUser(): FormGroup {
+    return this.formBuilder.group({
+      id_tn: new FormControl('', [Validators.required]),
+      fio: new FormControl('', [Validators.required]),
+      phone: new FormControl('', [Validators.required]),
+      dept: new FormControl('', [Validators.required]),
+      obj: new FormControl('')
+    })
+  }
+
+  get allCoauthors(): FormArray {
+    return this.form.get("coauthor_info") as FormArray;
+  }
+
+  onNewCoauthor() {
+    if (this.allCoauthors.length >= 10) {
+      this.messageService.add({ severity: 'warn', summary: 'Внимание', detail: `Максимальное число соавторов ${this.countCoauthors} шт.` });
+
+      return;
+    }
+
+    this.allCoauthors.push(this.createUser());
+  }
+
+  onDeleteCoauthor(index: number) {
+    this.allCoauthors.removeAt(index);
+  }
+
+  selectEmpCoauthor(event: any, index: number) {
+    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['id_tn'].setValue(event.id_tn);
+    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['fio'].setValue(event.fio);
+    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['dept'].setValue(event.dept);
+    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['phone'].setValue(event.phone);
+  }
+  // -----------------------------------------------
 
   onAddNewTag(event: any) {
     let lengthForTag: number = 15;

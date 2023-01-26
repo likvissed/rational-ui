@@ -34,27 +34,64 @@
           </div>
     
           <div class="py-2 pr-3 w-10">
-            <label class="pl-1 w-9"> Авторский состав </label>
-            <p-autoComplete
-              [suggestions]="employees$ | async"
-              (completeMethod)="searchEmployee($event)"
-              field="fio"
-              formControlName="coauthor_info"
-              [minLength]="1"
-              [forceSelection]="true"
-              [showEmptyMessage]="true"
-              appendTo="body"
-              placeholder="Введите ФИО или таб.номер"
-              [multiple]="true"
-            >
-              <ng-template let-employee pTemplate="item">
-                <span class="ml-3">{{ employee.fio }}</span>
-                <span> (отд. {{ employee.dept }}) </span>
-              </ng-template>
-            </p-autoComplete>
+            <div class="pb-1">
+              <label class="pl-1 w-9"> Авторский состав </label>
+              <button type="button" class="btn btn-sm old-style" (click)="onNewCoauthor()"> Добавить </button>
+            </div>
+
+            <div class="row">
+              <ng-container>
+                <p-table
+                  [value]="allCoauthors.controls"
+                  [reorderableColumns]="true"
+                  dataKey="tn"
+                  styleClass="p-datatable-sm p-datatable-gridlines"
+                  [tableStyle]="{'font-size': '12px'}"
+                >
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th> ФИО </th>
+                      <th></th>
+                    </tr>
+                  </ng-template>
+    
+                  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                    <ng-container formArrayName="coauthor_info">
+                      <tr [formGroupName]="rowIndex">
+                        <td>
+                          <p-autoComplete
+                            [suggestions]="employees$ | async"
+                            (completeMethod)="searchEmployee($event)"
+                            field="fio"
+                            formControlName="obj"
+                            [minLength]="1"
+                            [forceSelection]="true"
+                            [showEmptyMessage]="true"
+                            appendTo="body"
+                            placeholder="Введите ФИО или таб.номер"
+                            (onSelect)="selectEmpCoauthor($event, rowIndex)"
+                          >
+                            <ng-template let-employee pTemplate="item">
+                              <span class="ml-3">{{ employee.fio }}</span>
+                              <span> (отд. {{ employee.dept }}) </span>
+                            </ng-template>
+    
+                          </p-autoComplete>
+                        </td>
+    
+                        <td style="text-align:center">
+                          <button type="button" class="btn btn-sm old-style" (click)="onDeleteCoauthor(rowIndex)" > Удалить </button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-template>
+                </p-table>
+              </ng-container>
+            </div>
+
 
             <span class="font-italic text-secondary text-sm">
-              Не более 10 соавторов
+              Не более {{ countCoauthors }} соавторов
             </span>
           </div>
   
