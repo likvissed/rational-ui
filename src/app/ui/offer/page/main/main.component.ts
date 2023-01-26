@@ -27,6 +27,7 @@ export class MainComponent implements AfterViewInit  {
   ) { }
 
   ngAfterViewInit() {
+    console.log('init main');
     this.storageService.onDeleteToken();
   }
 

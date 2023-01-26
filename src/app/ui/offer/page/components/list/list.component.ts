@@ -48,6 +48,7 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('init list');
     let user = this.storageService.getJwtPayload();
     
     if (!user) {
