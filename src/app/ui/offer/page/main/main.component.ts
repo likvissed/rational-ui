@@ -35,13 +35,14 @@ export class MainComponent implements AfterViewInit  {
   getToken(event: any) {
     console.log('getToken', event);
 
-    // if (this.onCheckToken(event)) {
+    if (this.onCheckToken(event)) {
       this.onGetInfoUser(event.data);
-    // }
+    }
   }
 
   onCheckToken(event: any): boolean {
-    if (event.data['user_info'] && event.data['user_info'] != undefined && event.origin === environment.originUrl) {
+    // TODO: Добавить обратно event.origin === environment.originUrl
+    if (event.data['user_info'] && event.data['user_info'] != undefined) {
       return true;
     } else {
       return false;
