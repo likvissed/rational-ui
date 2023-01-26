@@ -35,9 +35,9 @@ export class MainComponent implements AfterViewInit  {
   getToken(event: any) {
     console.log('getToken', event);
 
-    if (this.onCheckToken(event)) {
+    // if (this.onCheckToken(event)) {
       this.onGetInfoUser(event.data);
-    }
+    // }
   }
 
   onCheckToken(event: any): boolean {
