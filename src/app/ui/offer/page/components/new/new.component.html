@@ -19,12 +19,12 @@
           <div formGroupName="author_info"> 
             <div class="py-2 pr-3 w-10">
               <label class="pl-1"> * ФИО </label>
-              <input type="text" pInputText formControlName="fio" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+              <input type="text" pInputText formControlName="fio" [readonly]="true" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
             </div>
     
             <div class="py-2 pr-3 w-10">
               <label class="pl-1"> * Подразделение </label>
-              <input type="text" pInputText formControlName="dept" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+              <input type="text" pInputText formControlName="dept" [readonly]="true" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
             </div>
       
             <div class="py-2 pr-3 w-10">
@@ -125,6 +125,7 @@
               [virtualScroll]="true"
               defaultLabel="Нажмите для выбора"
               appendTo="body"
+              (onChange)="onCheckDept()"
             >
               <ng-template let-division pTemplate="item">
                 <div>
@@ -136,14 +137,19 @@
             </p-multiSelect>
             <span class="font-italic text-secondary pl-1 text-sm">
               Макс. количество: 5 шт.
-            </span>
+            </span>            
 
             <div class="p-error text-sm pl-1" *ngIf="form.controls['profile_depts']?.invalid && (form.controls['profile_depts']?.dirty || form.controls['profile_depts']?.touched)">
               <span *ngIf="form.controls['profile_depts']?.errors?.['required']">
                 Необходимо выбрать профильное подразделение из списка
               </span>
             </div>
+
+            <div *ngIf="isShowWarningDept" class="p-error text-sm pl-1">
+              Не допускается подача рационализаторских предложений на результаты собственной трудовой деятельности
+            </div>
           </div>
+
 
         </div>
 

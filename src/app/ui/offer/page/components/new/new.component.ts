@@ -51,6 +51,8 @@ export class NewComponent implements OnInit {
 
   isValidUser: boolean = false;
 
+  isShowWarningDept: boolean = false;
+
   countCoauthors: number = 10;
 
   constructor(
@@ -102,9 +104,9 @@ export class NewComponent implements OnInit {
     this.form = this.formBuilder.group({
       author_info: this.formBuilder.group({
         id_tn: new FormControl('', [Validators.required]),
-        fio: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(60)]),
+        fio: new FormControl('', [Validators.required, Validators.maxLength(60)]),
         phone: new FormControl('', [Validators.required]),
-        dept: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(10)])
+        dept: new FormControl('', [Validators.required, Validators.maxLength(10)])
       }),
 
       coauthor_info: this.formBuilder.array([]),
@@ -205,6 +207,18 @@ export class NewComponent implements OnInit {
     }
 
     this.form.controls['profile_depts'].updateValueAndValidity();
+  }
+
+  onCheckDept() {
+    this.isShowWarningDept = false;
+
+    let deptUser = this.form.value.author_info.dept;
+    
+    this.form.value.profile_depts.forEach((dept: any) => {
+      if (dept == deptUser) {
+        this.isShowWarningDept = true;
+      }
+    });
   }
 
   onMarkAsDirtyForm() {
