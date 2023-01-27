@@ -5,6 +5,8 @@ import { downloadFileAction } from './../../../store/actions/download-file.actio
 import { getLists, selectFiltersLists } from './../../../store/offer-selectors';
 import { getListsAction } from './../../../store/actions/get-lists.action';
 
+import { ConfirmationService } from 'primeng/api';
+
 import { Store, select } from '@ngrx/store';
 
 import { Observable, of } from 'rxjs';
@@ -14,7 +16,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
+  providers: [
+    ConfirmationService
+  ]
 })
 export class ListComponent implements OnInit {
   lists$!: Observable<any>;
@@ -47,7 +52,8 @@ export class ListComponent implements OnInit {
     role: {
       name: '',
       value: ''
-    }
+    },
+    id_tn: ''
   };
 
   MAX_FILE_SIZE!: number;
@@ -55,7 +61,8 @@ export class ListComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
@@ -72,6 +79,8 @@ export class ListComponent implements OnInit {
   onGetJwtPayload(currentUser: any) {
     this.user.role.value = currentUser['role']['value'];
     this.user.role.name = currentUser['role']['name'];
+
+    this.user.id_tn = currentUser['id_tn'];
   }
 
   onInitializeValues() {
@@ -163,7 +172,16 @@ export class ListComponent implements OnInit {
   }
   
   onRowEditSave(row: any) {
-    this.store.dispatch(updateRowListAction({ data: row }));
+    this.confirmationService.confirm({
+      message: `Вы действительно хотите внести изменения для рацпредложения «${row.name}»?`,
+      header: 'Подтвердите выбор',
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'Да',
+      rejectLabel: 'Нет',
+      accept: () => {
+        this.store.dispatch(updateRowListAction({ data: row }));
+      }
+    });
   }
   
 }

@@ -162,6 +162,17 @@
             </td>
 
             <td *ngIf="user.role.value == 'admin'">
+              <span *ngIf="column.expert_number.length != 0">
+                <p-fileUpload 
+                  mode="basic" 
+                  name="scan[]" 
+                  url="./" 
+                  [auto]="true"
+                  pTooltip="Загрузить скан"
+                  tooltipPosition="top"
+                  [maxFileSize]="MAX_FILE_SIZE"
+                ></p-fileUpload>
+              </span>
             </td>
 
             <td style="text-align:center" *ngIf="user.role.value == 'admin'">
@@ -260,6 +271,7 @@
     </p-table>
   </p-dialog>
 
+  <p-confirmDialog [style]="{width: '700px'}" [baseZIndex]="10000"></p-confirmDialog>
 </div>
 
 <ng-template #emptyValue>

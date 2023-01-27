@@ -18,6 +18,7 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 const modules: any[] = [
   TabMenuModule,
@@ -37,7 +38,8 @@ const modules: any[] = [
   MessagesModule,
   MessageModule,
   ToastModule,
-  MenuModule
+  MenuModule,
+  ConfirmDialogModule
 ];
 
 @NgModule({
