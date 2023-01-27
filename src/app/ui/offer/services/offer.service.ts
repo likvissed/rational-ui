@@ -1,20 +1,16 @@
 
 import { environment } from 'src/environments/environment';
 
-import { HttpClient, HttpHeaders, HttpParams, HttpBackend } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class OfferService {
   constructor(
-    private http: HttpClient,
-    private handler: HttpBackend
+    private http: HttpClient
   ) {}
 
   newOffer() {
-    // TODO: Проверить на сервере
-    // this.http = new HttpClient(this.handler);
-
     const url = `${environment.apiUrl}/new`;
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -56,5 +52,14 @@ export class OfferService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     return this.http.get(`${url}/${id}`,  { headers,  responseType: 'blob' });
+  }
+
+  updateRowList(data: any) {
+    // TODO: Добавить url
+    const url = `${environment.apiUrl}/`;
+
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this.http.put(url, data , { headers: headers });
   }
 }

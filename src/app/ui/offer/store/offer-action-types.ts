@@ -17,5 +17,9 @@ export enum OfferActionTypes {
 
   DOWNLOAD_FILE = '[Offer] Download file',
   DOWNLOAD_FILE_SUCCESS = '[Offer] Download file success',
-  DOWNLOAD_FILE_FAILURE = '[Offer] Download file failure'
+  DOWNLOAD_FILE_FAILURE = '[Offer] Download file failure',
+
+  UPDATE_ROW_LIST = '[Offer] Update row list',
+  UPDATE_ROW_LIST_SUCCESS = '[Offer] Update row list success',
+  UPDATE_ROW_LIST_FAILURE = '[Offer] Update row list failure'
 }

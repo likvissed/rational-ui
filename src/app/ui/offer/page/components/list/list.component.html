@@ -12,7 +12,7 @@
         currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} записей"
         [scrollable]="true"
         scrollHeight="600px"
-        
+        editMode="row"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -37,13 +37,17 @@
 
             <th style="text-align:center"> Авторский состав </th>
             <th style="text-align:center"> Материалы </th>
+
+            <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Загрузить скан </th>
+            <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"></th>
           </tr>
         </ng-template>
 
-        <ng-template pTemplate="body" let-column let-i="rowIndex" let-expanded="expanded">
-          <tr>
+        <ng-template pTemplate="body" let-column let-i="rowIndex" let-editing="editing">
+          <tr [pEditableRow]="column">
             <td style="text-align:center" pFrozenColumn>{{ column.id }}</td>
             <td style="text-align:center" pFrozenColumn>{{ column.name }}</td>
+
             <td style="text-align:center">
               <button 
                 type="button" 
@@ -56,17 +60,36 @@
             </td>
             <td style="text-align:center">{{ column.creation_datetime | date: 'dd.MM.yyyy'  }}</td>
             <td style="text-align:center">
-              <span
-                [innerHtml]="column.status_id | describeNameStatus: filters.statuses"
-                [class]="'list-badge status-' + column.status_id"
-              >
-              </span>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <p-dropdown appendTo="body" [options]="filters.statuses" [(ngModel)]="column.status_id" optionLabel="name" optionValue="id" (onChange)="onChangeStatus($event, column)">
+                    <ng-template let-option pTemplate="item">
+                      <span [class]="'list-badge status-' + option.id">{{option.name}}</span>
+                    </ng-template>
+                  </p-dropdown>
+                </ng-template>
+                <ng-template pTemplate="output">
+                  <span
+                    [innerHtml]="column.status_id | describeNameStatus: filters.statuses"
+                    [class]="'list-badge status-' + column.status_id"
+                  >
+                  </span>
+                </ng-template>
+              </p-cellEditor>
+              
             </td>
 
             <td style="text-align:center">
-              <div *ngIf="column.expert_number; else emptyValue">
-                {{ column.expert_number }}
-              </div>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="text" [(ngModel)]="column.expert_number">
+                </ng-template>
+                <ng-template pTemplate="output">
+                  <div *ngIf="column.expert_number; else emptyValue">
+                    {{ column.expert_number }}
+                  </div>
+                </ng-template>
+              </p-cellEditor>
             </td>
 
             <td style="text-align:center">{{ column.author_info.fio }}</td>
@@ -136,6 +159,16 @@
                 ></button>
                 <p-menu #menu [popup]="true" appendTo="body" [model]="onGeListFiles(column.files)"></p-menu>
               </span>
+            </td>
+
+            <td *ngIf="user.role.value == 'admin'">
+            </td>
+
+            <td style="text-align:center" *ngIf="user.role.value == 'admin'">
+              <button *ngIf="!editing" type="button" pInitEditableRow class="btn btn-sm old-style"> Редактировать </button>
+
+              <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(column)" class="p-button-rounded p-button-text p-button-success p-mr-2"></button>
+              <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" class="p-button-rounded p-button-text p-button-danger"></button>
             </td>
 
           </tr>

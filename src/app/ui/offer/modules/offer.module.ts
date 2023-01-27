@@ -3,6 +3,7 @@ import { NewComponent } from './../page/components/new/new.component';
 import { ListComponent } from '../page/components/list/list.component';
 import { MainComponent } from '../page/main/main.component';
 
+import { UpdateRowListEffect } from './../store/effects/update-row-list.effect';
 import { DownloadFileEffect } from './../store/effects/download-file.effect';
 import { GetListsEffect } from './../store/effects/get-lists.effect';
 import { GetAnalogsEffect } from './../store/effects/get-analogs.effect';
@@ -48,7 +49,8 @@ import { NgModule } from '@angular/core';
         CreateOfferEffect,
         GetAnalogsEffect,
         GetListsEffect,
-        DownloadFileEffect
+        DownloadFileEffect,
+        UpdateRowListEffect
       ]
     )
   ],

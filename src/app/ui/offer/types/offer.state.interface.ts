@@ -7,4 +7,5 @@ export interface OfferStateInterface {
   flagAnalog: boolean
   flagCreatedOffer: boolean
   filters: any
+  isLoadLists: boolean
 }

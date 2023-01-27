@@ -1,3 +1,4 @@
+import { updateRowListAction, updateRowListSuccessAction, updateRowListFailureAction } from './actions/update_row_list.action';
 import { downloadFileAction, downloadFileSuccessAction, downloadFileFailureAction } from './actions/download-file.action';
 import { getListsAction, getListsSuccessAction, getListsFailureAction } from './actions/get-lists.action';
 import { getAnalogsAction, getAnalogsSuccessAction, getAnalogsFailureAction } from './actions/get-analogs.action';
@@ -17,7 +18,8 @@ const initialState: OfferStateInterface = {
   proposals: null,
   flagAnalog: false,
   flagCreatedOffer: false,
-  filters: null
+  filters: null,
+  isLoadLists: false
 }
 
 const reducer = createReducer(
@@ -83,21 +85,24 @@ const reducer = createReducer(
     ...state,
     isSubmitting: true,
     filters: null,
-    proposals: []
+    proposals: [],
+    isLoadLists: false
   })),
   on(getListsSuccessAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     response: action.response,
     proposals: action.response.proposals,
-    filters:  action.response.data_filters
+    filters:  action.response,
+    isLoadLists: true
   })),
   on(getListsFailureAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     errors: action.error,
     filters: null,
-    proposals: []
+    proposals: [],
+    isLoadLists: false
   })),
 
   on(downloadFileAction, (state): OfferStateInterface => ({
@@ -110,6 +115,21 @@ const reducer = createReducer(
     response: action.response
   })),
   on(downloadFileFailureAction, (state, action): OfferStateInterface => ({
+    ...state,
+    isSubmitting: false,
+    errors: action.error
+  })),
+
+  on(updateRowListAction, (state): OfferStateInterface => ({
+    ...state,
+    isSubmitting: true
+  })),
+  on(updateRowListSuccessAction, (state, action): OfferStateInterface => ({
+    ...state,
+    isSubmitting: false,
+    response: action.response
+  })),
+  on(updateRowListFailureAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     errors: action.error

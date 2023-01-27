@@ -15,4 +15,5 @@ export const getAnalogs = createSelector(offerFeatureSelector, (state: any) => s
 export const flagGetAnalogResponse = createSelector(offerFeatureSelector, (state: any) => state.flagAnalog);
 
 export const getLists = createSelector(offerFeatureSelector, (state: any) => state.proposals);
-export const selectFiltersLists = createSelector(offerFeatureSelector, (state: any) => state.filters);
+export const selectFiltersLists = createSelector(offerFeatureSelector, (state: any) => state);
+

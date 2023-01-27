@@ -30,6 +30,7 @@
     "@ngrx/store-devtools": "15",
     "bootstrap": "^5.2.3",
     "font-awesome": "^4.7.0",
+    "lodash": "^4.17.21",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primeng": "15",

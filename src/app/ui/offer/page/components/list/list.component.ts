@@ -1,3 +1,5 @@
+import { updateRowListAction } from './../../../store/actions/update_row_list.action';
+import { switchMap, map } from 'rxjs/operators';
 import { StorageService } from 'src/app/ui/shared/services/storage.service';
 import { downloadFileAction } from './../../../store/actions/download-file.action';
 import { getLists, selectFiltersLists } from './../../../store/offer-selectors';
@@ -5,7 +7,7 @@ import { getListsAction } from './../../../store/actions/get-lists.action';
 
 import { Store, select } from '@ngrx/store';
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
 
@@ -19,7 +21,8 @@ export class ListComponent implements OnInit {
   filters = {
     trends: [],
     statuses: [],
-    serials: []
+    serials: [],
+    depts: []
   };
 
   isDisplayAnnotation: boolean = false;
@@ -46,6 +49,9 @@ export class ListComponent implements OnInit {
       value: ''
     }
   };
+
+  MAX_FILE_SIZE!: number;
+  ID_STATUS_REJECT!: number;
 
   constructor(
     private store: Store,
@@ -76,16 +82,27 @@ export class ListComponent implements OnInit {
   }
 
   onLoadLists() {
-    this.lists$ = this.store.select(getLists);
+    this.lists$ = this.store.pipe(
+      select(getLists),
+      map((response: any ) => {
+        if (response) {
+          return response.map((data: any) => Object.assign({}, data));
+        }
+      })
+    )
   }
 
   onLoadFilters() {
     this.store.pipe(select(selectFiltersLists))
       .subscribe((data: any) => {
-        if (data) {
-          this.filters.trends = data.trends;
-          this.filters.statuses = data.statuses;
-          this.filters.serials = data.serials;
+        if (data.isLoadLists) {
+          this.filters.trends = data.filters.data_filters.trends;
+          this.filters.statuses = data.filters.data_filters.statuses;
+          this.filters.serials = data.filters.data_filters.serials;
+          this.filters.depts = data.filters.data_filters.depts;
+
+          this.MAX_FILE_SIZE = data.filters.constants.max_file_size;
+          this.ID_STATUS_REJECT = data.filters.data_filters.status_reject_id;
         }
     });
   } 
@@ -137,4 +154,16 @@ export class ListComponent implements OnInit {
     this.isDisplayAnalogs = true;
   }
 
+  onChangeStatus(event: any, row: any) {
+    if (event.value == this.ID_STATUS_REJECT) {
+      let text = prompt('Введите причину отклонения:', '');
+      
+      row.reason_for_rejection = text;
+    }
+  }
+  
+  onRowEditSave(row: any) {
+    this.store.dispatch(updateRowListAction({ data: row }));
+  }
+  
 }
