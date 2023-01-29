@@ -1,10 +1,12 @@
+import { NewComponent } from './../components/new/new.component';
+import { ListComponent } from './../components/list/list.component';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/app/ui/shared/services/storage.service';
 
 import { getAuthUserAction } from './../../../shared/store/actions/get-auth-user.action';
 import { Store, select } from '@ngrx/store';
 import { getInfoUser } from './../../../shared/store/selectors';
-import { Component, HostListener, AfterViewInit } from '@angular/core';
+import { Component, HostListener, AfterViewInit, ViewChild } from '@angular/core';
 
 import { MenuItem } from 'primeng/api';
 
@@ -14,6 +16,9 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements AfterViewInit  {
+  @ViewChild(ListComponent) childList: any;
+  @ViewChild(NewComponent) childNew: any;
+
   items!: MenuItem[];
   objProposal = {};
   tabs = {
@@ -69,6 +74,9 @@ export class MainComponent implements AfterViewInit  {
     }
 
     this.onFillMenu();
+
+    this.childList.ngOnInit();
+    this.childNew.ngOnInit();
   }
 
   public onSwitchTab(data: any): void {
