@@ -18,9 +18,9 @@
           <tr>
             <th style="text-align:center; min-width: 10px" pFrozenColumn> № </th>
             <th style="text-align:center; min-width: 150px" pFrozenColumn> Название рацпредложения </th>
-            <th style="text-align:center"> Аннотация </th>
-            <th style="text-align:center"> Дата подачи </th>
-            <th style="text-align:center; min-width: 130px"> Статус </th>
+            <th style="text-align:center; min-width: 100x"> Аннотация </th>
+            <th style="text-align:center; min-width: 100px"> Дата подачи </th>
+            <th style="text-align:center; min-width: 200px"> Статус </th>
 
             <th style="text-align:center"> № решения Экспертного совета </th>
 
@@ -41,6 +41,117 @@
             <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Загрузить скан </th>
             <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Назначить номер, поменять статус </th>
             <th style="text-align:center; min-width: 50px"> Редактировать рацпредложение </th>
+          </tr>
+
+          <tr>
+            <th></th>
+            <th> <!-- Название рацпредложения -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['name'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'name', 'contains')"
+                class="form-control"
+              >
+            </th>
+            <th></th>
+            <th></th>
+            <th> <!-- Статус -->
+              <p-dropdown
+                [options]="filters.statuses"
+                optionValue="id"
+                (onChange)="dtable.filter($event.value, 'status_id', 'equals')"
+                placeholder="Все"
+                [showClear]="true"
+                optionLabel="name"
+                [style]="{'width':'100%'}"
+                autoWidth="false"
+                appendTo="body"
+              >
+
+                <ng-template let-option pTemplate="item">
+                  <span [class]="'list-badge status-' + option.id">{{option.name}}</span>
+                </ng-template>
+              </p-dropdown>
+            </th>
+            <th> <!-- № решения Экспертного совета -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['expert_number'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'expert_number', 'equals')"
+                class="form-control col-lg-12"
+              >
+            </th>
+            <th> <!-- ФИО автора -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['fio'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'author_info.fio', 'contains')"
+                class="form-control col-lg-12"
+              >
+            </th>
+            <th></th>
+            <th></th>
+            <th> <!-- Направление -->
+              <p-dropdown
+                [options]="filters.trends"
+                optionValue="id"
+                (onChange)="dtable.filter($event.value, 'trend_id', 'equals')"
+                placeholder="Все"
+                [showClear]="true"
+                optionLabel="name"
+                [style]="{'width':'100%'}"
+                autoWidth="false"
+                appendTo="body"
+              >
+                <ng-template let-option pTemplate="item">
+                  <span> {{ option.name }} </span>
+                </ng-template>
+              </p-dropdown>
+            </th>
+            <th> <!-- Серийное производство -->
+              <p-dropdown
+                [options]="filters.serials"
+                optionValue="value"
+                (onChange)="dtable.filter($event.value, 'serial', 'equals')"
+                placeholder="Все"
+                [showClear]="true"
+                optionLabel="name"
+                [style]="{'width':'100%'}"
+                autoWidth="false"
+                appendTo="body"
+              >
+                <ng-template let-option pTemplate="item">
+                  <span> {{ option.name }} </span>
+                </ng-template>
+              </p-dropdown>
+            </th>
+            <th> <!-- Профильное подразделение -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['profile_depts'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'profile_depts', 'contains')"
+                class="form-control col-lg-12"
+              >
+            </th>
+            <th> <!-- Ключевые слова -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['tags'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'tags', 'contains')"
+                class="form-control col-lg-12"
+              >
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
           </tr>
         </ng-template>
 
@@ -215,6 +326,12 @@
 
           </tr>
         </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="19" style="text-align:center"> Не найдено </td>
+          </tr>
+      </ng-template>
 
       </p-table>
     </ng-container>
