@@ -65,4 +65,10 @@ export class OfferService {
 
     return this.http.put(url, data , { headers: headers });
   }
+
+  uploadScan(formData: any, id: number) {
+    const url = `${environment.apiUrl}/proposal_scan`;
+
+    return this.http.put (`${url}/${id}`, formData);
+  }
 }

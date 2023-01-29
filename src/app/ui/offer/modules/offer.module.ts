@@ -1,3 +1,4 @@
+import { UploadScanEffect } from './../store/effects/upload-scan.effect';
 import { AnalogComponent } from './../page/components/analog/analog.component';
 import { NewComponent } from './../page/components/new/new.component';
 import { ListComponent } from '../page/components/list/list.component';
@@ -50,7 +51,8 @@ import { NgModule } from '@angular/core';
         GetAnalogsEffect,
         GetListsEffect,
         DownloadFileEffect,
-        UpdateRowListEffect
+        UpdateRowListEffect,
+        UploadScanEffect
       ]
     )
   ],

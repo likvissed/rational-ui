@@ -21,5 +21,9 @@ export enum OfferActionTypes {
 
   UPDATE_ROW_LIST = '[Offer] Update row list',
   UPDATE_ROW_LIST_SUCCESS = '[Offer] Update row list success',
-  UPDATE_ROW_LIST_FAILURE = '[Offer] Update row list failure'
+  UPDATE_ROW_LIST_FAILURE = '[Offer] Update row list failure',
+
+  UPLOAD_SCAN = '[Offer] Upload scan',
+  UPLOAD_SCAN_SUCCESS = '[Offer] Upload scan success',
+  UPLOAD_SCAN_FAILURE = '[Offer] Upload scan failure'
 }

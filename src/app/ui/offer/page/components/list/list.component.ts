@@ -1,3 +1,4 @@
+import { uploadScanAction } from './../../../store/actions/upload-scan.action';
 import { updateRowListAction } from './../../../store/actions/update_row_list.action';
 import { switchMap, map } from 'rxjs/operators';
 import { StorageService } from 'src/app/ui/shared/services/storage.service';
@@ -60,6 +61,8 @@ export class ListComponent implements OnInit {
   MAX_FILE_SIZE!: number;
   ID_STATUS_REJECT!: number;
   ID_STATUS_NEW!: number
+
+  formData = new FormData();
 
   constructor(
     private store: Store,
@@ -189,6 +192,20 @@ export class ListComponent implements OnInit {
 
   onOpenEditRecord(row: any) {
     this.proposal.emit(row);
+  }
+
+  onUploadScan(event: any, id: number) {
+    this.formData.delete('file');
+
+    const file: File = event.files[0];
+    
+    this.formData.append(
+      'file',
+      file,
+      file.name
+    );
+
+    this.store.dispatch(uploadScanAction({ file: this.formData, id: id }));
   }
   
 }

@@ -277,11 +277,11 @@
                 <p-fileUpload 
                   mode="basic" 
                   name="scan[]" 
-                  url="./" 
                   [auto]="true"
                   pTooltip="Загрузить скан"
                   tooltipPosition="top"
                   [maxFileSize]="MAX_FILE_SIZE"
+                  (onSelect)="onUploadScan($event, column.id)"
                 ></p-fileUpload>
               </span>
             </td>
