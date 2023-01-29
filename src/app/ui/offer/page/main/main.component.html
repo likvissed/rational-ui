@@ -3,10 +3,10 @@
 </div>
 
 <div [hidden]="tabs.tab1">
-  <app-list></app-list>
+  <app-list (proposal)="onSwitchTab($event)"></app-list>
 </div> 
 
 <div [hidden]="tabs.tab2">
-  <app-new></app-new>
+  <app-new [proposal]="objProposal"></app-new>
 </div>
 

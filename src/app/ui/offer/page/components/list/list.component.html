@@ -39,7 +39,8 @@
             <th style="text-align:center"> Материалы </th>
 
             <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Загрузить скан </th>
-            <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"></th>
+            <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Назначить номер, поменять статус </th>
+            <th style="text-align:center; min-width: 50px"> Редактировать рацпредложение </th>
           </tr>
         </ng-template>
 
@@ -161,7 +162,7 @@
               </span>
             </td>
 
-            <td *ngIf="user.role.value == 'admin'">
+            <td *ngIf="user.role.value == 'admin'" style="text-align:center">
               <span *ngIf="column.expert_number.length != 0">
                 <p-fileUpload 
                   mode="basic" 
@@ -176,10 +177,41 @@
             </td>
 
             <td style="text-align:center" *ngIf="user.role.value == 'admin'">
-              <button *ngIf="!editing" type="button" pInitEditableRow class="btn btn-sm old-style"> Редактировать </button>
+              <button 
+                *ngIf="!editing" 
+                type="button" 
+                pInitEditableRow 
+                class="btn btn-sm old-style"
+              > Изменить </button>
 
-              <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(column)" class="p-button-rounded p-button-text p-button-success p-mr-2"></button>
-              <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" class="p-button-rounded p-button-text p-button-danger"></button>
+              <button 
+                *ngIf="editing" 
+                pButton 
+                pRipple 
+                type="button" 
+                pSaveEditableRow 
+                icon="pi pi-check"
+                (click)="onRowEditSave(column)" 
+                class="p-button-rounded p-button-text p-button-success p-mr-2"
+              ></button>
+              <button 
+                *ngIf="editing" 
+                pButton 
+                pRipple 
+                type="button"
+                pCancelEditableRow 
+                icon="pi pi-times" 
+                class="p-button-rounded p-button-text p-button-danger"
+              ></button>
+            </td>
+
+            <td>
+              <button 
+                *ngIf="column.status_id == ID_STATUS_NEW && user.id_tn == column.author_info.id_tn" 
+                type="button" 
+                class="btn btn-sm old-style" 
+                (click)="onOpenEditRecord(column)"
+              >  Редактировать </button>
             </td>
 
           </tr>

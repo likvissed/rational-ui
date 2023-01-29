@@ -13,7 +13,7 @@
       </h6>
     </p-dialog>
 
-    <form [formGroup]="form">
+    <form [formGroup]="form">  
       <div class="grid">
         <div class="col-12 md:col-10 lg:col-6">
           <div formGroupName="author_info"> 
@@ -257,7 +257,10 @@
               <button type="button" class="btn btn-sm old-style" (click)="onSaveDraft()"> Сохранить черновик </button>
             </span>
           
-            <button type="button" class="btn btn-sm old-style" (click)="onOpenAnalogs()"> Отправить </button>
+            <button type="button" class="btn btn-sm old-style" (click)="onOpenAnalogs()"> 
+              <span *ngIf="isNewForm"> Отправить </span>
+              <span *ngIf="!isNewForm"> Обновить </span>
+            </button>
           </div>
       </div>
 

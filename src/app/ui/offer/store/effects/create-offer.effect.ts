@@ -23,7 +23,7 @@ export class CreateOfferEffect {
     this.actions$.pipe(
       ofType(createOfferAction),
       switchMap((value) => {
-        return this.service.createOffer(value.formData).pipe(
+        return this.service.createOffer(value.formData, value.id).pipe(
           map((response: any ) => {
             this.messageService.add({severity: 'success', summary: 'Успешно', detail: response.result });
 

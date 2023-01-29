@@ -19,7 +19,8 @@ const initialState: OfferStateInterface = {
   flagAnalog: false,
   flagCreatedOffer: false,
   filters: null,
-  isLoadLists: false
+  isLoadLists: false,
+  lists: null
 }
 
 const reducer = createReducer(
@@ -85,24 +86,24 @@ const reducer = createReducer(
     ...state,
     isSubmitting: true,
     filters: null,
-    proposals: [],
-    isLoadLists: false
+    isLoadLists: false,
+    lists: []
   })),
   on(getListsSuccessAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     response: action.response,
-    proposals: action.response.proposals,
     filters:  action.response,
-    isLoadLists: true
+    isLoadLists: true,
+    lists: action.response.proposals
   })),
   on(getListsFailureAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     errors: action.error,
     filters: null,
-    proposals: [],
-    isLoadLists: false
+    isLoadLists: false,
+    lists: []
   })),
 
   on(downloadFileAction, (state): OfferStateInterface => ({

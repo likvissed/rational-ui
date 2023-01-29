@@ -8,4 +8,5 @@ export interface OfferStateInterface {
   flagCreatedOffer: boolean
   filters: any
   isLoadLists: boolean
+  lists: any
 }

@@ -11,7 +11,7 @@ import { Store, select } from '@ngrx/store';
 
 import { Observable, of } from 'rxjs';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-list',
@@ -22,6 +22,7 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class ListComponent implements OnInit {
+  @Output() proposal = new EventEmitter<any>();
   lists$!: Observable<any>;
   filters = {
     trends: [],
@@ -58,6 +59,7 @@ export class ListComponent implements OnInit {
 
   MAX_FILE_SIZE!: number;
   ID_STATUS_REJECT!: number;
+  ID_STATUS_NEW!: number
 
   constructor(
     private store: Store,
@@ -112,6 +114,7 @@ export class ListComponent implements OnInit {
 
           this.MAX_FILE_SIZE = data.filters.constants.max_file_size;
           this.ID_STATUS_REJECT = data.filters.data_filters.status_reject_id;
+          this.ID_STATUS_NEW = data.filters.data_filters.status_new_id;
         }
     });
   } 
@@ -182,6 +185,10 @@ export class ListComponent implements OnInit {
         this.store.dispatch(updateRowListAction({ data: row }));
       }
     });
+  }
+
+  onOpenEditRecord(row: any) {
+    this.proposal.emit(row);
   }
   
 }

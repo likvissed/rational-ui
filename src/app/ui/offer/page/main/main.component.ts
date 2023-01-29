@@ -15,6 +15,7 @@ import { MenuItem } from 'primeng/api';
 })
 export class MainComponent implements AfterViewInit  {
   items!: MenuItem[];
+  objProposal = {};
   tabs = {
     'tab1': false,
     'tab2': true
@@ -68,6 +69,15 @@ export class MainComponent implements AfterViewInit  {
     }
 
     this.onFillMenu();
+  }
+
+  public onSwitchTab(data: any): void {
+    this.objProposal = data;
+
+    this.tabs.tab1 = true;
+    this.tabs.tab2 = false;
+
+    this.activeItem = this.items[1];
   }
 
   onFillMenu() {

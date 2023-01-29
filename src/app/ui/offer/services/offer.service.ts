@@ -18,14 +18,18 @@ export class OfferService {
     return this.http.get(url, { headers: headers });
   }
 
-  createOffer(formData: any) {
+  createOffer(formData: any, id: any) {
     const url = `${environment.apiUrl}/new`;
 
     let headers = new HttpHeaders();
     headers.set('Content-Type', 'multipart/form-data');
     headers.set('Content-Type', 'application/json');
 
-    return this.http.post (url, formData, { headers: headers });
+    if (id == undefined || id == '') {
+      return this.http.post (url, formData, { headers: headers });
+    } else {
+      return this.http.put (`${url}/${id}`, formData, { headers: headers });
+    }
   }
 
   getAnalogs(data: any) {
@@ -55,8 +59,7 @@ export class OfferService {
   }
 
   updateRowList(data: any) {
-    // TODO: Добавить url
-    const url = `${environment.apiUrl}/`;
+    const url = `${environment.apiUrl}/proposal`;
 
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
 

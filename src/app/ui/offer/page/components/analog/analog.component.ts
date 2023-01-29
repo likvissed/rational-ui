@@ -25,7 +25,7 @@ export class AnalogComponent implements OnInit {
   onInitializeValues() {
     this.proposedAnalogs$ = this.config.data?.analogs;
 
-    this.newAnalogs = [...this.config.data?.presentAnalogs]
+    this.newAnalogs = [...this.config.data?.presentAnalogs];
   }
 
   onAddAnalog() {

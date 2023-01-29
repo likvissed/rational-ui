@@ -9,7 +9,7 @@ import { findEmployeeAction } from './../../../../shared/store/actions/find-empl
 
 import { FileUpload } from 'primeng/fileupload'
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
 
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 
@@ -30,6 +30,7 @@ import { Subscription } from 'rxjs';
   providers:[DynamicDialogRef, DynamicDialogConfig, DialogService]
 })
 export class NewComponent implements OnInit {
+  @Input() proposal = {};
   @ViewChild('fileUpload') fileUpload!: FileUpload;
   form!: FormGroup;
 
@@ -45,7 +46,7 @@ export class NewComponent implements OnInit {
 
   formData = new FormData();
 
-  dataSubscription!: Subscription;
+  dataSubscription: Subscription = Subscription.EMPTY;
 
   isDisplaySuccessMsg: boolean = false;
 
@@ -54,6 +55,8 @@ export class NewComponent implements OnInit {
   isShowWarningDept: boolean = false;
 
   countCoauthors: number = 10;
+
+  isNewForm: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -73,9 +76,23 @@ export class NewComponent implements OnInit {
     }
 
     this.isValidUser = true;
+    this.isNewForm = true;
 
     this.onInitializeFrom();
     this.onInitializeValues();
+  }
+
+  ngOnChanges(changes: any) {
+    this.isNewForm = false;
+
+    this.onInitializeFrom();
+    this.form.patchValue(changes.proposal.currentValue);
+
+    if (changes.proposal.currentValue.coauthor_info) {
+      changes.proposal.currentValue.coauthor_info.forEach((object: any) => {
+        this.allCoauthors.push(this.createUser(object));
+      });
+    }
   }
 
   onInitializeValues() {
@@ -102,11 +119,13 @@ export class NewComponent implements OnInit {
 
   onInitializeFrom() {
     this.form = this.formBuilder.group({
+      id: new FormControl(''),
+
       author_info: this.formBuilder.group({
-        id_tn: new FormControl('', [Validators.required]),
-        fio: new FormControl('', [Validators.required, Validators.maxLength(60)]),
-        phone: new FormControl('', [Validators.required]),
-        dept: new FormControl('', [Validators.required, Validators.maxLength(10)])
+        id_tn: new FormControl(''),
+        fio: new FormControl(''),
+        phone: new FormControl(''),
+        dept: new FormControl('')
       }),
 
       coauthor_info: this.formBuilder.array([]),
@@ -136,18 +155,18 @@ export class NewComponent implements OnInit {
   private createUser(obj?: any): FormGroup {
     if (obj) {
       return this.formBuilder.group({
-        id_tn: new FormControl(obj['id_tn'], [Validators.required]),
-        fio: new FormControl(obj['fio'], [Validators.required]),
-        phone: new FormControl(obj['phone'], [Validators.required]),
-        dept: new FormControl(obj['dept'], [Validators.required]),
+        id_tn: new FormControl(obj['id_tn']),
+        fio: new FormControl(obj['fio']),
+        phone: new FormControl(obj['phone']),
+        dept: new FormControl(obj['dept']),
         obj: new FormControl(obj)
       });
     } else {   
       return this.formBuilder.group({
-        id_tn: new FormControl('', [Validators.required]),
-        fio: new FormControl('', [Validators.required]),
-        phone: new FormControl('', [Validators.required]),
-        dept: new FormControl('', [Validators.required]),
+        id_tn: new FormControl(''),
+        fio: new FormControl(''),
+        phone: new FormControl(''),
+        dept: new FormControl(''),
         obj: new FormControl('')
       });
     }
@@ -275,7 +294,7 @@ export class NewComponent implements OnInit {
           });
 
         if (data.save) {
-          this.onCreateOffer();
+          this.onCreateOffer();          
         }
       }
     });
@@ -289,8 +308,8 @@ export class NewComponent implements OnInit {
     
     this.formData.delete(nameData);
     this.formData.append(nameData, JSON.stringify(data));
-    
-    this.store.dispatch(createOfferAction({ formData: this.formData, data: data }));
+
+    this.store.dispatch(createOfferAction({ formData: this.formData, data: data, id: this.form.value.id }));
 
     this.dataSubscription = this.store.select(flagSuccessCreateOffer)
       .subscribe((flag: boolean) => {
@@ -318,9 +337,13 @@ export class NewComponent implements OnInit {
     if (dataObj) {
       this.form.patchValue(dataObj);
 
-      dataObj.coauthor_info.forEach((object: any) => {
-        this.allCoauthors.push(this.createUser(object));
-      });
+      if (dataObj.coauthor_info) {
+        this.allCoauthors.clear();
+
+        dataObj.coauthor_info.forEach((object: any) => {
+          this.allCoauthors.push(this.createUser(object));
+        });
+      }
   
     } else {
       this.messageService.add({severity: 'warn', summary: 'Внимание', detail: 'Сохраненных черновиков нет' });
