@@ -28,12 +28,10 @@ export class UploadScanEffect {
         return this.service.uploadScan(value.file, value.id).pipe(
           map((response: any ) => {
             this.messageService.add({severity: 'success', summary: 'Успешно', detail: response.result });
-
-            return uploadScanSuccessAction({response});
           }),
           switchMap((response: any) => [
-            uploadScanSuccessAction({response}),
-            // getListsAction()
+            uploadScanSuccessAction({response})
+            // TODO: Добавить getListsAction()
           ]),
 
           catchError((errorResponse: HttpErrorResponse) => of(

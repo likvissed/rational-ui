@@ -1,3 +1,4 @@
+import { downloadScanAction } from './../../../store/actions/download-scan.action';
 import { uploadScanAction } from './../../../store/actions/upload-scan.action';
 import { updateRowListAction } from './../../../store/actions/update_row_list.action';
 import { switchMap, map } from 'rxjs/operators';
@@ -206,6 +207,10 @@ export class ListComponent implements OnInit {
     );
 
     this.store.dispatch(uploadScanAction({ file: this.formData, id: id }));
+  }
+
+  onDownloadScan(id: number) {
+    this.store.dispatch(downloadScanAction({ id: id }));
   }
   
 }

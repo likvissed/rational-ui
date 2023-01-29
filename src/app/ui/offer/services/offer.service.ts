@@ -71,4 +71,12 @@ export class OfferService {
 
     return this.http.put (`${url}/${id}`, formData);
   }
+
+  downloadScan(id: number) {
+    const url = `${environment.apiUrl}/proposal_scan`;
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this.http.get(`${url}/${id}`,  { headers,  responseType: 'blob' });
+  }
 }

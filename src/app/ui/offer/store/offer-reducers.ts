@@ -1,3 +1,4 @@
+import { downloadScanAction, downloadScanSuccessAction, downloadScanFailureAction } from './actions/download-scan.action';
 import { uploadScanAction, uploadScanSuccessAction, uploadScanFailureAction } from './actions/upload-scan.action';
 import { updateRowListAction, updateRowListSuccessAction, updateRowListFailureAction } from './actions/update_row_list.action';
 import { downloadFileAction, downloadFileSuccessAction, downloadFileFailureAction } from './actions/download-file.action';
@@ -147,6 +148,21 @@ const reducer = createReducer(
     response: action.response
   })),
   on(uploadScanFailureAction, (state, action): OfferStateInterface => ({
+    ...state,
+    isSubmitting: false,
+    errors: action.error
+  })),
+
+  on(downloadScanAction, (state): OfferStateInterface => ({
+    ...state,
+    isSubmitting: true
+  })),
+  on(downloadScanSuccessAction, (state, action): OfferStateInterface => ({
+    ...state,
+    isSubmitting: false,
+    response: action.response
+  })),
+  on(downloadScanFailureAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     errors: action.error

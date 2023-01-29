@@ -1,5 +1,6 @@
+import { downloadScanAction, downloadScanSuccessAction, downloadScanFailureAction } from './../actions/download-scan.action';
+
 import { OfferService } from './../../services/offer.service';
-import { downloadFileAction, downloadFileSuccessAction, downloadFileFailureAction } from './../actions/download-file.action';
 
 import { MessageService } from 'primeng/api';
 
@@ -11,39 +12,39 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 
 @Injectable()
-export class DownloadFileEffect {
+export class DownloadScanEffect {
   constructor(
     private actions$: Actions,
     private service: OfferService,
     private messageService: MessageService
   ) {}
 
-  downloadFile$ = createEffect(() =>
+  downloadScan$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(downloadFileAction),
+      ofType(downloadScanAction),
       switchMap((value) => {
-        return this.service.downloadFile(value.id).pipe(
-          map((response: any ) => {            
+        return this.service.downloadScan(value.id).pipe(
+          map((response: any ) => {         
             let file = new Blob([response], { type: response.type });
             let fileURL = URL.createObjectURL(file);
 
             let fileLink = document.createElement('a');
             fileLink.href = fileURL;
 
-            fileLink.download = value.filename;
+            fileLink.download = 'Скан-рацпредложения';
 
             fileLink.click();
 
             this.messageService.add({severity: 'success', summary: 'Загрузка файла...' });
 
-            return downloadFileSuccessAction({ response: response });
+            return downloadScanSuccessAction({ response: response });
           }),
 
           catchError((errorResponse: HttpErrorResponse) => of(
-            downloadFileFailureAction({error: errorResponse.error})
+            downloadScanFailureAction({error: errorResponse.error})
           ))
         )
       })
-    ), { dispatch: false }
+    )
   );
 }

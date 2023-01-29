@@ -39,6 +39,7 @@
             <th style="text-align:center"> Материалы </th>
 
             <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Загрузить скан </th>
+            <th style="text-align:center; min-width: 50px"> Скачать скан </th>
             <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Назначить номер, поменять статус </th>
             <th style="text-align:center; min-width: 50px"> Редактировать рацпредложение </th>
           </tr>
@@ -146,6 +147,7 @@
                 class="form-control col-lg-12"
               >
             </th>
+            <th></th>
             <th></th>
             <th></th>
             <th></th>
@@ -286,6 +288,15 @@
               </span>
             </td>
 
+            <td>
+              <button
+                *ngIf="column.scan"
+                type="button" 
+                class="btn btn-sm old-style" 
+                (click)="onDownloadScan(column.id)"
+              >  Скачать </button>
+            </td>
+
             <td style="text-align:center" *ngIf="user.role.value == 'admin'">
               <button 
                 *ngIf="!editing" 
@@ -329,7 +340,7 @@
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="19" style="text-align:center"> Не найдено </td>
+            <td colspan="20" style="text-align:center"> Не найдено </td>
           </tr>
       </ng-template>
 

@@ -25,5 +25,9 @@ export enum OfferActionTypes {
 
   UPLOAD_SCAN = '[Offer] Upload scan',
   UPLOAD_SCAN_SUCCESS = '[Offer] Upload scan success',
-  UPLOAD_SCAN_FAILURE = '[Offer] Upload scan failure'
+  UPLOAD_SCAN_FAILURE = '[Offer] Upload scan failure',
+
+  DOWNLOAD_SCAN = '[Offer] Download scan',
+  DOWNLOAD_SCAN_SUCCESS = '[Offer] Download scan success',
+  DOWNLOAD_SCAN_FAILURE = '[Offer] Download scan failure'
 }
