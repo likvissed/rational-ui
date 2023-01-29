@@ -9,7 +9,7 @@ import { findEmployeeAction } from './../../../../shared/store/actions/find-empl
 
 import { FileUpload } from 'primeng/fileupload'
 
-import { Component, OnInit, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 
@@ -49,6 +49,7 @@ export class NewComponent implements OnInit {
   dataSubscription: Subscription = Subscription.EMPTY;
 
   isDisplaySuccessMsg: boolean = false;
+  headerDisplaySuccessMsg = '';
 
   isValidUser: boolean = false;
 
@@ -322,6 +323,9 @@ export class NewComponent implements OnInit {
   }
 
   onOpenModalMsg() {
+    const action = this.isNewForm ? 'отправлено' : 'обновлено';
+    this.headerDisplaySuccessMsg = `Рационализаторское предложение успешно ${action}`;
+
     this.isDisplaySuccessMsg = true;    
   }
 
@@ -348,5 +352,9 @@ export class NewComponent implements OnInit {
     } else {
       this.messageService.add({severity: 'warn', summary: 'Внимание', detail: 'Сохраненных черновиков нет' });
     }
+  }
+
+  onSwitchTab() {
+    window.location.reload();
   }
 }

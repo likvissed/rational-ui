@@ -114,16 +114,16 @@
 
 
             <td style="text-align:center">
-              <span *ngIf="column.analogs.length == 0">
+              <span *ngIf="column.obj_analogs.length == 0">
                 Отстутствуют
               </span>
-              <span *ngIf="column.analogs.length > 0">
+              <span *ngIf="column.obj_analogs.length > 0">
                 <button 
                 type="button" 
                 pButton 
                 pRipple
                 label="Смотреть" 
-                (click)="onShowAnalogs(column.name, column.analogs)"
+                (click)="onShowAnalogs(column.name, column.obj_analogs)"
                 class="btn btn-sm old-style"
               ></button>
               </span>

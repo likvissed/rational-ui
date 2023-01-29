@@ -1,7 +1,7 @@
 <div class="p-fluid flex" *ngIf="isValidUser">
   <div class="container">
     <p-dialog 
-      header="Рационализаторское предложение успешно отправлено" 
+      [header]="headerDisplaySuccessMsg"
       [(visible)]="isDisplaySuccessMsg" 
       [style]="{width: '600px'}" 
       [baseZIndex]="10000"
@@ -9,7 +9,7 @@
     >
       <h6>
         Проверить статус можно во вкладке
-        <a routerLink="/offer/list"> Список предложений </a>
+        <a  routerLink="" (click)="onSwitchTab()"> Список предложений </a>
       </h6>
     </p-dialog>
 
