@@ -1,5 +1,3 @@
-.common_script:
-
 docker-build-production:
   stage: build
   before_script:
