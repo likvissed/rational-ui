@@ -45,8 +45,8 @@ export class MainComponent implements AfterViewInit  {
   }
 
   onCheckToken(event: any): boolean {
-    // TODO: Добавить обратно event.origin === environment.originUrl
-    if (event.data['user_info'] && event.data['user_info'] != undefined) {
+    console.log(event.origin);
+    if (event.data['user_info'] && event.data['user_info'] != undefined && event.origin === environment.originUrl) {
       return true;
     } else {
       return false;
