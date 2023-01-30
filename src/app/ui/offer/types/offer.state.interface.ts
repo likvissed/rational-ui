@@ -9,4 +9,5 @@ export interface OfferStateInterface {
   filters: any
   isLoadLists: boolean
   lists: any
+  newUser:any
 }

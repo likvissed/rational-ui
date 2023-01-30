@@ -55,10 +55,10 @@ export class MainComponent implements AfterViewInit  {
 
   onGetInfoUser(user: any) {
     this.store.dispatch(getAuthUserAction({ token: user }));
-
+    
     this.store.pipe(select(getInfoUser))
-      .subscribe((response: any) => {
-        if (response) {
+    .subscribe((response: any) => {
+        if (response['jwt']) {
           this.storageService.onNewToken(response['jwt']);
 
           this.onInitial();

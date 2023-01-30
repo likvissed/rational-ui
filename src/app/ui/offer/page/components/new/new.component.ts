@@ -87,7 +87,14 @@ export class NewComponent implements OnInit {
     this.isNewForm = false;
 
     this.onInitializeFrom();
+    this.onInitializeValues();
+    
     this.form.patchValue(changes.proposal.currentValue);
+
+    let event = {
+      value: changes.proposal.currentValue.trend_id
+    };
+    this.onChangeTrend(event);
 
     if (changes.proposal.currentValue.coauthor_info) {
       changes.proposal.currentValue.coauthor_info.forEach((object: any) => {
@@ -106,7 +113,12 @@ export class NewComponent implements OnInit {
     this.store.pipe(select(selectNewOffer))
       .subscribe((response: any) => {
         if (response) {
-          this.form.patchValue(response.proposal);
+          this.form.controls['author_info'].setValue({
+            id_tn: response.proposal.author_info.id_tn,
+            fio: response.proposal.author_info.fio,
+            phone: response.proposal.author_info.phone,
+            dept: response.proposal.author_info.dept
+          });
 
           this.trends = response.data_filters.trends;
           this.depts = response.data_filters.depts;
@@ -256,6 +268,7 @@ export class NewComponent implements OnInit {
     if (this.form.invalid) {
       this.onMarkAsDirtyForm();
 
+      this.messageService.add({severity: 'warn', summary: 'Внимание', detail: 'Заполнены не все обязательные поля' });
       return;
     }
     
