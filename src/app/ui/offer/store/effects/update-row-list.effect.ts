@@ -1,3 +1,4 @@
+import { getListsAction } from './../actions/get-lists.action';
 import { updateRowListAction, updateRowListSuccessAction, updateRowListFailureAction } from './../actions/update_row_list.action';
 
 import { MessageService } from 'primeng/api';
@@ -27,9 +28,11 @@ export class UpdateRowListEffect {
         return this.service.updateRowList(value.data).pipe(
           map((response: any ) => {
             this.messageService.add({severity: 'success', summary: 'Успешно', detail: response.result });
-
-            return updateRowListSuccessAction({response});
           }),
+          switchMap((response: any) => [
+            updateRowListSuccessAction({response}),
+            getListsAction()
+          ]),
 
           catchError((errorResponse: HttpErrorResponse) => of(
             updateRowListFailureAction({ error: errorResponse.error })
