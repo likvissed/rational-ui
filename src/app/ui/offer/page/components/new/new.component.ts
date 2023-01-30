@@ -72,41 +72,39 @@ export class NewComponent implements OnInit {
   ngOnInit() {
     let user = this.storageService.getJwtPayload();
 
-    if (!user) {
-      return;
+    if (user && user['id_tn']) {
+      this.isValidUser = true;
+      this.isNewForm = true;
+  
+      this.onInitializeFrom();
+      this.onGetNewOffer();
     }
-
-    this.isValidUser = true;
-    this.isNewForm = true;
-
-    this.onInitializeFrom();
-    this.onInitializeValues();
   }
 
   ngOnChanges(changes: any) {
-    this.isNewForm = false;
+    let user = this.storageService.getJwtPayload();
 
-    this.onInitializeFrom();
-    this.onInitializeValues();
-    
-    this.form.patchValue(changes.proposal.currentValue);
-
-    let event = {
-      value: changes.proposal.currentValue.trend_id
-    };
-    this.onChangeTrend(event);
-
-    if (changes.proposal.currentValue.coauthor_info) {
-      changes.proposal.currentValue.coauthor_info.forEach((object: any) => {
-        this.allCoauthors.push(this.createUser(object));
-      });
+    if (user && user['id_tn']) {
+      this.isNewForm = false;
+  
+      this.onInitializeFrom();
+      this.onGetNewOffer();
+      
+      this.form.patchValue(changes.proposal.currentValue);
+  
+      let event = {
+        value: changes.proposal.currentValue.trend_id
+      };
+      this.onChangeTrend(event);
+  
+      if (changes.proposal.currentValue.coauthor_info) {
+        changes.proposal.currentValue.coauthor_info.forEach((object: any) => {
+          this.allCoauthors.push(this.createUser(object));
+        });
+      }
     }
   }
-
-  onInitializeValues() {
-    this.onGetNewOffer();
-  }
-
+  
   onGetNewOffer() {
     this.store.dispatch(newOfferAction());
 

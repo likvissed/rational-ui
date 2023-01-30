@@ -6,7 +6,7 @@ import { createFeatureSelector, createSelector } from "@ngrx/store";
 
 export const offerFeatureSelector = createFeatureSelector<OfferStateInterface>(OFFER_FEATURE_KEY);
 
-export const selectNewOffer = createSelector(offerFeatureSelector, (state: any) => state.newUser);
+export const selectNewOffer = createSelector(offerFeatureSelector, (state: any) => state.newOffer);
 
 export const sendNewOffer = createSelector(offerFeatureSelector, (state: any) => state.response);
 export const flagSuccessCreateOffer = createSelector(offerFeatureSelector, (state: any) => state.flagCreatedOffer);

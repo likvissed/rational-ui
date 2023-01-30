@@ -74,12 +74,11 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     let user = this.storageService.getJwtPayload();
     
-    if (!user) {
-      return;
+    if (user && user['id_tn']) {
+      this.onGetJwtPayload(user);
+
+      this.onInitializeValues();
     }
-  
-    this.onGetJwtPayload(user);
-    this.onInitializeValues();
   }
 
   onGetJwtPayload(currentUser: any) {

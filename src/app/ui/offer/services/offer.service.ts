@@ -11,6 +11,7 @@ export class OfferService {
   ) {}
 
   newOffer() {
+    console.log('service newOffer');
     const url = `${environment.apiUrl}/new`;
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');

@@ -18,7 +18,7 @@ export class NewOfferEffect {
     private service: OfferService
   ) {}
 
-  new$ = createEffect(() =>
+  newOffer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(newOfferAction),
       switchMap(() => {

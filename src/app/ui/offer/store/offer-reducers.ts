@@ -22,8 +22,7 @@ const initialState: OfferStateInterface = {
   flagCreatedOffer: false,
   filters: null,
   isLoadLists: false,
-  lists: null,
-  newUser: null
+  lists: null
 }
 
 const reducer = createReducer(
@@ -32,19 +31,19 @@ const reducer = createReducer(
   on(newOfferAction, (state): OfferStateInterface => ({
     ...state,
     isSubmitting: true,
-    newUser: null
+    newOffer: null
   })),
   on(newOfferSuccessAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     response: action.response,
-    newUser: action.response
+    newOffer: action.response
   })),
   on(newOfferFailureAction, (state, action): OfferStateInterface => ({
     ...state,
     isSubmitting: false,
     errors: action.error,
-    newUser: null
+    newOffer: null
   })),
 
   on(createOfferAction, (state): OfferStateInterface => ({

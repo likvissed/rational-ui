@@ -58,7 +58,7 @@ export class MainComponent implements AfterViewInit  {
     
     this.store.pipe(select(getInfoUser))
     .subscribe((response: any) => {
-        if (response['jwt']) {
+        if (response && response['jwt']) {
           this.storageService.onNewToken(response['jwt']);
 
           this.onInitial();
