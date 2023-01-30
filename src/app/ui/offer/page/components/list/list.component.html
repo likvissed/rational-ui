@@ -150,9 +150,9 @@
             <th></th>
             <th></th>
             <th></th>
+            <th *ngIf="user.role.value == 'admin'"></th>
             <th></th>
-            <th></th>
-            <th></th>
+            <th *ngIf="user.role.value == 'admin'"></th>
             <th></th>
           </tr>
         </ng-template>
