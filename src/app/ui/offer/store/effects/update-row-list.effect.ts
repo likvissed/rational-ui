@@ -1,5 +1,7 @@
+import { getListsAction } from './../actions/get-lists.action';
+import { updateRowListAction, updateRowListSuccessAction, updateRowListFailureAction } from './../actions/update_row_list.action';
+
 import { MessageService } from 'primeng/api';
-import { createOfferAction, createOfferSuccessAction, createOfferFailureAction } from './../actions/create-offer.action';
 
 import { OfferService } from './../../services/offer.service';
 
@@ -12,26 +14,28 @@ import { of } from 'rxjs';
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 
 @Injectable()
-export class CreateOfferEffect {
+export class UpdateRowListEffect {
   constructor(
     private actions$: Actions,
     private service: OfferService,
     private messageService: MessageService
   ) {}
 
-  create$ = createEffect(() =>
+  update$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(createOfferAction),
+      ofType(updateRowListAction),
       switchMap((value) => {
-        return this.service.createOffer(value.formData, value.id).pipe(
+        return this.service.updateRowList(value.data).pipe(
           map((response: any ) => {
             this.messageService.add({severity: 'success', summary: 'Успешно', detail: response.result });
-
-            return createOfferSuccessAction({response});
           }),
+          switchMap((response: any) => [
+            updateRowListSuccessAction({response}),
+            getListsAction()
+          ]),
 
           catchError((errorResponse: HttpErrorResponse) => of(
-            createOfferFailureAction({ error: errorResponse.error })
+            updateRowListFailureAction({ error: errorResponse.error })
           ))
         )
       })

@@ -1,0 +1,438 @@
+<div class="container-fluid">
+  <div class="row">
+    <ng-container *ngIf="lists$ | async as data">
+      <p-table
+        #dtable
+        [value]="data"
+        dataKey="id"
+        styleClass="p-datatable-sm p-datatable-gridlines"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} записей"
+        [scrollable]="true"
+        scrollHeight="600px"
+        editMode="row"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="text-align:center; min-width: 10px" pFrozenColumn> № </th>
+            <th style="text-align:center; min-width: 150px" pFrozenColumn> Название рацпредложения </th>
+            <th style="text-align:center; min-width: 100x"> Аннотация </th>
+            <th style="text-align:center; min-width: 100px"> Дата подачи </th>
+            <th style="text-align:center; min-width: 200px"> Статус </th>
+
+            <th style="text-align:center"> № решения Экспертного совета </th>
+
+            <th style="text-align:center; min-width: 200px"> ФИО автора </th>
+            <th style="text-align:center"> Телефон </th>
+            <th style="text-align:center"> Подразделение </th>
+
+            <th style="text-align:center"> Направление </th>
+            <th style="text-align:center"> Серийное производство </th>
+            <th style="text-align:center"> Профильное подразделение </th>
+            <th style="text-align:center; min-width: 160px"> Ключевые слова </th>
+
+            <th style="text-align:center"> Аналоги </th>
+
+            <th style="text-align:center"> Авторский состав </th>
+            <th style="text-align:center"> Материалы </th>
+
+            <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Загрузить скан </th>
+            <th style="text-align:center; min-width: 50px"> Скачать скан </th>
+            <th style="text-align:center; min-width: 50px" *ngIf="user.role.value == 'admin'"> Назначить номер, поменять статус </th>
+            <th style="text-align:center; min-width: 50px"> Редактировать рацпредложение </th>
+          </tr>
+
+          <tr>
+            <th pFrozenColumn></th>
+            <th pFrozenColumn> <!-- Название рацпредложения -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['name'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'name', 'contains')"
+                class="form-control"
+              >
+            </th>
+            <th></th>
+            <th></th>
+            <th> <!-- Статус -->
+              <p-dropdown
+                [options]="filters.statuses"
+                optionValue="id"
+                (onChange)="dtable.filter($event.value, 'status_id', 'equals')"
+                placeholder="Все"
+                [showClear]="true"
+                optionLabel="name"
+                [style]="{'width':'100%'}"
+                autoWidth="false"
+                appendTo="body"
+              >
+
+                <ng-template let-option pTemplate="item">
+                  <span [class]="'list-badge status-' + option.id">{{option.name}}</span>
+                </ng-template>
+              </p-dropdown>
+            </th>
+            <th> <!-- № решения Экспертного совета -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['expert_number'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'expert_number', 'equals')"
+                class="form-control col-lg-12"
+              >
+            </th>
+            <th> <!-- ФИО автора -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['fio'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'author_info.fio', 'contains')"
+                class="form-control col-lg-12"
+              >
+            </th>
+            <th></th>
+            <th></th>
+            <th> <!-- Направление -->
+              <p-dropdown
+                [options]="filters.trends"
+                optionValue="id"
+                (onChange)="dtable.filter($event.value, 'trend_id', 'equals')"
+                placeholder="Все"
+                [showClear]="true"
+                optionLabel="name"
+                [style]="{'width':'100%'}"
+                autoWidth="false"
+                appendTo="body"
+              >
+                <ng-template let-option pTemplate="item">
+                  <span> {{ option.name }} </span>
+                </ng-template>
+              </p-dropdown>
+            </th>
+            <th> <!-- Серийное производство -->
+              <p-dropdown
+                [options]="filters.serials"
+                optionValue="value"
+                (onChange)="dtable.filter($event.value, 'serial', 'equals')"
+                placeholder="Все"
+                [showClear]="true"
+                optionLabel="name"
+                [style]="{'width':'100%'}"
+                autoWidth="false"
+                appendTo="body"
+              >
+                <ng-template let-option pTemplate="item">
+                  <span> {{ option.name }} </span>
+                </ng-template>
+              </p-dropdown>
+            </th>
+            <th> <!-- Профильное подразделение -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['profile_depts'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'profile_depts', 'contains')"
+                class="form-control col-lg-12"
+              >
+            </th>
+            <th> <!-- Ключевые слова -->
+              <input
+                pInputText
+                type="text"
+                [value]="$any(dtable.filters['tags'])?.value"
+                (input)="dtable.filter($any($event.target)?.value, 'tags', 'contains')"
+                class="form-control col-lg-12"
+              >
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th *ngIf="user.role.value == 'admin'"></th>
+            <th></th>
+            <th *ngIf="user.role.value == 'admin'"></th>
+            <th></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-column let-i="rowIndex" let-editing="editing">
+          <tr [pEditableRow]="column">
+            <td style="text-align:center" pFrozenColumn>{{ column.id }}</td>
+            <td style="text-align:center" pFrozenColumn>{{ column.name }}</td>
+
+            <td style="text-align:center">
+              <button 
+                type="button" 
+                pButton 
+                pRipple
+                label="Смотреть" 
+                (click)="onShowAnnotation(column.name, column.annotation)"
+                class="btn btn-sm old-style"
+              ></button>
+            </td>
+            <td style="text-align:center">{{ column.creation_datetime | date: 'dd.MM.yyyy'  }}</td>
+            <td style="text-align:center">
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <p-dropdown appendTo="body" [options]="filters.statuses" [(ngModel)]="column.status_id" optionLabel="name" optionValue="id" (onChange)="onChangeStatus($event, column)">
+                    <ng-template let-option pTemplate="item">
+                      <span [class]="'list-badge status-' + option.id">{{option.name}}</span>
+                    </ng-template>
+                  </p-dropdown>
+                </ng-template>
+                <ng-template pTemplate="output">
+                  <span
+                    [innerHtml]="column.status_id | describeNameStatus: filters.statuses"
+                    [class]="'list-badge status-' + column.status_id"
+                  >
+                  </span>
+                </ng-template>
+              </p-cellEditor>
+              
+            </td>
+
+            <td style="text-align:center">
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="text" [(ngModel)]="column.expert_number">
+                </ng-template>
+                <ng-template pTemplate="output">
+                  <div *ngIf="column.expert_number; else emptyValue">
+                    {{ column.expert_number }}
+                  </div>
+                </ng-template>
+              </p-cellEditor>
+            </td>
+
+            <td style="text-align:center">{{ column.author_info.fio }}</td>
+            <td style="text-align:center">{{ column.author_info.phone }}</td>
+            <td style="text-align:center">{{ column.author_info.dept }}</td>
+
+            <td style="text-align:center">
+              <span
+                [innerHtml]="column.trend_id | describeNameTrend: filters.trends"
+              >
+              </span>
+            </td>
+            <td style="text-align:center">
+              <span
+                [innerHtml]="column.serial | describeNameSerial: filters.serials"
+              >
+              </span>
+            </td>
+            <td style="text-align:center">{{ column.profile_depts | join:', ' }}</td>
+            <td style="text-align:center">{{ column.tags | join:', ' }}</td>
+
+            <td style="text-align:center">
+              <span *ngIf="column.obj_analogs.length == 0">
+                Отстутствуют
+              </span>
+              <span *ngIf="column.obj_analogs.length > 0">
+                <button 
+                type="button" 
+                pButton 
+                pRipple
+                label="Смотреть" 
+                (click)="onShowAnalogs(column.name, column.obj_analogs)"
+                class="btn btn-sm old-style"
+              ></button>
+              </span>
+            </td> 
+
+            <td style="text-align:center">
+              <span *ngIf="column.coauthor_info.length == 0">
+                Отстутствует
+              </span>
+              <span *ngIf="column.coauthor_info.length > 0">
+                <button 
+                type="button" 
+                pButton 
+                pRipple
+                label="Смотреть" 
+                (click)="onShowCoauthors(column.name, column.coauthor_info)"
+                class="btn btn-sm old-style"
+              ></button>
+              </span>
+            </td>
+            <td style="text-align:center">
+              <span *ngIf="column.files.length == 0">
+                Отстутствуют
+              </span>
+              <span *ngIf="column.files.length > 0">
+                <button 
+                  type="button" 
+                  pButton 
+                  pRipple 
+                  [label]="column.files.length" 
+                  icon="pi pi-file" 
+                  (click)="menu.toggle($event)"
+                  class="btn btn-sm old-style"
+                ></button>
+                <p-menu #menu [popup]="true" appendTo="body" [model]="onGeListFiles(column.files)"></p-menu>
+              </span>
+            </td>
+
+            <td *ngIf="user.role.value == 'admin'" style="text-align:center">
+              <span *ngIf="column.expert_number.length != 0">
+                <p-fileUpload 
+                  mode="basic" 
+                  name="scan[]" 
+                  [auto]="true"
+                  pTooltip="Загрузить скан"
+                  tooltipPosition="top"
+                  [maxFileSize]="MAX_FILE_SIZE"
+                  (onSelect)="onUploadScan($event, column.id)"
+                ></p-fileUpload>
+              </span>
+            </td>
+
+            <td>
+              <button
+                *ngIf="column.scan"
+                type="button" 
+                class="btn btn-sm old-style" 
+                (click)="onDownloadScan(column.id)"
+              >  Скачать </button>
+            </td>
+
+            <td style="text-align:center" *ngIf="user.role.value == 'admin'">
+              <button 
+                *ngIf="!editing" 
+                type="button" 
+                pInitEditableRow 
+                class="btn btn-sm old-style"
+              > Изменить </button>
+
+              <button 
+                *ngIf="editing" 
+                pButton 
+                pRipple 
+                type="button" 
+                pSaveEditableRow 
+                icon="pi pi-check"
+                (click)="onRowEditSave(column)" 
+                class="p-button-rounded p-button-text p-button-success p-mr-2"
+              ></button>
+              <button 
+                *ngIf="editing" 
+                pButton 
+                pRipple 
+                type="button"
+                pCancelEditableRow 
+                icon="pi pi-times" 
+                class="p-button-rounded p-button-text p-button-danger"
+              ></button>
+            </td>
+
+            <td>
+              <button 
+                *ngIf="column.status_id == ID_STATUS_NEW && user.id_tn == column.author_info.id_tn" 
+                type="button" 
+                class="btn btn-sm old-style" 
+                (click)="onOpenEditRecord(column)"
+              >  Редактировать </button>
+            </td>
+
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="20" style="text-align:center"> Не найдено </td>
+          </tr>
+      </ng-template>
+
+      </p-table>
+    </ng-container>
+
+  </div>
+
+  <p-dialog 
+    [header]="coauthors.name" 
+    [(visible)]="isDisplayCoauthors" 
+    [style]="{width: '600px'}" 
+    [baseZIndex]="10000"
+    [modal]="true"
+    [dismissableMask]="true"
+  >
+    <p-table
+      [value]="coauthors.lists"
+      styleClass="p-datatable-sm p-datatable-gridlines"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th width="2%"> № </th>
+          <th width="60%"> ФИО </th>
+          <th width="20%"> Подразделение </th>
+          <th width="20%"> Телефон </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+        <tr>
+          <td> {{ rowIndex + 1 }} </td>
+          <td> {{ rowData.fio }} </td>
+          <td> {{ rowData.dept }} </td>
+          <td> {{ rowData.phone }} </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-dialog>
+
+  <p-dialog 
+    [header]="annotation.name" 
+    [(visible)]="isDisplayAnnotation" 
+    [style]="{width: '600px'}" 
+    [baseZIndex]="10000"
+    [modal]="true"
+    [dismissableMask]="true"
+  >
+    <h6>
+      {{ annotation.text }}
+    </h6>
+  </p-dialog>
+
+  <p-dialog 
+    [header]="analogs.name" 
+    [(visible)]="isDisplayAnalogs" 
+    [style]="{width: '1000px'}" 
+    [baseZIndex]="10000"
+    [modal]="true"
+    [dismissableMask]="true"
+  >
+    <p-table
+      [value]="analogs.lists"
+      styleClass="p-datatable-sm p-datatable-gridlines"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th width="5%" style="text-align:center"> № </th>
+          <th width="20%" style="text-align:center"> Наименование </th>
+          <th width="60%" style="text-align:center"> Аннотация </th>
+          <th width="40%" style="text-align:center"> ФИО автора </th>
+          <th width="5%" style="text-align:center"> Телефон </th>
+          <th width="5%" style="text-align:center"> Подразделение </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+        <tr>
+          <td style="text-align:center"> {{ rowData.id }} </td>
+          <td style="text-align:center"> {{ rowData.name }} </td>
+          <td style="text-align:center"> {{ rowData.annotation }} </td>
+          <td style="text-align:center"> {{ rowData.author_info.fio }} </td>
+          <td style="text-align:center"> {{ rowData.author_info.phone }} </td>
+          <td style="text-align:center"> {{ rowData.author_info.dept }} </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-dialog>
+
+  <p-confirmDialog [style]="{width: '700px'}" [baseZIndex]="10000"></p-confirmDialog>
+</div>
+
+<ng-template #emptyValue>
+  <p> - </p>
+</ng-template>

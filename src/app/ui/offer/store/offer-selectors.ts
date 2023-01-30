@@ -6,10 +6,14 @@ import { createFeatureSelector, createSelector } from "@ngrx/store";
 
 export const offerFeatureSelector = createFeatureSelector<OfferStateInterface>(OFFER_FEATURE_KEY);
 
-export const selectNewOffer = createSelector(offerFeatureSelector, (state: any) => state.response);
+export const selectNewOffer = createSelector(offerFeatureSelector, (state: any) => state.newOffer);
 
 export const sendNewOffer = createSelector(offerFeatureSelector, (state: any) => state.response);
+export const flagSuccessCreateOffer = createSelector(offerFeatureSelector, (state: any) => state.flagCreatedOffer);
 
 export const getAnalogs = createSelector(offerFeatureSelector, (state: any) => state.proposals);
-
 export const flagGetAnalogResponse = createSelector(offerFeatureSelector, (state: any) => state.flagAnalog);
+
+export const getLists = createSelector(offerFeatureSelector, (state: any) => state.lists);
+export const selectFiltersLists = createSelector(offerFeatureSelector, (state: any) => state);
+

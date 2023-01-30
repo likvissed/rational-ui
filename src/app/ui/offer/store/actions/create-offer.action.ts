@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
 
 export const createOfferAction = createAction(
   OfferActionTypes.CREATE_OFFER,
-  props<{ data: any, formData: any }>()
+  props<{ data: any, formData: any, id: any }>()
 );
 
 export const createOfferSuccessAction = createAction(

@@ -1,0 +1,28 @@
+.list-badge {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-size: 75%;
+
+  &.status-1 {
+    background-color: var(--green-100);
+    color: var(--green-800);
+  }
+
+  &.status-2 {
+    background-color: var(--cyan-100);
+    color: var(--cyan-800);
+  }
+
+  &.status-3 {
+    background-color: var(--red-100);
+    color: var(--red-800);
+  }
+
+  &.status-4 {
+    background-color: var(--yellow-100);
+    color: var(--yellow-800);
+  }
+}

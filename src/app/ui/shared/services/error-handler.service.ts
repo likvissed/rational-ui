@@ -3,14 +3,11 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { AuthHelper } from '@iss/ng-auth-center';
-
 @Injectable()
 export class ErrorHandlerService {
   str_severity = 'error';
 
   constructor(
-    private authHelper: AuthHelper,
     private messageService: MessageService
   ) {}
 
@@ -19,7 +16,6 @@ export class ErrorHandlerService {
 
     switch (error.status) {
       case 401:
-        this.authHelper.logout();
         this.messageService.add({severity: 'warn', summary: 'Не авторизован', detail: 'Авторизуйтесь снова'});
 
         break;
@@ -40,7 +36,7 @@ export class ErrorHandlerService {
 
         break;
       default:
-        this.messageService.add({severity: this.str_severity, summary: 'Сервер временно недоступен', detail: error.statusText});
+        this.messageService.add({severity: this.str_severity, summary: 'Сервер временно недоступен', detail: 'Не удалось загрузить данные. Попробуйте обновить страницу' });
 
         break;
     }

@@ -1,5 +1,6 @@
+import { uploadScanAction, uploadScanSuccessAction, uploadScanFailureAction } from './../actions/upload-scan.action';
+
 import { MessageService } from 'primeng/api';
-import { createOfferAction, createOfferSuccessAction, createOfferFailureAction } from './../actions/create-offer.action';
 
 import { OfferService } from './../../services/offer.service';
 
@@ -10,28 +11,31 @@ import { switchMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { getListsAction } from '../actions/get-lists.action';
 
 @Injectable()
-export class CreateOfferEffect {
+export class UploadScanEffect {
   constructor(
     private actions$: Actions,
     private service: OfferService,
     private messageService: MessageService
   ) {}
 
-  create$ = createEffect(() =>
+  upload$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(createOfferAction),
+      ofType(uploadScanAction),
       switchMap((value) => {
-        return this.service.createOffer(value.formData, value.id).pipe(
+        return this.service.uploadScan(value.file, value.id).pipe(
           map((response: any ) => {
             this.messageService.add({severity: 'success', summary: 'Успешно', detail: response.result });
-
-            return createOfferSuccessAction({response});
           }),
+          switchMap((response: any) => [
+            uploadScanSuccessAction({response}),
+            getListsAction()
+          ]),
 
           catchError((errorResponse: HttpErrorResponse) => of(
-            createOfferFailureAction({ error: errorResponse.error })
+            uploadScanFailureAction({ error: errorResponse.error })
           ))
         )
       })

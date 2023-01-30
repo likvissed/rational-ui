@@ -14,7 +14,7 @@
   <p-table [value]="proposedAnalogs$ | async">
     <ng-template pTemplate="header">
       <tr *ngIf="(proposedAnalogs$ | async)?.length > 0 || newAnalogs.length > 0">
-        <th width="80%"> Наименования рац. предложений </th>
+        <th width="80%"> Наименования рацпредложений </th>
         <th width="10%"></th>
       </tr>
     </ng-template>
@@ -45,7 +45,9 @@
 <div>
   <div class="pt-1">
     <div class="flex justify-content-end mt-3">
-      <button type="button" class="btn btn-sm old-style" (click)="onSendAnalog(true)"> Отправить </button>
+      <span class="pr-2">
+        <button type="button" class="btn btn-sm old-style" (click)="onSendAnalog(true)"> Отправить </button>
+      </span>
       <button type="button" class="btn btn-sm old-style" (click)="onCloseModal(false)"> Отмена </button>
     </div>
   </div>

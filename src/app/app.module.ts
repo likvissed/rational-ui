@@ -1,7 +1,6 @@
 import { MessageService } from 'primeng/api';
 import { SharedModule } from './ui/shared/modules/shared.module';
 import { OfferModule } from './ui/offer/modules/offer.module';
-import { LayoutModule } from './ui/layout/modules/layout.module';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,14 +15,11 @@ import { PrimengModule } from './primeng.module';
 
 import { environment } from './../environments/environment';
 
-import { AuthCenterModule } from '@iss/ng-auth-center';
-
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 const appModules: any[] = [
-  LayoutModule,
   PrimengModule,
   OfferModule,
   SharedModule
@@ -35,7 +31,6 @@ const appModules: any[] = [
   ],
   imports: [
     HttpClientModule,
-    AuthCenterModule.forRoot(environment.auth),
     AppRoutingModule,
 
     BrowserModule,

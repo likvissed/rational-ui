@@ -1,17 +1,30 @@
-<div class="p-fluid flex">
+<div class="p-fluid flex" *ngIf="isValidUser">
   <div class="container">
-    <form [formGroup]="form">
+    <p-dialog 
+      [header]="headerDisplaySuccessMsg"
+      [(visible)]="isDisplaySuccessMsg" 
+      [style]="{width: '600px'}" 
+      [baseZIndex]="10000"
+      [modal]="true"
+    >
+      <h6>
+        Проверить статус можно во вкладке
+        <a  routerLink="" (click)="onSwitchTab()"> Список предложений </a>
+      </h6>
+    </p-dialog>
+
+    <form [formGroup]="form">  
       <div class="grid">
         <div class="col-12 md:col-10 lg:col-6">
           <div formGroupName="author_info"> 
             <div class="py-2 pr-3 w-10">
               <label class="pl-1"> * ФИО </label>
-              <input type="text" pInputText formControlName="fio" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+              <input type="text" pInputText formControlName="fio" [readonly]="true" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
             </div>
     
             <div class="py-2 pr-3 w-10">
               <label class="pl-1"> * Подразделение </label>
-              <input type="text" pInputText formControlName="dept" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
+              <input type="text" pInputText formControlName="dept" [readonly]="true" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
             </div>
       
             <div class="py-2 pr-3 w-10">
@@ -19,39 +32,71 @@
               <p-inputMask class="p-inputtext-sm" formControlName="phone" mask="99-99" placeholder="Не должно быть пустым"></p-inputMask>
             </div>
           </div>
-
-          <div class="py-2 pr-3 w-10">
-            <label class="pl-1"> Дата подачи предложения </label>
-            <input type="text" pInputText formControlName="creation_datetime" class="p-inputtext-sm" placeholder="Не должно быть пустым"/>
-          </div>
     
           <div class="py-2 pr-3 w-10">
-            <label class="pl-1 w-9"> Авторский состав </label>
-            <p-autoComplete
-              [suggestions]="employees$ | async"
-              (completeMethod)="searchEmployee($event)"
-              field="fio"
-              formControlName="coauthor_info"
-              [minLength]="1"
-              [forceSelection]="true"
-              [showEmptyMessage]="true"
-              appendTo="body"
-              placeholder="Введите ФИО или таб.номер"
-              [multiple]="true"
-            >
-              <ng-template let-employee pTemplate="item">
-                <span class="ml-3">{{ employee.fio }}</span>
-                <span> (отд. {{ employee.dept }}) </span>
-              </ng-template>
-            </p-autoComplete>
+            <div class="pb-1">
+              <label class="pl-1 w-9"> Авторский состав </label>
+              <button type="button" class="btn btn-sm old-style" (click)="onNewCoauthor()"> Добавить </button>
+            </div>
+
+            <div class="row">
+              <ng-container>
+                <p-table
+                  [value]="allCoauthors.controls"
+                  [reorderableColumns]="true"
+                  dataKey="tn"
+                  styleClass="p-datatable-sm p-datatable-gridlines"
+                  [tableStyle]="{'font-size': '12px'}"
+                >
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th> ФИО </th>
+                      <th></th>
+                    </tr>
+                  </ng-template>
+    
+                  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                    <ng-container formArrayName="coauthor_info">
+                      <tr [formGroupName]="rowIndex">
+                        <td>
+                          <p-autoComplete
+                            [suggestions]="employees$ | async"
+                            (completeMethod)="searchEmployee($event)"
+                            field="fio"
+                            formControlName="obj"
+                            [minLength]="1"
+                            [forceSelection]="true"
+                            [showEmptyMessage]="true"
+                            appendTo="body"
+                            placeholder="Введите ФИО или таб.номер"
+                            (onSelect)="selectEmpCoauthor($event, rowIndex)"
+                          >
+                            <ng-template let-employee pTemplate="item">
+                              <span class="ml-3">{{ employee.fio }}</span>
+                              <span> (отд. {{ employee.dept }}) </span>
+                            </ng-template>
+    
+                          </p-autoComplete>
+                        </td>
+    
+                        <td style="text-align:center">
+                          <button type="button" class="btn btn-sm old-style" (click)="onDeleteCoauthor(rowIndex)" > Удалить </button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-template>
+                </p-table>
+              </ng-container>
+            </div>
+
 
             <span class="font-italic text-secondary text-sm">
-              Не более 10 соавторов
+              Не более {{ countCoauthors }} соавторов
             </span>
           </div>
   
           <div class="py-2 pr-3 w-10">
-            <label> * Направление рац. предложения </label>
+            <label> * Направление рацпредложения </label>
             <p-dropdown [options]="trends" formControlName="trend_id" optionLabel="name" optionValue="id" (onChange)="onChangeTrend($event)"></p-dropdown>
           </div>
     
@@ -80,6 +125,7 @@
               [virtualScroll]="true"
               defaultLabel="Нажмите для выбора"
               appendTo="body"
+              (onChange)="onCheckDept()"
             >
               <ng-template let-division pTemplate="item">
                 <div>
@@ -91,21 +137,26 @@
             </p-multiSelect>
             <span class="font-italic text-secondary pl-1 text-sm">
               Макс. количество: 5 шт.
-            </span>
+            </span>            
 
             <div class="p-error text-sm pl-1" *ngIf="form.controls['profile_depts']?.invalid && (form.controls['profile_depts']?.dirty || form.controls['profile_depts']?.touched)">
               <span *ngIf="form.controls['profile_depts']?.errors?.['required']">
                 Необходимо выбрать профильное подразделение из списка
               </span>
             </div>
+
+            <div *ngIf="isShowWarningDept" class="p-error text-sm pl-1">
+              Не допускается подача рационализаторских предложений на результаты собственной трудовой деятельности
+            </div>
           </div>
+
 
         </div>
 
         <div class="col-12 md:col-10 lg:col-6">
 
           <div class="py-2 pr-3 w-10">
-            <label class="pl-1"> * Название рац. предложения </label>
+            <label class="pl-1"> * Название рацпредложения </label>
             <textarea 
               formControlName="name" 
               [rows]="3" 
@@ -120,14 +171,14 @@
               </span>
 
               <span *ngIf="form.controls['name']?.errors?.['required']">
-                Необходимо ввести название рац. предложения
+                Необходимо ввести название рацпредложения
               </span>
             </div>
             
           </div>
 
           <div class="py-2 pr-3 w-10">
-            <label class="pl-1"> * Ключевые слова </label>
+            <label class="pl-1"> * Ключевые слова (тэги) </label>
             <p-chips
               formControlName="tags"
               [max]="5"
@@ -183,7 +234,7 @@
             >
               <ng-template pTemplate="content" let-files>
                 <span *ngIf="files.length == 0" class="font-italic text-secondary pl-1 text-sm">
-                  Для добавления файлов нажмите на кнопку "Выбрать файлы"
+                  Чертежи, схемы, эскизы, рисунки, формулы, пояснения, технико-экономические расчеты и иные материалы
                 </span>
               </ng-template>
             </p-fileUpload>
@@ -199,7 +250,17 @@
             <label>* Обязательное поле для заполнения </label>
           </div>
           <div class="flex align-items-center justify-content-center border-round">
-            <button type="button" class="btn btn-sm old-style" (click)="onOpenAnalogs()"> Отправить </button>
+            <span class="pr-2" *ngIf="isPresentDraft">
+              <button type="button" class="btn btn-sm old-style" (click)="onGetDraft()"> Восстановить черновик </button>
+            </span>
+            <span class="pr-2">
+              <button type="button" class="btn btn-sm old-style" (click)="onSaveDraft()"> Сохранить черновик </button>
+            </span>
+          
+            <button type="button" class="btn btn-sm old-style" (click)="onOpenAnalogs()"> 
+              <span *ngIf="isNewForm"> Отправить </span>
+              <span *ngIf="!isNewForm"> Обновить </span>
+            </button>
           </div>
       </div>
 

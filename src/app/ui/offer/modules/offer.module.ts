@@ -1,7 +1,13 @@
+import { DownloadScanEffect } from './../store/effects/download-scan.effect';
+import { UploadScanEffect } from './../store/effects/upload-scan.effect';
 import { AnalogComponent } from './../page/components/analog/analog.component';
 import { NewComponent } from './../page/components/new/new.component';
 import { ListComponent } from '../page/components/list/list.component';
+import { MainComponent } from '../page/main/main.component';
 
+import { UpdateRowListEffect } from './../store/effects/update-row-list.effect';
+import { DownloadFileEffect } from './../store/effects/download-file.effect';
+import { GetListsEffect } from './../store/effects/get-lists.effect';
 import { GetAnalogsEffect } from './../store/effects/get-analogs.effect';
 import { CreateOfferEffect } from './../store/effects/create-offer.effect';
 import { NewOfferEffect } from './../store/effects/new-offer.effect';
@@ -9,6 +15,7 @@ import { offerReducer, OFFER_FEATURE_KEY } from './../store/offer-reducers';
 
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { SharedModule } from './../../shared/modules/shared.module';
 
 import { OfferRoutingModule } from './offer-routing.module';
 import { OfferServiceModule } from './../services/offer.service.module';
@@ -22,13 +29,15 @@ import { NgModule } from '@angular/core';
   declarations: [
     NewComponent,
     ListComponent,
-    AnalogComponent
+    AnalogComponent,
+    MainComponent
   ],
   imports: [
     CommonModule,
     OfferRoutingModule,
 
     PrimengModule,
+    SharedModule,
 
     FormsModule,
     ReactiveFormsModule,
@@ -40,9 +49,17 @@ import { NgModule } from '@angular/core';
       [
         NewOfferEffect,
         CreateOfferEffect,
-        GetAnalogsEffect
+        GetAnalogsEffect,
+        GetListsEffect,
+        DownloadFileEffect,
+        UpdateRowListEffect,
+        UploadScanEffect,
+        DownloadScanEffect
       ]
     )
+  ],
+  exports: [
+    MainComponent
   ]
 })
 export class OfferModule { }

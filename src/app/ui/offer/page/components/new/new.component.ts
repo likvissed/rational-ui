@@ -1,20 +1,21 @@
+import { StorageService } from 'src/app/ui/shared/services/storage.service';
 import { getAnalogsAction } from './../../../store/actions/get-analogs.action';
 import { AnalogComponent } from './../analog/analog.component';
 import { createOfferAction } from './../../../store/actions/create-offer.action';
-import { selectNewOffer, getAnalogs, flagGetAnalogResponse } from './../../../store/offer-selectors';
+import { selectNewOffer, getAnalogs, flagGetAnalogResponse, flagSuccessCreateOffer } from './../../../store/offer-selectors';
 import { newOfferAction } from './../../../store/actions/new-offer.action';
 import { searchUsers } from './../../../../shared/store/selectors';
 import { findEmployeeAction } from './../../../../shared/store/actions/find-employee.action';
 
 import { FileUpload } from 'primeng/fileupload'
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 
 import { Observable, of } from 'rxjs';
 
-import { Store, select } from '@ngrx/store';
+import { Store, select, on } from '@ngrx/store';
 
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 
@@ -29,6 +30,7 @@ import { Subscription } from 'rxjs';
   providers:[DynamicDialogRef, DynamicDialogConfig, DialogService]
 })
 export class NewComponent implements OnInit {
+  @Input() proposal = {};
   @ViewChild('fileUpload') fileUpload!: FileUpload;
   form!: FormGroup;
 
@@ -44,7 +46,19 @@ export class NewComponent implements OnInit {
 
   formData = new FormData();
 
-  dataSubscription!: Subscription;
+  dataSubscription: Subscription = Subscription.EMPTY;
+
+  isDisplaySuccessMsg: boolean = false;
+  headerDisplaySuccessMsg = '';
+
+  isValidUser: boolean = false;
+
+  isShowWarningDept: boolean = false;
+
+  countCoauthors: number = 10;
+
+  isNewForm: boolean = true;
+  isPresentDraft: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,25 +67,65 @@ export class NewComponent implements OnInit {
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
     private messageService: MessageService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit() {
-    this.onInitializeFrom();
-    this.onInitializeValues();
+    if (this.onCheckValid()) {
+      this.isNewForm = true;
+    }
   }
 
-  onInitializeValues() {
-    this.onGetNewOffer();
+  onCheckValid(): boolean {
+    let user = this.storageService.getJwtPayload();
+
+    if (user && user['id_tn']) {
+      this.isValidUser = true;
+  
+      this.onInitializeFrom();
+      this.onGetNewOffer();
+
+      if (this.storageService.onGetDraftForm()) {
+        this.isPresentDraft = true;
+      }
+
+      return true;
+    } else {
+      return false;
+    }
   }
 
+  ngOnChanges(changes: any) {
+    if (this.onCheckValid()) {
+      this.isNewForm = false;
+      
+      this.form.patchValue(changes.proposal.currentValue);
+  
+      let event = {
+        value: changes.proposal.currentValue.trend_id
+      };
+      this.onChangeTrend(event);
+  
+      if (changes.proposal.currentValue.coauthor_info) {
+        changes.proposal.currentValue.coauthor_info.forEach((object: any) => {
+          this.allCoauthors.push(this.createUser(object));
+        });
+      }
+    }
+  }
+  
   onGetNewOffer() {
     this.store.dispatch(newOfferAction());
 
     this.store.pipe(select(selectNewOffer))
       .subscribe((response: any) => {
-        // TODO: Сообщение о том, что не удалось получить данные пользователя
         if (response) {
-          this.form.patchValue(response.proposal);
+          this.form.controls['author_info'].setValue({
+            id_tn: response.proposal.author_info.id_tn,
+            fio: response.proposal.author_info.fio,
+            phone: response.proposal.author_info.phone,
+            dept: response.proposal.author_info.dept
+          });
 
           this.trends = response.data_filters.trends;
           this.depts = response.data_filters.depts;
@@ -85,16 +139,16 @@ export class NewComponent implements OnInit {
 
   onInitializeFrom() {
     this.form = this.formBuilder.group({
+      id: new FormControl(''),
+
       author_info: this.formBuilder.group({
-        id_tn: new FormControl('', [Validators.required]),
-        fio: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(60)]),
-        phone: new FormControl('', [Validators.required]),
-        dept: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(10)])
+        id_tn: new FormControl(''),
+        fio: new FormControl(''),
+        phone: new FormControl(''),
+        dept: new FormControl('')
       }),
 
-      creation_datetime: new FormControl({ value: '', disabled: true }),
-
-      coauthor_info: new FormControl(''),
+      coauthor_info: this.formBuilder.array([]),
 
       trend_id: new FormControl('', [Validators.required]),
       serial: new FormControl(true, [Validators.required]),
@@ -108,13 +162,61 @@ export class NewComponent implements OnInit {
     });
   }
 
+  // ------------------ Coauthors ------------------
+
   searchEmployee(event: any) {
-    if (this.form.value.coauthor_info.length <= 9) {
+    if (this.form.value.coauthor_info.length <= this.countCoauthors) {
       this.store.dispatch(findEmployeeAction({ data: event.query.trim()}));
 
       this.employees$ = this.store.pipe(select(searchUsers));
     }
   }
+
+  private createUser(obj?: any): FormGroup {
+    if (obj) {
+      return this.formBuilder.group({
+        id_tn: new FormControl(obj['id_tn']),
+        fio: new FormControl(obj['fio']),
+        phone: new FormControl(obj['phone']),
+        dept: new FormControl(obj['dept']),
+        obj: new FormControl(obj)
+      });
+    } else {   
+      return this.formBuilder.group({
+        id_tn: new FormControl(''),
+        fio: new FormControl(''),
+        phone: new FormControl(''),
+        dept: new FormControl(''),
+        obj: new FormControl('')
+      });
+    }
+  }
+
+  get allCoauthors(): FormArray {
+    return this.form.get("coauthor_info") as FormArray;
+  }
+
+  onNewCoauthor() {
+    if (this.allCoauthors.length >= 10) {
+      this.messageService.add({ severity: 'warn', summary: 'Внимание', detail: `Максимальное число соавторов ${this.countCoauthors} шт.` });
+
+      return;
+    }
+
+    this.allCoauthors.push(this.createUser());
+  }
+
+  onDeleteCoauthor(index: number) {
+    this.allCoauthors.removeAt(index);
+  }
+
+  selectEmpCoauthor(event: any, index: number) {
+    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['id_tn'].setValue(event.id_tn);
+    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['fio'].setValue(event.fio);
+    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['dept'].setValue(event.dept);
+    (((<FormArray>this.form.controls['coauthor_info']).at(index)) as FormGroup).controls['phone'].setValue(event.phone);
+  }
+  // -----------------------------------------------
 
   onAddNewTag(event: any) {
     let lengthForTag: number = 15;
@@ -146,6 +248,18 @@ export class NewComponent implements OnInit {
     this.form.controls['profile_depts'].updateValueAndValidity();
   }
 
+  onCheckDept() {
+    this.isShowWarningDept = false;
+
+    let deptUser = this.form.value.author_info.dept;
+    
+    this.form.value.profile_depts.forEach((dept: any) => {
+      if (dept == deptUser) {
+        this.isShowWarningDept = true;
+      }
+    });
+  }
+
   onMarkAsDirtyForm() {
     // TODO: Добавить проверку вложенным парметрам
     Object.keys(this.form.controls).forEach((key) => {
@@ -161,6 +275,7 @@ export class NewComponent implements OnInit {
     if (this.form.invalid) {
       this.onMarkAsDirtyForm();
 
+      this.messageService.add({severity: 'warn', summary: 'Внимание', detail: 'Заполнены не все обязательные поля' });
       return;
     }
     
@@ -200,7 +315,7 @@ export class NewComponent implements OnInit {
           });
 
         if (data.save) {
-          this.onCreateOffer();
+          this.onCreateOffer();          
         }
       }
     });
@@ -214,7 +329,47 @@ export class NewComponent implements OnInit {
     
     this.formData.delete(nameData);
     this.formData.append(nameData, JSON.stringify(data));
-    
-    this.store.dispatch(createOfferAction({ formData: this.formData, data: data }));
+
+    this.store.dispatch(createOfferAction({ formData: this.formData, data: data, id: this.form.value.id }));
+
+    this.dataSubscription = this.store.select(flagSuccessCreateOffer)
+      .subscribe((flag: boolean) => {
+        if (flag) {
+          this.onOpenModalMsg();
+        }
+        
+        this.dataSubscription.unsubscribe();
+      });
+  }
+
+  onOpenModalMsg() {
+    const action = this.isNewForm ? 'отправлено' : 'обновлено';
+    this.headerDisplaySuccessMsg = `Рационализаторское предложение успешно ${action}`;
+
+    this.isDisplaySuccessMsg = true;    
+  }
+
+  onSaveDraft() {
+    this.storageService.onSetDraft(this.form.getRawValue());
+
+    this.messageService.add({severity: 'success', summary: 'Успешно', detail: 'Черновик сохранен. Внимание: без файлов' });
+  }
+
+  onGetDraft() {
+    let dataObj = this.storageService.onGetDraftForm();
+
+    this.form.patchValue(dataObj);
+
+    if (dataObj.coauthor_info) {
+      this.allCoauthors.clear();
+
+      dataObj.coauthor_info.forEach((object: any) => {
+        this.allCoauthors.push(this.createUser(object));
+      });
+    }
+  }
+
+  onSwitchTab() {
+    window.location.reload();
   }
 }
