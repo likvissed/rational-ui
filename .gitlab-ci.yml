@@ -20,7 +20,7 @@ docker-build-production:
     - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} -H "ssh://$DEPLOY_USER@$DEPLOY_SERVER" down --remove-orphans
     - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} -H "ssh://$DEPLOY_USER@$DEPLOY_SERVER" up -d
   only:
-    - main
+    - dockerize
 
 docker-build-staging:
   stage: build
