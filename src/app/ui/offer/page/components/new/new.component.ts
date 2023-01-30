@@ -58,6 +58,7 @@ export class NewComponent implements OnInit {
   countCoauthors: number = 10;
 
   isNewForm: boolean = true;
+  isPresentDraft: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -70,25 +71,33 @@ export class NewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.onCheckValid()) {
+      this.isNewForm = true;
+    }
+  }
+
+  onCheckValid(): boolean {
     let user = this.storageService.getJwtPayload();
 
     if (user && user['id_tn']) {
       this.isValidUser = true;
-      this.isNewForm = true;
   
       this.onInitializeFrom();
       this.onGetNewOffer();
+
+      if (this.storageService.onGetDraftForm()) {
+        this.isPresentDraft = true;
+      }
+
+      return true;
+    } else {
+      return false;
     }
   }
 
   ngOnChanges(changes: any) {
-    let user = this.storageService.getJwtPayload();
-
-    if (user && user['id_tn']) {
+    if (this.onCheckValid()) {
       this.isNewForm = false;
-  
-      this.onInitializeFrom();
-      this.onGetNewOffer();
       
       this.form.patchValue(changes.proposal.currentValue);
   
@@ -349,19 +358,14 @@ export class NewComponent implements OnInit {
   onGetDraft() {
     let dataObj = this.storageService.onGetDraftForm();
 
-    if (dataObj) {
-      this.form.patchValue(dataObj);
+    this.form.patchValue(dataObj);
 
-      if (dataObj.coauthor_info) {
-        this.allCoauthors.clear();
+    if (dataObj.coauthor_info) {
+      this.allCoauthors.clear();
 
-        dataObj.coauthor_info.forEach((object: any) => {
-          this.allCoauthors.push(this.createUser(object));
-        });
-      }
-  
-    } else {
-      this.messageService.add({severity: 'warn', summary: 'Внимание', detail: 'Сохраненных черновиков нет' });
+      dataObj.coauthor_info.forEach((object: any) => {
+        this.allCoauthors.push(this.createUser(object));
+      });
     }
   }
 

@@ -250,7 +250,7 @@
             <label>* Обязательное поле для заполнения </label>
           </div>
           <div class="flex align-items-center justify-content-center border-round">
-            <span class="pr-2">
+            <span class="pr-2" *ngIf="isPresentDraft">
               <button type="button" class="btn btn-sm old-style" (click)="onGetDraft()"> Восстановить черновик </button>
             </span>
             <span class="pr-2">
