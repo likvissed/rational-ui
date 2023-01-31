@@ -12,7 +12,6 @@
         currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} записей"
         editMode="row"
         [scrollable]="true"
-        scrollHeight="600px"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -252,6 +251,7 @@
                     tooltipPosition="top"
                     [maxFileSize]="MAX_FILE_SIZE"
                     (onSelect)="onUploadScan($event, column.id)"
+                    styleClass="dropdown-style"
                   ></p-fileUpload>
                 </span>
               </td>

@@ -20,6 +20,10 @@
   z-index: 1000;
 }
 
+:host ::ng-deep .p-button.p-fileupload-choose {
+  position: static;
+}
+
 ::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
   color: #2e2e2e;
 }
