@@ -70,6 +70,7 @@
                             appendTo="body"
                             placeholder="Введите ФИО или таб.номер"
                             (onSelect)="selectEmpCoauthor($event, rowIndex)"
+                            styleClass="dropdown-style"
                           >
                             <ng-template let-employee pTemplate="item">
                               <span class="ml-3">{{ employee.fio }}</span>
