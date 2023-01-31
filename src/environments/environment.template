@@ -4,5 +4,5 @@ export const  environment = {
 
   apiUrl: "${API_URL}",
 
-  originUrl: "${ORIGIN_URI}"
+  originUrls: ${ORIGIN_URI}
 };

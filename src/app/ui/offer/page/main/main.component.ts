@@ -45,12 +45,19 @@ export class MainComponent implements AfterViewInit  {
   
   onCheckToken(event: any): boolean {
     console.log('getToken', (event.data['user_info']));
-    if (event.data['user_info'] && event.data['user_info'] != undefined && event.origin === environment.originUrl) {
+
+    if (event.data['user_info'] && event.data['user_info'] != undefined && this.onValidOrigin(event.origin)) {
       return true;
     } else {
       return false;
     }
-  } 
+  }
+
+  onValidOrigin(getOrigin: any): boolean {
+    let object = environment.originUrls.find((obj: any) => obj === getOrigin);
+
+    return object ? true : false;
+  }
 
   onGetInfoUser(user: any) {
     this.store.dispatch(getAuthUserAction({ token: user }));
