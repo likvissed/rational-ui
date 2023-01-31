@@ -30,9 +30,8 @@
 :host ::ng-deep .p-datatable-scrollable .p-frozen-column {
   position: static;
 }
-:host ::ng-deep .p-datatable-scrollable-table>.p-datatable-thead {
+:host ::ng-deep .p-datatable-scrollable-table >.p-datatable-thead {
   position: static;
-
 }
 
 
