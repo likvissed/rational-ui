@@ -39,13 +39,12 @@ export class MainComponent implements AfterViewInit  {
   @HostListener('window:message', ['$event'])
   getToken(event: any) {
     if (this.onCheckToken(event)) {
-      console.log('getToken', (event.data['user_info']));
       this.onGetInfoUser(event.data);
     }
   }
-
+  
   onCheckToken(event: any): boolean {
-    console.log(event.origin);
+    console.log('getToken', (event.data['user_info']));
     if (event.data['user_info'] && event.data['user_info'] != undefined && event.origin === environment.originUrl) {
       return true;
     } else {

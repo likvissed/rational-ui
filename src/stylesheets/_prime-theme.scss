@@ -3,9 +3,23 @@
   font-size: 13px;
 }
 
-::ng-deep .p-tabmenu {
+:host ::ng-deep .p-tabmenu {
   font-size: 13px;
 }
+
+:host ::ng-deep .p-datatable {
+  position: static;
+}
+:host ::ng-deep .dropdown-style {
+  position: static;
+}
+:host ::ng-deep .ui-table-scrollable-header{
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1000;
+}
+
 ::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
   color: #2e2e2e;
 }

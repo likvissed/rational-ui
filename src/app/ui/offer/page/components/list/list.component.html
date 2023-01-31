@@ -10,9 +10,9 @@
         [rows]="10"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} записей"
+        editMode="row"
         [scrollable]="true"
         scrollHeight="600px"
-        editMode="row"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -68,6 +68,7 @@
                 [style]="{'width':'100%'}"
                 autoWidth="false"
                 appendTo="body"
+                styleClass="dropdown-style"
               >
 
                 <ng-template let-option pTemplate="item">
@@ -106,6 +107,7 @@
                 [style]="{'width':'100%'}"
                 autoWidth="false"
                 appendTo="body"
+                styleClass="dropdown-style"
               >
                 <ng-template let-option pTemplate="item">
                   <span> {{ option.name }} </span>
@@ -123,6 +125,7 @@
                 [style]="{'width':'100%'}"
                 autoWidth="false"
                 appendTo="body"
+                styleClass="dropdown-style"
               >
                 <ng-template let-option pTemplate="item">
                   <span> {{ option.name }} </span>
@@ -176,7 +179,7 @@
             <td style="text-align:center">
               <p-cellEditor>
                 <ng-template pTemplate="input">
-                  <p-dropdown appendTo="body" [options]="filters.statuses" [(ngModel)]="column.status_id" optionLabel="name" optionValue="id" (onChange)="onChangeStatus($event, column)">
+                  <p-dropdown appendTo="body" styleClass="dropdown-style" [options]="filters.statuses" [(ngModel)]="column.status_id" optionLabel="name" optionValue="id" (onChange)="onChangeStatus($event, column)">
                     <ng-template let-option pTemplate="item">
                       <span [class]="'list-badge status-' + option.id">{{option.name}}</span>
                     </ng-template>

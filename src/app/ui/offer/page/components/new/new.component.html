@@ -97,12 +97,12 @@
   
           <div class="py-2 pr-3 w-10">
             <label> * Направление рацпредложения </label>
-            <p-dropdown [options]="trends" formControlName="trend_id" optionLabel="name" optionValue="id" (onChange)="onChangeTrend($event)"></p-dropdown>
+            <p-dropdown [options]="trends" styleClass="dropdown-style" formControlName="trend_id" optionLabel="name" optionValue="id" (onChange)="onChangeTrend($event)"></p-dropdown>
           </div>
     
           <div class="py-2 pr-3 w-10">
             <label> * Серийное производство </label>
-            <p-dropdown [options]="serials" formControlName="serial" optionLabel="name" optionValue="value"></p-dropdown>
+            <p-dropdown [options]="serials" styleClass="dropdown-style" formControlName="serial" optionLabel="name" optionValue="value"></p-dropdown>
           </div>
 
           <div class="py-2 pr-3 w-10">
@@ -126,6 +126,7 @@
               defaultLabel="Нажмите для выбора"
               appendTo="body"
               (onChange)="onCheckDept()"
+              styleClass="dropdown-style"
             >
               <ng-template let-division pTemplate="item">
                 <div>
