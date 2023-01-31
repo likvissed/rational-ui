@@ -2,11 +2,11 @@
   <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
 </div>
 
-<div [hidden]="tabs.tab1" class="pt-7">
+<div [hidden]="tabs.tab1" class="pt-2">
   <app-list (proposal)="onSwitchTab($event)"></app-list>
 </div> 
 
-<div [hidden]="tabs.tab2" class="pt-7">
+<div [hidden]="tabs.tab2" class="pt-2">
   <app-new [proposal]="objProposal"></app-new>
 </div>
 

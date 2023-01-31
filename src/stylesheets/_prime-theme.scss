@@ -7,32 +7,32 @@
   font-size: 13px;
 }
 
-:host ::ng-deep .p-datatable {
-  position: static;
-}
-:host ::ng-deep .dropdown-style {
-  position: static;
-}
-:host ::ng-deep .ui-table-scrollable-header{
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-  z-index: 1000;
-}
+// :host ::ng-deep .p-datatable {
+//   position: static;
+// }
+// :host ::ng-deep .dropdown-style {
+//   position: static;
+// }
+// :host ::ng-deep .ui-table-scrollable-header{
+//   position: sticky;
+//   position: -webkit-sticky;
+//   top: 0;
+//   z-index: 1000;
+// }
 
 
 :host ::ng-deep .p-button.p-fileupload-choose {
   position: static;
 }
-:host ::ng-deep .p-datatable-scrollable >.p-datatable-wrapper {
-  position: static;
-}
-:host ::ng-deep .p-datatable-scrollable .p-frozen-column {
-  position: static;
-}
-:host ::ng-deep .p-datatable-scrollable-table >.p-datatable-thead {
-  position: static;
-}
+// :host ::ng-deep .p-datatable-scrollable >.p-datatable-wrapper {
+//   position: static;
+// }
+// :host ::ng-deep .p-datatable-scrollable .p-frozen-column {
+//   position: static;
+// }
+// :host ::ng-deep .p-datatable-scrollable-table >.p-datatable-thead {
+//   position: static;
+// }
 
 
 ::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
