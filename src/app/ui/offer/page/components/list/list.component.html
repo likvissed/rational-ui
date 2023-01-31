@@ -336,7 +336,7 @@
 
             <td>
               <button 
-                *ngIf="(column.status_id == ID_STATUS_NEW && user.id_tn == column.author_info.id_tn) || (user.role.value == 'admin')" 
+                *ngIf="(column.status_id == ID_STATUS_NEW) && (user.id_tn == column.author_info.id_tn || user.role.value == 'admin')" 
                 type="button" 
                 class="btn btn-sm old-style" 
                 (click)="onOpenEditRecord(column)"
