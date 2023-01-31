@@ -1,4 +1,26 @@
-.common_script:
+docker-build-production:
+  stage: build
+  before_script:
+    - mkdir -p ~/.ssh
+    - cp "$DEPLOY_KEY_ALT" ~/.ssh/id_ed25519
+    - chmod -R 700 ~/.ssh
+    - ssh-keyscan $DEPLOY_SERVER_ALT >> ~/.ssh/known_hosts
+    - ssh-keyscan $(getent hosts $DEPLOY_SERVER_ALT | cut -d' ' -f1) >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" $CI_REGISTRY --password-stdin
+  script:
+    - cp $DOTENV .env
+    - export COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1
+    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} build
+    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} push
+    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} -H "ssh://$DEPLOY_USER_ALT@$DEPLOY_SERVER_ALT" pull
+    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} -H "ssh://$DEPLOY_USER_ALT@$DEPLOY_SERVER_ALT" down --remove-orphans
+    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} -H "ssh://$DEPLOY_USER_ALT@$DEPLOY_SERVER_ALT" up -d
+  only:
+    - dockerize
+
+docker-build-staging:
+  stage: build
   before_script:
     - mkdir -p ~/.ssh
     - cp "$DEPLOY_KEY" ~/.ssh/id_ed25519
@@ -7,24 +29,6 @@
     - ssh-keyscan $(getent hosts $DEPLOY_SERVER | cut -d' ' -f1) >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" $CI_REGISTRY --password-stdin
-
-docker-build-production:
-  stage: build
-  extends: .common_script
-  script:
-    - cp $DOTENV .env
-    - export COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1
-    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} build
-    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} push
-    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} -H "ssh://$DEPLOY_USER@$DEPLOY_SERVER" pull
-    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} -H "ssh://$DEPLOY_USER@$DEPLOY_SERVER" down --remove-orphans
-    - docker-compose -f docker-compose.production.yml -p ${CI_PROJECT_NAME} -H "ssh://$DEPLOY_USER@$DEPLOY_SERVER" up -d
-  only:
-    - main
-
-docker-build-staging:
-  stage: build
-  extends: .common_script
   script:
     - cp $DOTENV_STAGING .env
     - export COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1
