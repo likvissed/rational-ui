@@ -102,6 +102,8 @@ export class MainComponent implements AfterViewInit  {
         command: () => {
           this.tabs.tab1 = false;
           this.tabs.tab2 = true;
+
+          this.activeItem = this.items[0];
         } 
       },
       { 
@@ -110,6 +112,8 @@ export class MainComponent implements AfterViewInit  {
         command: () => {
           this.tabs.tab1 = true;
           this.tabs.tab2 = false;
+
+          this.activeItem = this.items[1];
         } 
       }
     ];
